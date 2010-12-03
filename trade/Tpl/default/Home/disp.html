@@ -1,0 +1,193 @@
+<include file="../Public/header" />
+<div class="ind_view">
+<div class="cltitle">
+<a href="{:GetSettValue('siteurl')}" title="{:GetSettValue('sitename')}">HOME</a> >
+ <volist name="catep" id="vo">
+  
+  <a href="{:U(tourlstr($vo['name']).'@',array('cid'=>$vo['id']))}" title="{$vo.name}">{$vo.name}</a> >
+  
+ </volist>
+ {$list.name}
+</div>
+
+
+<dl>
+<dt>
+<SCRIPT src="../Public/Js/base.js" type=text/javascript></SCRIPT>
+<div class="ind_v_l_1">
+<div id=preview>
+	<div class=jqzoom id=spec-n1 ><IMG
+	src="/{$list.bigimage}" jqimg="/{$list.bigimage}" width=340>
+	</div>
+	<div id=spec-n5>
+		<div class=control id=spec-left>
+			<img src="../Public/images/left.gif" />
+		</div>
+		<div id=spec-list>
+			<ul class=list-h>
+            <volist name="gallerys" id="vo">
+				<li><img src="/{$vo.img_url}"> </li>
+            </volist>
+			</ul>
+		</div>
+		<div class=control id=spec-right>
+			<img src="../Public/images/right.gif" />
+		</div>
+		
+    </div>
+</div>
+<SCRIPT type=text/javascript>
+	$(function(){			
+	   $(".jqzoom").jqueryzoom({
+			xzoom:400,
+			yzoom:400,
+			offset:10,
+			position:"right",
+			preload:1,
+			lens:1
+		});
+		$("#spec-list").jdMarquee({
+			deriction:"left",
+			width:330,
+			height:56,
+			step:2,
+			speed:4,
+			delay:10,
+			control:true,
+			_front:"#spec-right",
+			_back:"#spec-left"
+		});
+		$("#spec-list img").bind("mouseover",function(){
+			var src=$(this).attr("src");
+			$("#spec-n1 img").eq(0).attr({
+				src:src.replace("\/n5\/","\/n1\/"),
+				jqimg:src.replace("\/n5\/","\/n0\/")
+			});
+			$(this).css({
+				"border":"2px solid #ff6600",
+				"padding":"1px"
+			});
+		}).bind("mouseout",function(){
+			$(this).css({
+				"border":"1px solid #ccc",
+				"padding":"2px"
+			});
+		});				
+	})
+	</SCRIPT>
+<SCRIPT src="../Public/Js/163css.js" type=text/javascript></SCRIPT>
+
+</div>
+</dt>
+ <form name="cart_quantity" action="{:U('Cart/add')}" method="post">
+<dd class="mid">
+<div class="ind_v_r_1">
+<h1>{$list.name}</h1>
+<ul><li>Item #{$list.id}</li>
+<li class="price"> </li>
+</ul>
+ 
+ <dl>
+ 
+<input type="hidden" name="id" value="{$list.id}">
+<!--<gt name="sizes_count" value="1">
+ <dt>
+  <span>Size</span>&nbsp;:&nbsp;<select name="size">
+  <option value="">Please Choose Size</option>
+  <volist name="sizes" id="vo">
+  <option value="{$vo}">{$vo}</option>
+  </volist>
+  
+  </select>
+  </dt>
+</gt>-->
+
+ <dt class="a">
+ <volist name="attrlist[0]['attrs']" id="vo">
+ 
+  <span>{$attrlist[0]['name']}</span>&nbsp;:{$vo['attr_value']}&nbsp;<input name="{$attrlist[0]['name']}[]" value="{$vo['attr_value']}" type="hidden" />
+  <volist name="attrlist" id="subvo">
+  <gt name="i" value="1">
+  <gt name="subvo['values_count']" value="0">
+  <span>{$subvo['name']}</span>&nbsp;:
+     <select name="{$subvo['name']}[]">
+     <volist name="subvo['attrs']" id="subsubvo">
+     <option value="{$subsubvo['attr_value']}">{$subsubvo['attr_value']}</option>
+     </volist>
+     <select>
+  &nbsp;
+  </gt>
+  </gt>  
+  </volist>
+  &nbsp;&nbsp;<input size="3" name="count[]" />Unit(s)
+  <br />
+ 
+ </volist> 
+  </dt>
+
+  <dt>Buying Guide &gt;&gt;</dt>
+  <dt class="a">  1) We accept Credit Card and&nbsp;Others .<BR>2) &gt; $300 . It is better to send through Western Union .<BR>3) When purchasing , Plz fill the correct inform.Thanks !</dt>
+     </dl>
+ 
+</div>
+</dd>
+<dd class="rig">
+<ol class="total" id="messager">{:getprice($list['price'],$list['pricespe'])}</ol>
+		  <ul>
+          <eq name="attrcount" value="0">
+          <li class="li">Start from: <INPUT value="1" maxlength="3" size="3" style="width:30px" name="count[]" id="count[]" onblur="addpost();" align="absmiddle"> Unit(s)</li>
+          </eq>
+          <li class="cart"><input type="image" src="../Public/images/car_gray.gif" style="height:27px;width:123px;border:0px"  alt="Add to cart" title="Add to cart"></li>
+		<li><a href="#"><img src="../Public/images/car_Wishlist.gif" alt="Add to wash list"></a></li></li>  
+	  </ul>
+		  <ol class="wenzi">To add to shopping cart,
+choose from options to the left.
+</ol>
+<ol><img src="../Public/images/getseal.gif" alt="VeriSign services"></ol>
+<ul><li><a href="/Shipping-Delivery/" title="Shipping Delivery">Shipping &amp; Delivery</a></li><li><a href="/payment/" title="Payment methods">Payment methods</a></li></ul>
+</dd> </form></dl>
+</div>
+ 
+<script> 
+function INFShow(id)
+{
+for (var i = 0;i < 3;i++)
+{
+var INFV = document.getElementById("INFV" + i);
+var INFC = document.getElementById("INFC" + i);
+if (i == id)
+{
+INFV.className = 'hover';
+INFC.style.display = "";
+}
+else
+{
+INFV.className = '';
+INFC.style.display = "none";
+}
+}
+}
+</script>
+<DIV class="container">
+<UL class="tabs-nav">
+  <LI onclick="INFShow('0')" id="INFV0" class="hover"><A><SPAN>Item description</SPAN></A></LI>
+  <LI onclick="INFShow('1')" id="INFV1"><A><SPAN>Shipping and payment</SPAN></A></LI>
+  <!--<LI onclick="INFShow('2')" id="INFV2"><A><SPAN>Related items</SPAN></A></LI>--></UL>
+  <div class="prov" id="INFC0" style="text-align:left">
+  {$list.remark}
+  </div>
+  
+  
+<div class="prov" id="INFC1" style="display:none; text-align:left">
+<div class="con"><P class=MsoNormal style="MARGIN: 0cm 0cm 0pt"><B style="mso-bidi-font-weight: normal"><SPAN lang=EN-US style="FONT-SIZE: 12pt; FONT-FAMILY: Verdana"><FONT size=2>D</FONT></SPAN></B><SPAN lang=EN-US style="FONT-SIZE: 12pt; FONT-FAMILY: Verdana"><FONT size=2>efault : <?xml:namespace prefix = st1 ns = "urn:schemas-microsoft-com:office:smarttags" /><st1:place w:st="on">EMS</st1:place> . If you have special requestment . Plz contact us . Thanks !<BR>Delivery time : 3-7 days according where you are located and the kind of the express company .<?xml:namespace prefix = o ns = "urn:schemas-microsoft-com:office:office" /><o:p></o:p></FONT></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt"><SPAN lang=EN-US style="FONT-SIZE: 12pt; FONT-FAMILY: Verdana"><FONT size=2>{:GetSettValue('siteurl')} support these expresses .</FONT> </SPAN></P>
+<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt"><SPAN lang=EN-US style="FONT-SIZE: 12pt; FONT-FAMILY: Verdana"><IMG src="http://www.b2b1999.com/upfile/10/201061623413631331.gif" border=0></SPAN><SPAN lang=EN-US style="FONT-WEIGHT: normal; FONT-SIZE: 12pt; FONT-FAMILY: Verdana; mso-bidi-font-weight: bold"><A href="http://www.fedex.com" target="_blank"><IMG src="http://www.b2b1999.com/upfile/10/201061623412199053.gif" border=0></A><IMG src="http://www.b2b1999.com/upfile/10/201061623414181508.gif" border=0><IMG src="http://www.b2b1999.com/upfile/10/20106162342138856.gif" border=0><IMG src="http://www.b2b1999.com/upfile/10/201061623421833618.gif" border=0><IMG src="http://www.b2b1999.com/upfile/10/20106162342681016.gif" border=0><BR></SPAN><FONT size=2><SPAN lang=EN-US style="FONT-SIZE: 12pt; FONT-FAMILY: Verdana">P</SPAN><SPAN lang=EN-US style="FONT-WEIGHT: normal; FONT-SIZE: 12pt; FONT-FAMILY: Verdana; mso-bidi-font-weight: bold">ayment methods available on {:GetSettValue('siteurl')}:<o:p></o:p></SPAN></FONT></P>
+<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: left; mso-pagination: widow-orphan" align=left><SPAN lang=EN-US style="FONT-SIZE: 12pt; FONT-FAMILY: Verdana; mso-bidi-font-family: ����; mso-font-kerning: 0pt"><FONT size=2>1) Credit Card<o:p></o:p></FONT></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: left; mso-pagination: widow-orphan" align=left><SPAN lang=EN-US style="FONT-SIZE: 12pt; FONT-FAMILY: Verdana; mso-bidi-font-family: ����; mso-font-kerning: 0pt"><FONT size=2>2) Western <st1:place w:st="on">Union</st1:place><o:p></o:p></FONT></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: left; mso-pagination: widow-orphan" align=left><SPAN lang=EN-US style="FONT-SIZE: 12pt; FONT-FAMILY: Verdana; mso-bidi-font-family: ����; mso-font-kerning: 0pt"><FONT size=2>3) Money Gram<o:p></o:p></FONT></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: left; mso-pagination: widow-orphan" align=left><SPAN lang=EN-US style="FONT-SIZE: 12pt; FONT-FAMILY: Verdana; mso-bidi-font-family: ����; mso-font-kerning: 0pt"><FONT size=2>4) Bank Transfer<o:p></o:p></FONT></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: left; mso-pagination: widow-orphan" align=left><SPAN lang=EN-US style="FONT-SIZE: 12pt; FONT-FAMILY: Verdana; mso-bidi-font-family: ����; mso-font-kerning: 0pt"><FONT size=2>5) Others</FONT></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: left; mso-pagination: widow-orphan" align=left><SPAN lang=EN-US style="FONT-SIZE: 12pt; FONT-FAMILY: Verdana; mso-bidi-font-family: ����; mso-font-kerning: 0pt"><BR><FONT size=2>After confirming your money , We will manage your order within 24 hours . And contact with you about the tracking No# . Have a happy shopping !<o:p></o:p></FONT></SPAN></P>
+<P></P><BR><BR><BR><BR><BR><BR><BR></div>
+</DIV>
+<include file="../Public/footer" />

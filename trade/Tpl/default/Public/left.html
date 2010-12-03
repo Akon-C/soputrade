@@ -1,0 +1,62 @@
+<div class="left">
+ 
+ 
+<dl>
+<dt class="cht">Categories</dt>
+<dd class="cata">
+ 
+<div class="in1_l_in">
+	  <ol>
+      <volist name="catetree" id="vo">
+		<ul>          
+		  <eq name="vo['subcount']" value="0">
+          <li class="titleout"><div class="tt"><a href="{:U(tourlstr($vo['name']).'@',array('cid'=>$vo['id']))}" title="{$vo.name}">{$vo.name}</a></div>
+          </li>
+          </eq>
+          <gt name="vo['subcount']" value="0">
+          <li class="titleout" onMouseOver="document.all.Layer{$vo.id}.style.visibility='';this.className='titleover'" onMouseOut="document.all.Layer{$vo.id}.style.visibility='hidden';this.className='titleout'"><div class="tt"><a href="{:U(tourlstr($vo['name']).'@',array('cid'=>$vo['id']))}" title="{$vo.name}">{$vo.name}</a></div>
+		  <div class="l_li" id="Layer{$vo.id}" style="visibility:hidden;">
+		  <ul>
+		    <volist name="vo['sub']" id="subvo">
+			<li><a href="{:U(tourlstr($subvo['name']).'@',array('cid'=>$subvo['id']))}" title="T Shirts">{$subvo.name}</a></li>
+			</volist>
+			
+		  </ul>
+		  </div>
+          </li>
+          </gt>
+		  
+		</ul>
+		</volist>
+		
+		
+	  </ol>
+	</div> 
+</dd>
+</dl>
+<div class="bestpro">
+<ol>Top Ten Views</ol>
+<ul class="l_class">
+	    <volist name="toptenviews" id="vo">
+		<li>
+          <dl>
+            <dt class="left"><img src="__ROOT__/{$vo.smallimage}" alt="{$vo.name}"></dt><dd class="right"><a href="{:U(tourlstr($vo['name']).'@',array('pid'=>$vo['id']))}" target="_blank" title="{$vo.name}">{$vo.name}</a></dd>
+          </dl>
+       </li>
+	   </volist>
+		
+	  </ul>
+</div>
+
+<div class="inc">
+<ul>
+<li class="f"><a href="http://translate.google.com/?hl=fr&langpair=en%7Cfr#">Français</a></li>
+<li class="i"><a href="http://translate.google.com/?hl=it&langpair=en%7Cit#">Italiano</a></li>
+<li class="n"><a href="http://translate.google.com/?hl=nl&langpair=en%7Cnl#">Nederlands</a></li>
+<li class="e"><a href="http://translate.google.com/?hl=es&langpair=en%7Ces#">Español</a></li>
+<li class="d"><a href="http://translate.google.com/?hl=da&langpair=en%7Cda#">Dansk</a></li>
+<li class="de"><a href="http://translate.google.com/?hl=de&langpair=en%7Cde#">Deutsch</a></li>
+</ul>
+</div>
+ 
+</div>

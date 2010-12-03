@@ -1,0 +1,202 @@
+<include file="../Public/admintop" />
+<include file="../Public/adminleft" />
+<tagLib name="html" />
+<script language="javascript">
+function ajaxFileUpload(fileToUpload,timestamp)
+{
+	
+	$("#loading")
+	.ajaxStart(function(){
+		$(this).show();
+	})
+	.ajaxComplete(function(){
+		$(this).hide();
+	});
+
+	$.ajaxFileUpload
+	(
+		{
+			url:"{:U('Products/upload')}",
+			secureuri:false,
+			fileElementId:fileToUpload,
+			dataType: 'json',
+			success: function (data, status)
+			{
+				
+				if (status==1){
+					$("#msg").text(data.info);
+					
+				}
+				else{
+					$("#msg").text(data.info);
+					$("#fileToUpload_look_"+timestamp).attr("href","."+data.data);
+					$("#fileToUpload_look_"+timestamp).show();
+					$("#fileToUpload_look_"+timestamp).preview();
+					$("#fileToUpload_url_"+timestamp).val(data.data);
+					//var jsonObj = eval("("+data+")");						
+					/*$("#imgurlbox").attr("src",".././Public/Uploads/Products/"+data.data); 
+					$("#imgurlbox").show();
+					$("#imgurl").val(data.data);*/
+				}
+
+
+			},
+			error: function (data, status, e)
+			{
+				alert(e);
+			}
+		}
+	)		
+	return false;
+
+}
+$(document).ready (
+				   function(){
+					   
+					  
+					   $("#img_add").click(
+							   function(){
+								   var timestamp = Date.parse(new Date());
+								   var str="<p class='t-left'><input type='hidden'  name='timestamp[]' value='"+timestamp+"' /><input type='hidden' id='fileToUpload_url_"+timestamp+"' name='imgurl[]' value='' />描述：<input type='text' size='20' name='img_desc[]' class='input-text' />&nbsp排序：<input type='text' size='5' name='sort[]' class='input-text' />&nbsp图片：<input type='file' id='fileToUpload_"+timestamp+"' name='fileToUpload[]' class='input-text' /><input type='radio' name='isIndex'  class='input-text' value='"+timestamp+"'>封面&nbsp;&nbsp;<input class='input-submit' id='upload'  type='button' name='upload' value='上传' onClick=\"return ajaxFileUpload('fileToUpload_"+timestamp+"','"+timestamp+"');\" />&nbsp;<a id='fileToUpload_look_"+timestamp+"' href='javascript:void(0);' style='display:none;'  target='_blank'><img ' src='../Public/images/look.jpg' width='15' height='15' ></a></p>";
+								   //alert(str);
+								   $("#img_html").html($("#img_html").html()+str);
+								   
+							   }
+							   );
+				   }
+				   );
+</script>
+<!-- Content (Right Column) -->
+		<div id="content" class="box">
+
+			<h1>添加新产品</h1>
+            <p class="msg info">提示：<label id="msg"></label><span id="loading" style="display:none;"><img   src="../Public/images/loading.gif" style="height:20px;">上传中...</span></p>
+            	
+            <p id="btn-create" class="box">
+              <a href="{:U('Products/add')}">添加新产品</a>
+            </p>
+            <!-- Tabs -->
+			<div class="tabs box">
+				<ul>
+					<li><a href="#tab01"><span>通用信息</span></a></li>
+					<li><a href="#tab02"><span>详细描述</span></a></li>
+					<li><a href="#tab03"><span>商品相册</span></a></li>
+                    <li><a href="#tab04"><span>SEO信息</span></a></li>
+				</ul>
+			</div> <!-- /tabs -->
+            <div id="tab01">
+            <form action="{:U('Products/Insert')}" name="myform" method="post" enctype="multipart/form-data">
+            <table class="nostyle">
+                    <tr>
+						<td style="width:120px;">产品名称:</td>
+						<td><input type="text" size="40" name="name" class="input-text" value="" /></td>
+					</tr>
+                    <tr>
+						<td style="width:120px;">编号:</td>
+						<td><input type="text" size="40" name="serial" class="input-text" value="" /></td>
+					</tr>
+                    <tr>
+						<td style="width:120px;">价格:</td>
+						<td><input type="text" size="40" name="price" class="input-text" value="" /></td>
+					</tr>
+                    <tr>
+						<td style="width:120px;">特价:</td>
+						<td><input type="text" size="40" name="pricespe" class="input-text" value="" /></td>
+					</tr>
+                    
+                    <tr>
+						<td style="width:120px;">产品分类:</td>
+						<td>
+                        <select name="cateid" class="input-text" >
+                        <option value="0">最上级...</option>
+                        <volist name="catetree" id="vo">
+                        <option value="{$vo['id']}">{:class_str_insert($vo['deep'],"&nbsp;&nbsp;&nbsp;")}{$vo.name}</option>
+                        </volist>
+                        </select>
+                        </td>
+					</tr>
+                     <tr>
+						<td style="width:120px;">品牌:</td>
+						<td>
+                        <select name="brandid" class="input-text" >
+                        <option value="0">最上级...</option>
+                        <volist name="brandtree" id="vo">
+                        <option value="{$vo['id']}">{$vo.name}</option>
+                        </volist>
+                        </select>
+                        </td>
+					</tr>
+                    <tr>
+						<td style="width:120px;">尺码:</td>
+						<td><input type="text" size="40" name="size" class="input-text" value="" />"以","号分隔</td>
+					</tr>
+                    
+                    <tr>
+						<td style="width:120px;">最新产品:</td>
+						<td><input type="radio" value="1"  name="isnew" class="input-text"  />是<input type="radio" value="0"  name="isnew" class="input-text"  checked/>否</td>
+					</tr>
+                    <tr>
+						<td style="width:120px;">热卖产品:</td>
+						<td><input type="radio" value="1"  name="ishot" class="input-text"  />是<input type="radio" value="0"  name="ishot" class="input-text"  checked/>否</td>
+					</tr>
+                    <tr>
+						<td style="width:120px;">推荐产品:</td>
+						<td><input type="radio" value="1"  name="isrec" class="input-text"  />是<input type="radio" value="0"  name="isrec" class="input-text"  checked/>否</td>
+					</tr>
+                    <tr>
+						<td style="width:120px;">特价产品:</td>
+						<td><input type="radio" value="1"  name="isprice" class="input-text"  />是<input type="radio" value="0"  name="isprice" class="input-text"  checked/>否</td>
+					</tr>
+                    <tr>
+						<td style="width:120px;">排序:</td>
+						<td><input type="text" size="20" name="sort" class="input-text" value="" /></td>
+					</tr>
+                    
+            </table>
+            </div>
+            <div id="tab02">
+            <html:editor id="remark" name="remark" height="400x" width="100%" type="FCKeditor" content="" />
+            </div>
+            <div id="tab03">
+            <table class="nostyle">
+           
+            <tr><td>
+            <p class="t-left">
+            <input type="hidden"  name="timestamp[]" value="0" />
+            <input type="hidden" id="fileToUpload_url_0" name="imgurl[]" value="" />
+            描述：<input type="text" size="20" name="img_desc[]" class="input-text" />
+            排序：<input type="text" size="5" name="sort[]" class="input-text" />
+            图片：<input type="file" id="fileToUpload" name="fileToUpload[]" class="input-text" /><input type="radio" name="isIndex" checked class="input-text" value="0">
+            封面 
+             <input class="input-submit" id="upload"  type="button" name="upload" value="上传" onClick="return ajaxFileUpload('fileToUpload','0');" />
+             &nbsp;<a id="img_add" href="javascript:void(0);" title="../Public/images/look.jpg"><img src="../Public/images/+.jpg" width="15" height="15"></a>
+             <a id='fileToUpload_look_0' href='javascript:void(0);' target="_blank" style='display:none;'><img  src='../Public/images/look.jpg' width='15' height='15' ></a></p>
+            <label id="img_html">
+            </label>
+           </td></tr>
+           <tr><td>
+           
+           </td></tr>
+           </table>
+            </div>
+            <div id="tab04">
+            <table class="nostyle">
+            <tr>
+                <td style="width:120px;">标题(SEO):</td>
+                <td><input type="text" size="60" name="pagetitle" class="input-text" value="" /></td>
+            </tr>
+            <tr>
+                <td style="width:120px;">关键字(SEO):</td>
+                <td><textarea name="pagekey" cols="60" rows="10" class="input-text"></textarea></td>
+            </tr>
+            <tr>
+                <td style="width:120px;">描述(SEO):</td>
+                <td><textarea name="pagedec" cols="60" rows="10" class="input-text"></textarea></td>
+            </tr>
+            
+            </table>
+            </div>
+            <p class="t-right"><input type="submit" class="input-submit" value="添加" /></p>
+            </form>
+		</div> <!-- /content -->
+<include file="../Public/adminfooter" />

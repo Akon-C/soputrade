@@ -1,0 +1,119 @@
+<include file="../Public/header" />
+<div class="ind_con">
+<include file="../Public/left" />
+<div class="right">
+ <div class="pcata">
+  <div class="pcata_l">
+   <ol class="pic">
+	  <SCRIPT  src="../Public/Js/flash.js" type=text/javascript></SCRIPT>
+	  <div id=flashFCI><a href="#" title="jerseysmaker" target="_blank"><IMG src="/upfile/10/201082423343331813.jpg" alt="jerseysmaker"></a></div>
+	  <SCRIPT type=text/javascript>
+	  var s1 = new SWFObject("../Public/flash/flash.swf", "mymovie1", "534", "180", "5", "#ffffff");
+	  s1.addParam("wmode", "transparent");
+	  s1.addParam("AllowscriptAccess", "sameDomain");
+	  s1.addVariable("bigSrc", "{$flashpic}");
+	  s1.addVariable("smallSrc", "|images/06.jpg|||");
+	  s1.addVariable("href", "{$flashlink}");
+	  s1.addVariable("txt", "{$flashremark}");
+	  s1.addVariable("width", "534");
+	  s1.addVariable("height", "180");
+	  s1.write("flashFCI");
+	  </SCRIPT>
+	  </ol>
+      
+<div class="procata">
+<ol>Featured Categories</ol>
+<ul>
+	<li>    
+        <volist name="catetree" id="vo">
+        <eq name="vo['ishot']" value="1">
+		<dl>
+		  <dt><a href="{:U(tourlstr($vo['name']).'@',array('cid'=>$vo['id']))}" title="{$vo.name}"><img src="__ROOT__/{$vo.imgurl}" alt="{$vo.name}"></a></dt>
+		  <dd class="title"><a href="{:U(tourlstr($vo['name']).'@',array('cid'=>$vo['id']))}" title="{$vo.name}">{$vo.name}</a></dd>
+		<dd class="cash">	
+              <volist name="vo['sub']" id="subvo" offset="0" length="5">
+                  <h3><a href="{:U(tourlstr($subvo['name']).'@',array('cid'=>$subvo['id']))}" title="{$subvo.name}">{$subvo.name}</a></h3>
+              </volist>
+<a href='{:U(tourlstr($subvo['name']).'@',array('cid'=>$subvo['id']))}' title='More wholesale products'><h4>More wholesale products &gt;&gt;</h4></a>
+</dd>
+</dl>
+        </eq>
+        </volist>
+		</li>
+	  </ul>
+</div>
+ 
+</div> 
+ <div class="pcata_r">
+   <ul class="pic">
+	  <volist name="leftpic" id="vo">
+	   	 <li><a href="{$vo.link}" target="_blank"><img src="__ROOT__/{$vo.img_url}"  /></a></li>
+	  </volist>
+		
+		 </ul>
+  </div>
+</div>
+<script> 
+function INFShow(id)
+{
+for (var i = 0;i < 3;i++)
+{
+var INFV = document.getElementById("INFV" + i);
+var INFC = document.getElementById("INFC" + i);
+if (i == id)
+{
+INFV.className = 'I_over';
+INFC.style.display = "";
+}
+else
+{
+INFV.className = '';
+INFC.style.display = "none";
+}
+}
+}
+</script>
+<div class="INF_TJ">
+<ul class="uhead"><li class="best"><h2 onClick="INFShow('0')" id="INFV0" class="I_over">Featured Products</h2></li><li class="ship"><h2 onClick="INFShow('1')" id="INFV1"><ol>Hot Products</ol></h2></li><li><h2 onClick="INFShow('2')" id="INFV2">New Products</h2></li></ul>
+<div class="prov" id="INFC0">
+<ul>
+	    <li>
+        <volist name="FeaturedPorducts" id="vo">
+		<dl>
+		  <dt><a href="{:U(tourlstr($vo['name']).'@',array('pid'=>$vo['id']))}" target="_blank" title="{$vo.name}"><img src="__ROOT__/{$vo.smallimage}" alt="{$vo.name}"></a></dt>
+		  <dd><a href="{:U(tourlstr($vo['name']).'@',array('pid'=>$vo['id']))}" target="_blank" title="{$vo.name}">{$vo.name}</a></dd><dd class="price">{:getprice($vo['price'],$vo['pricespe'])}</dd>
+		</dl>
+		</volist>
+		</li>
+	  </ul>
+</div>
+<div class="prov" id="INFC1" style="display:none;">
+<ul>
+	    <li>
+		<volist name="HotPorducts" id="vo">
+		<dl>
+		  <dt><a href="{:U(tourlstr($vo['name']).'@',array('pid'=>$vo['id']))}" target="_blank" title="{$vo.name}"><img src="__ROOT__/{$vo.smallimage}" alt="{$vo.name}"></a></dt>
+		  <dd><a href="{:U(tourlstr($vo['name']).'@',array('pid'=>$vo['id']))}" target="_blank" title="{$vo.name}">{$vo.name}</a></dd><dd class="price">{:getprice($vo['price'],$vo['pricespe'])}</dd>
+		</dl>
+		</volist>
+		</li>
+	  </ul>
+</div>
+<div class="prov" id="INFC2" style="display:none;">
+<ul>
+	    <li>
+		<volist name="NewPorducts" id="vo">
+		<dl>
+		  <dt><a href="{:U(tourlstr($vo['name']).'@',array('pid'=>$vo['id']))}" target="_blank" title="{$vo.name}"><img src="__ROOT__/{$vo.smallimage}" alt="{$vo.name}"></a></dt>
+		  <dd><a href="{:U(tourlstr($vo['name']).'@',array('pid'=>$vo['id']))}" target="_blank" title="{$vo.name}">{$vo.name}</a></dd><dd class="price">{:getprice($vo['price'],$vo['pricespe'])}</dd>
+		</dl>
+		</volist>
+		</li>
+	  </ul>
+</div>
+</div>
+ 
+
+</div>
+</div>
+<include file="../Public/footer" />

@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" media="screen,projection" type="text/css" href="../Public/css/css.css" /> 
+{:Meta($pagetitle,$pagekeywords,$pagedesc,$list)}
+<script type="text/javascript" src="../Public/Js/jquery.js"></script> 
+</head>
+
+<body>
+<!--bof header--> 
+<div class="in_top">
+  <div class="left">
+     <ul>
+       <li class="up"><a href="{:GetSettValue('siteurl')}"><img src="../Public/images/logo.jpg" width="188" height="44" alt="{:GetSettValue('sitename')}"/></a> China Wholesale</li>
+       <li class="cent">
+         <a class="addthis_button" href="http://www.addthis.com/bookmark.php?v=250&amp;username=xyxxshs"><img src="http://s7.addthis.com/static/btn/v2/lg-bookmark-en.gif" width="125" height="16" alt="Bookmark and Share" style="border:0;margin-top:2px"/></a><script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=xyxxshs"></script>
+       </li>
+       <li class="down"><img src="../Public/images/topbg.gif"  alt="China Wholesale"/></li>
+     </ul>
+  </div>
+  <div class="right">
+    <dl>
+      <dt class="up">
+      <gt name="mid" value="0">
+      <a alt="" href="{:U('Member/index')}">My Account</a><a alt="Log in" href="{:U('Member-Index/LogOut')}">Log Out
+      <else/>
+      <a alt="Log in" href="{:U('Member-Public/Login')}">Log in</a><a alt="Join Now" href="{:U('Member-Public/Join')}">Join Now</a>
+      </gt>
+      <a alt="" href="{:U('Help')}">Support Center</a><a  href="{:U('Home-Cart/disp')}" title="my cart"><img src="../Public/images/shopping-Cart.jpg" width="98" height="12" style="margin-top:5px"alt=""/></a>
+      <p><img src="../Public/images/topline.jpg" style="margin-top:11px" title=""/></p>
+      </dt>
+      <dt class="down">
+       <ul>
+         <li class="u1"><a  href="{:U('Cart/list')}" title="my cart"><img src="../Public/images/checkout.jpg" title=""/></a></li>
+         <li class="u2">Currencies:</li>
+		 <li class="u3">
+         <form name="form1" id="form1" action="{:U('Index/Currencies')}" method="post">
+         <select name="Currencies" onchange="document.form1.submit();">
+         <option value="">Please select...</option>
+         <volist name="currencies" id="vo">
+         <option value="{$vo.symbol}">{$vo.name}</option>
+         </volist>
+         </select>
+         </form>
+         </li>
+       </ul>
+      </dt>
+    </dl>
+  </div>
+</div>
+<div class="in_nav">
+  <ul>
+    <li class="left"><a alt="Home" href="__ROOT__">Home</a></li>
+    <li class="cent">
+<a href="/products/" title="Product">Product</a>
+ 
+<a href="/Payment/" title="Payment">Payment</a>
+ 
+<a href="/Shipping-Delivery/" title="Shipping">Shipping</a>
+ 
+<a href="/privacy-and-policy/" title="Privacy Notice">Privacy Notice</a>
+ 
+<a href="/Wholesale/" title="Wholesale">Wholesale</a>
+ 
+<a href="/mc/" title="My Account">My Account</a>
+</li>
+    <li class="right"><img src="../Public/images/navright.gif" title=""/></li>
+  </ul>
+</div>
+<div class="in_ser">
+    <div class="left"><img title="" style="float:left" src="../Public/images/srchcor.jpg">
+      <ul> <form name="form2" method="post" action="search/index.asp">
+        <li class="u1">Search:</li> 
+        <li class="u2"><input type="text" name="keyword" size="10" maxlength="40" class="search"></li>  
+        <li class="u3">
+			<select name="sort_id" id="sort_id" style="width:220px">
+		      <option value="0" SELECTED>All Categories</option>
+			  
+			  <option  value="1">Women's Clothing</option>
+			  
+			  <option  value="10">Women's Footwear</option>
+			  
+			  <option  value="12">Men's Wear</option>
+			  
+			  <option  value="13">Handbags & bags</option>
+			  
+			  <option  value="14">Hats & Belts</option>
+			  
+			  <option  value="15">Sunglasses</option>
+			  
+			  <option  value="16">Jerseys</option>
+			  
+			  <option  value="17">Sports Shoes</option>
+			  
+			  <option  value="18">Casual Shoes</option>
+			  
+			  <option  value="19">Children's Wear</option>
+			  
+			  <option  value="20">Hair Care Shop</option>
+			  
+			  <option  value="21">Fashion Accessories</option>
+			  
+			  <option  value="23">Electronics Products</option>
+			  
+			</select></li>
+            <li class="u4"><input type="image" src="../Public/images/go.jpg" class="quickbutton" border="0" alt="Product Search" title="Quick Find"></li>
+            </form>
+      </ul>
+    
+    </div>
+    <div class="right"><img title="" style="float:right" src="../Public/images/srchcor1.jpg">
+      <ul class="chat" id=nav_chat_sales>
+  <li class="nm"><span><A  style="color:#990000" class=red title=William onclick=show_chat_div(this); 
+  href="javascript:void(0);">Linda</A></span> is Online to help you</li>
+  <li class="cline" id=chat_div style="DISPLAY: none">
+  <dl>
+  
+  <dd><IMG id="chat_div_close_img" title="close" onclick="close_chat_div()" height="13" alt="close" src="../Public/images/close.gif" width=13 border=0></dd></dl>
+</li>
+</ul>
+    </div>
+</div>
+<div class="in_s">{:GetSettValue('hottitle')}</div>
+<!--eof header-->

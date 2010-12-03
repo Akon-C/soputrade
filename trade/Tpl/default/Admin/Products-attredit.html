@@ -1,0 +1,86 @@
+<include file="../Public/admintop" />
+<include file="../Public/adminleft" />
+<script type="text/javascript">
+function addvalues(id){
+	$("#newvalues_"+id).html($("#newvalues_"+id).html()+$("#values_"+id).html());
+}
+</script>
+<!-- Content (Right Column) -->
+		<div id="content" class="box">
+
+			<h1>产品属性</h1>
+            <p class="msg info">提示：</p>
+            	
+            <p id="btn-create" class="box">
+              <a href="{:U('Products/productslist')}">产品列表</a>
+            </p>
+            <form action="{:U('Products/attrUpdate')}" name="myform" method="post">
+            <table class="nostyle">
+                    <volist name="attr" id="vo">
+                    <tr>
+						<td style="width:120px;">
+                        <eq name="vo['input_type']" value="1">
+                        [<a href="javascript:void(0);" onClick="addvalues('{$vo.id}');">+</a>]
+                        </eq>
+                        {$vo.name}:
+                        <input type="hidden" name="attr_id[]" value="{$vo.id}">
+                        </td>
+						<td>
+                        <label id="values_{$vo.id}">
+                        <eq name="vo['input_type']" value="0">
+                        <input type="text" size="40" name="attr_value_{$vo.id}[]" class="input-text" value="" />
+                        </eq>
+                        <eq name="vo['input_type']" value="1">
+                        <select name="attr_value_{$vo.id}[]">
+                        <option value="">请选择或删除</option>
+                        <volist name="vo['values']" id="subvo">
+                        <option value="{$subvo}">{$subvo}</option>
+                        </volist>
+                        </select>
+                        </eq>
+                        
+                       
+                        <br>
+                        </label>
+                        
+                        <volist name="vo['attrs']" id="subvo1">
+                        
+                        
+                        <label id="values_{$vo.id}">
+                        <eq name="vo['input_type']" value="0">
+                        <input type="text" size="40" name="attr_value_{$vo.id}[]" class="input-text" value="{$subvo1}" />
+                        </eq>
+                        <eq name="vo['input_type']" value="1">
+                        <select name="attr_value_{$vo.id}[]" id="{$subvo1['id']}">
+                        <option value="">请选择或删除</option>
+                        <volist name="vo['values']" id="subvo">                       
+                         <option value="{$subvo}">{$subvo}</option>
+                        </volist>
+                        </select>
+                        <script type="text/javascript">
+						$("#{$subvo1['id']}").val("{$subvo1['attr_value']}");
+						</script>
+                        </eq> 
+                        <br/>                       
+                        </volist>
+                        
+                        <label id="newvalues_{$vo.id}">
+                        </label>
+                        </td>
+					</tr>
+                    </volist>
+                    
+                   
+                    <tr>
+						<td colspan="2" class="t-right"><input type="submit" class="input-submit" value="更新" />
+                        </td>
+					</tr>
+            </table>
+            <input type="hidden" name="products_id" value="{$pid}" />
+            <input type="hidden" name="id" value="{$list.id}" />
+            <script type="text/javascript">
+			$("input[name='status'][value={$list['status']}]").attr("checked",true);
+			</script>
+            </form>
+		</div> <!-- /content -->
+<include file="../Public/adminfooter" />

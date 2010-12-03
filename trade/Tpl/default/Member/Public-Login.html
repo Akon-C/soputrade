@@ -1,0 +1,40 @@
+<include file="../Public/header" />
+<div class="ind_con">
+<include file="../Public/left" />
+<link rel="stylesheet" type="text/css" href="../Public/css/mc.css">
+<div class="ind_mcc">
+ 
+<div class="right">
+<ol class="titt"><span>Login</span> or Create a New Account</ol> 
+ 
+<div class="sc">
+<div class="sc_r">
+<ol>Returning Customers</ol>
+<form method="POST" name="formx" action="{:U('Member-Public/doLogin')}" onSubmit="JavaScript:return CheckForm(formx);" id="formx">
+<ul class="ul">
+<h2>If you've shopped with us before ,please enter your email address and password</h2>
+<li><h4>E-mail</h4><INPUT id="email" maxLength="60" size=30 name="email"></li>
+<li><h4>Password</h4><INPUT type="password" maxLength="60" size=30 name="password"></li>
+<li><INPUT type="image" name=submit2 src="../Public/images/button_login.gif" style="height:26px;border:0px" align="absmiddle" cache tppabs=""></li>
+<li class="fp"><a href="msnim:chat?contact=#" title="Contact Us">Forgot your password</a> ?</li>
+</ul>
+</form>
+</div>
+<div class="sc_l">
+<ol>New Guests</ol>
+<form action="{:U('Member-Public/doJoin')}" method="post" name="formx" id="formx">
+<ul class="ul">
+<h2>Enter your email address and create a password</h2>
+<li><h4>First Name<span class="r">*</span></h4><INPUT type="text" id="firstname" maxLength="60" size=15 name="firstname"></li><li><h4>Last Name<span class="r">*</span></h4><INPUT type="text" id="lastname" maxLength="60" size=15 name="lastname"></li>
+<li><h4>E-mail<span class="m">(e.g.abc@abc.com)</span><span class="r">*</span></h4><INPUT type="text" id="email" maxLength="60" size=30 name="email"></li>
+<li><h4>Password<span class="m">(at least 6 character.)</span><span class="r">*</span></h4><INPUT type="password" id="password" maxLength="60" size=30 name="password"></li>
+<li><h4>Confirm Password<span class="r">*</span></h4><INPUT type="password" id="repassword" maxLength="60" size=30 name="repassword"></li>
+<li><INPUT type="image" name=submit3 src="../Public/images/button_new_account.gif" style="height:26px;border:0px" align="absmiddle" cache tppabs=""></li>
+</ul>
+</form>
+</div>
+
+</div>
+</div></div>
+</div>
+<include file="../Public/footer" />

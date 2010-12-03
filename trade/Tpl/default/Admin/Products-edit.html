@@ -1,0 +1,238 @@
+<include file="../Public/admintop" />
+<include file="../Public/adminleft" />
+<tagLib name="html" />
+<script language="javascript">
+function ajaxFileUpload(fileToUpload,timestamp)
+{
+	
+	$("#loading")
+	.ajaxStart(function(){
+		$(this).show();
+	})
+	.ajaxComplete(function(){
+		$(this).hide();
+	});
+
+	$.ajaxFileUpload
+	(
+		{
+			url:"{:U('Products/upload')}",
+			secureuri:false,
+			fileElementId:fileToUpload,
+			dataType: 'json',
+			success: function (data, status)
+			{
+				
+				if (status==1){
+					$("#msg").text(data.info);
+					
+				}
+				else{
+					$("#msg").text(data.info);
+					$("#fileToUpload_look_"+timestamp).attr("href","."+data.data);
+					$("#fileToUpload_look_"+timestamp).show();
+					$("#fileToUpload_look_"+timestamp).preview();
+					$("#fileToUpload_url_"+timestamp).val(data.data);
+					//var jsonObj = eval("("+data+")");						
+					/*$("#imgurlbox").attr("src",".././Public/Uploads/Products/"+data.data); 
+					$("#imgurlbox").show();
+					$("#imgurl").val(data.data);*/
+				}
+
+
+			},
+			error: function (data, status, e)
+			{
+				alert(e);
+			}
+		}
+	)		
+	return false;
+
+}
+$(document).ready (
+				   function(){
+					   
+					   $(".delimg").click(
+													function(){
+														 var v=$(this).attr("v");
+														 $("#fileToUpload_look_"+v).attr("href","");
+														 $("#fileToUpload_url_"+v).val('');
+														 $(this).parents("p").hide(); 
+														 //alert($("#fileToUpload_url_"+v).val());
+													}
+													);
+					   $("#img_add").click(
+							   function(){
+								   var timestamp = Date.parse(new Date());
+								   var str="<p class='t-left'><input type='hidden'  name='timestamp[]' value='"+timestamp+"' /><input type='hidden' id='fileToUpload_url_"+timestamp+"' name='imgurl[]' value='' />描述：<input type='text' size='20' name='img_desc[]' class='input-text' />&nbsp排序：<input type='text' size='5' name='sort[]' class='input-text' />&nbsp图片：<input type='file' id='fileToUpload_"+timestamp+"' name='fileToUpload[]' class='input-text' /><input type='radio' name='isIndex'  class='input-text' value='"+timestamp+"'>封面&nbsp;&nbsp;<input class='input-submit' id='upload'  type='button' name='upload' value='上传' onClick=\"return ajaxFileUpload('fileToUpload_"+timestamp+"','"+timestamp+"');\" />&nbsp;<a id='fileToUpload_look_"+timestamp+"' href='javascript:void(0);' style='display:none;'  target='_blank'><img ' src='../Public/images/look.jpg' width='15' height='15' ></a></p>";
+								   //alert(str);
+								   $("#img_html").html($("#img_html").html()+str);
+								   
+							   }
+							   );
+				   }
+				   );
+</script>
+<!-- Content (Right Column) -->
+		<div id="content" class="box">
+
+			<h1>编辑产品</h1>
+            <p class="msg info">提示：<label id="msg"></label><span id="loading" style="display:none;"><img   src="../Public/images/loading.gif" style="height:20px;">上传中...</span></p>
+            	
+            <p id="btn-create" class="box">
+              <a href="{:U('Products/add')}">添加新产品</a>
+            </p>
+            <!-- Tabs -->
+			<div class="tabs box">
+				<ul>
+					<li><a href="#tab01"><span>通用信息</span></a></li>
+					<li><a href="#tab02"><span>详细描述</span></a></li>
+					<li><a href="#tab03"><span>商品相册</span></a></li>
+                    <li><a href="#tab04"><span>SEO信息</span></a></li>
+				</ul>
+			</div> <!-- /tabs -->
+            
+            <form action="{:U('Products/Update')}" name="myform" method="post" enctype="multipart/form-data">
+            <div id="tab01">
+            <table class="nostyle">
+                    <tr>
+						<td style="width:120px;">产品名称:</td>
+						<td><input type="text" size="40" name="name" class="input-text" value="{$list['name']}" /></td>
+					</tr>
+                    <tr>
+						<td style="width:120px;">编号:</td>
+						<td><input type="text" size="40" name="serial" class="input-text" value="{$list['serial']}" /></td>
+					</tr>
+                    <tr>
+						<td style="width:120px;">价格:</td>
+						<td><input type="text" size="40" name="price" class="input-text" value="{$list['price']}" /></td>
+					</tr>
+                    <tr>
+						<td style="width:120px;">特价:</td>
+						<td><input type="text" size="40" name="pricespe" class="input-text" value="{$list['pricespe']}" /></td>
+					</tr>
+                    <tr>
+						<td style="width:120px;">产品分类:</td>
+						<td>
+                        <select name="cateid" id="cateid" class="input-text" >
+                        <option value="0">最上级...</option>
+                        <volist name="catetree" id="vo">
+                        <option value="{$vo['id']}">{:class_str_insert($vo['deep'],"&nbsp;&nbsp;&nbsp;")}{$vo.name}</option>
+                        </volist>
+                        </select>
+                        </td>
+					</tr>
+                     <tr>
+						<td style="width:120px;">品牌:</td>
+						<td>
+                        <select name="brandid" id="brandid" class="input-text" >
+                        <option value="0">最上级...</option>
+                        <volist name="brandtree" id="vo">
+                        <option value="{$vo['id']}">{$vo.name}</option>
+                        </volist>
+                        </select>
+                        </td>
+					</tr>
+                    <tr>
+						<td style="width:120px;">尺码:</td>
+						<td><input type="text" size="40" name="size" class="input-text" value="{$list['size']}" />"以","号分隔</td>
+					</tr>
+                    
+                    <tr>
+						<td style="width:120px;">最新产品:</td>
+						<td><input type="radio" value="1"  name="isnew" class="input-text"  />是<input type="radio" value="0"  name="isnew" class="input-text"  checked/>否</td>
+					</tr>
+                    <tr>
+						<td style="width:120px;">热卖产品:</td>
+						<td><input type="radio" value="1"  name="ishot" class="input-text"  />是<input type="radio" value="0"  name="ishot" class="input-text"  checked/>否</td>
+					</tr>
+                    <tr>
+						<td style="width:120px;">推荐产品:</td>
+						<td><input type="radio" value="1"  name="isrec" class="input-text"  />是<input type="radio" value="0"  name="isrec" class="input-text"  checked/>否</td>
+					</tr>
+                    <tr>
+						<td style="width:120px;">特价产品:</td>
+						<td><input type="radio" value="1"  name="isprice" class="input-text"  />是<input type="radio" value="0"  name="isprice" class="input-text"  checked/>否</td>
+					</tr>
+                    <tr>
+						<td style="width:120px;">排序:</td>
+						<td><input type="text" size="20" name="sort" class="input-text" value="{$list['sort']}" /></td>
+					</tr>
+                    
+            </table>
+            </div>
+            <div id="tab02">
+            <html:editor id="remark" name="remark" height="400x" width="100%" type="FCKeditor" content="{$list['remark']}" />
+            </div>
+            <div id="tab03">
+            <table class="nostyle">
+           
+            <tr><td>
+            <volist name="glist" id="vo">
+            <p class="t-left">
+            <input type="hidden"  name="timestamp[]" value="{$vo.id}" />
+            <input type="hidden" id="fileToUpload_url_{$vo.id}" name="imgurl[]" value="{$vo.img_url}" />
+            描述：<input type="text" size="20" name="img_desc[]" class="input-text" value="{$vo.img_desc}" />
+            排序：<input type="text" size="5" name="sort[]" class="input-text" value="{$vo.sort}" />
+            图片：<input type="file" id="fileToUpload_{$vo.id}" name="fileToUpload[]" class="input-text" /><input type="radio" name="isIndex" checked class="input-text" value="{$vo.id}">
+            封面 
+             <input class="input-submit" id="upload"  type="button" name="upload" value="上传" onClick="return ajaxFileUpload('fileToUpload_{$vo.id}','{$vo.id}');" />
+             &nbsp;
+             <a id='fileToUpload_look_{$vo.id}' name="fileToUpload_look" href='../{$vo.thumb_url}' target="_blank" ><img  src='../Public/images/look.jpg' width='15' height='15' ></a>
+              &nbsp;
+             <a class='delimg' href='javascript:void(0);' v="{$vo.id}" ><img  src='../Public/images/mod_0.gif' width='15' height='15' ></a>
+             </p>
+            </volist>
+            <p class="t-left">
+            <input type="hidden"  name="timestamp[]" value="0" />
+            <input type="hidden" id="fileToUpload_url_0" name="imgurl[]" value="" />
+            描述：<input type="text" size="20" name="img_desc[]" class="input-text" />
+            排序：<input type="text" size="5" name="sort[]" class="input-text" />
+            图片：<input type="file" id="fileToUpload" name="fileToUpload[]" class="input-text" /><input type="radio" name="isIndex" checked class="input-text" value="0">
+            封面 
+             <input class="input-submit" id="upload"  type="button" name="upload" value="上传" onClick="return ajaxFileUpload('fileToUpload','0');" />
+             &nbsp;<a id="img_add" href="javascript:void(0);" title="../Public/images/look.jpg"><img src="../Public/images/+.jpg" width="15" height="15"></a>
+             <a id='fileToUpload_look_0' href='javascript:void(0);' target="_blank" style='display:none;'><img  src='../Public/images/look.jpg' width='15' height='15' ></a>
+             </p>
+             <label id="img_html">
+            </label>
+           </td></tr>
+           <tr><td>
+           
+           </td></tr>
+           </table>
+            </div>
+            <div id="tab04">
+            <table class="nostyle">
+            <tr>
+                <td style="width:120px;">标题(SEO):</td>
+                <td><input type="text" size="60" name="pagetitle" class="input-text" value="{$list['pagetitle']}" /></td>
+            </tr>
+            <tr>
+                <td style="width:120px;">关键字(SEO):</td>
+                <td><textarea name="pagekey" cols="60" rows="10" class="input-text">{$list['pagekey']}</textarea></td>
+            </tr>
+            <tr>
+                <td style="width:120px;">描述(SEO):</td>
+                <td><textarea name="pagedec" cols="60" rows="10" class="input-text">{$list['pagedec']}</textarea></td>
+            </tr>
+            
+            </table>
+            </div>
+            <p class="t-right"><input type="submit" class="input-submit" value="更新" /></p>
+            <input type="hidden" name="id" value="{$list['id']}" />
+            <script language="javascript" type="text/javascript">
+			   <volist name="glist" id="vo">
+			  $("#fileToUpload_look_{$vo.id}").preview();
+			  </volist>
+			   $("#cateid").val({$list['cateid']});
+			   $("#brandid").val({$list['brandid']});
+			   $("input[name='isnew'][value={$list['isnew']}]").attr("checked",true);
+			   $("input[name='ishot'][value={$list['ishot']}]").attr("checked",true);
+			   $("input[name='isrec'][value={$list['isrec']}]").attr("checked",true);
+			   $("input[name='isprice'][value={$list['isprice']}]").attr("checked",true);
+			</script>
+            </form>
+		</div> <!-- /content -->
+<include file="../Public/adminfooter" />

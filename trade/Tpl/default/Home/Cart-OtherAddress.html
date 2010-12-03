@@ -1,0 +1,152 @@
+<include file="../Public/header" />
+<div class="ind_con">
+<include file="../Public/left" />
+<link rel="stylesheet" type="text/css" href="../Public/css/cart.css">
+<div class="ind_cart">
+<div class="right">
+<ol class="titt"><a href="__ROOT__" title="Home">Home</a> &gt;&gt; <span>Billing, Shipping & Review</span></ol>
+<DIV class="right_big_con">
+<UL class="projects">
+  <LI class="li1"><SPAN>Your Shopping Cart&nbsp;&nbsp;&nbsp;</SPAN></LI>
+  <LI class="li2"><SPAN>Customer Info</SPAN></LI>
+  <LI class="current3"><SPAN>Address Book</SPAN></LI>
+  <LI class="li4"><SPAN>Review</SPAN></LI>
+  <LI class="li5"><SPAN>Order Complete</SPAN></LI></UL></DIV>
+<DIV class="cart">
+<ol class="uh">Billing, Shipping & Review</ol>
+<form name="form1" action="{:U('Cart/checkout')}" method="post" >
+<ul class="SC_T">
+<li class="t1"><h2 class="I_over">QTY.</h2></li>
+<li class="t2"><h2 class="I_over">ITEM DESCRIPTION</h2></li>
+<li class="t3"><h2 class="I_over">PRICE</h2></li>
+<li class="t4"><h2 class="I_over">TOTAL</h2></li>
+<li class="t5"></li>
+</ul>
+<ul class="SC_L">
+<volist name="list" id="vo">
+<li class="n1">{$vo.count}</li>
+<li class="n2"><dl><dt><a href="{:U(tourlstr($vo['name']).'@',array('pid'=>$vo['pid']))}" target="_blank" title="{$vo.name}"><img src="/{$vo.smallimage}" alt="{$vo.name}"></a></dt><dd><a href="{:U(tourlstr($vo['name']).'@',array('pid'=>$vo['pid']))}" target="_blank" title="{$vo.name}"><b>{$vo.name}</b></a><br>
+
+<volist name="vo['model']" id="subvo">
+{$subvo['name']}:{$subvo['value']}&nbsp;
+<input type="hidden" name="model_name_{$vo.id}[]" value="{$subvo['name']}" />
+<input type="hidden" name="model_value_{$vo.id}[]" value="{$subvo['value']}" />
+</volist>
+
+
+<br><b>Item#:</b>{$vo.pid}</dd></dl></li>
+<li class="n3">{:getprice($vo['price'],$vo['pricespe'])}</li>
+<li class="n4">{:getprice($vo['price_total'],$vo['pricespe_total'])}</li>
+<li class="n5"></li>
+<li class="hr"></li>
+</volist>
+</ol>
+
+</ul>
+
+
+<dl class="sum">
+  <dt style="font-size:18px;color:#993300;line-height:100px;text-indent:10px;">Buy more than  free shipping.</dt>
+  <dd>
+    <ul>
+     <li>Subtotal  {:getprice_str($cart_total)}</li>
+	 <li>Shipping Fee $ 0.00</li>
+	 <li>Insurance $ 0.00</li>
+	 <li>Paypal Fee 0%</li>
+	 <li><b>Grand Total</b> <span>{:getprice_str($cart_total)}<input type="hidden" name="orders_total" value="{$cart_total}" /></span></li>
+	</ul>
+  </dd>
+</dl>
+
+<div class="add">
+<div class="shippingdetails">
+<ol><h2 class="I_over">Shipping To</h2></ol>
+
+<ul>
+<table border="0px" align="left">
+<tr>
+<td>First Name:</td>
+<td align="left"><input type="text" name="delivery_firstname" /></td>
+</tr>
+<tr>
+<td>Last Name:</td>
+<td><input type="text" name="delivery_lastname" /></td>
+</tr>
+<tr>
+<td>Address:</td>
+<td><input type="text" name="delivery_address" /></td>
+</tr>
+<tr>
+<td>State/Province:</td>
+<td><input type="text" name="delivery_state" /></td>
+</tr>
+<tr>
+<td>City:</td>
+<td><input type="text" name="delivery_city" /></td>
+</tr>
+<tr>
+<td>Zip/Postal Code:</td>
+<td><input type="text" name="delivery_zip" /></td>
+</tr>
+<tr>
+<td>Country:</td>
+<td><select name="delivery_country" id="delivery_country" style="font-size:11px;font-family:Verdana, Arial, Helvetica, sans-serif;">
+  <option value="">Please Select</option> 
+  <volist name="countries" id="vo"> 
+  <option value="{$vo.countries_name}" >{$vo.countries_name}</option> 
+  </volist>
+  </select></td>
+</tr>
+<tr>
+<td>Telephone:</td>
+<td><input type="text" name="delivery_telphone" /></td>
+</tr>
+
+</table>
+</ul>
+
+</div>
+<h3>Shipping Method:EMS International Express</h3>
+
+
+<input type="hidden" name="member_firstname" value="{$member_Info['firstname']}">
+<input type="hidden" name="member_lastname" value="{$member_Info['lastname']}">
+<input type="hidden" name="member_address" value="{$member_ShippingAddress['address']}">
+<input type="hidden" name="member_city" value="{$member_ShippingAddress['city']}">
+<input type="hidden" name="member_state" value="{$member_ShippingAddress['state']}">
+<input type="hidden" name="member_zip" value="{$member_ShippingAddress['zip']}">
+<input type="hidden" name="member_country" value="{:get_country($member_ShippingAddress['country'])}">
+<input type="hidden" name="member_telephone" value="{$member_ShippingAddress['telphone']}">
+<input type="hidden" name="member_id" value="{$member_Info['id']}">
+<div class="paycol">
+<ol><h2 class="I_over">SPECIAL COMMENTS ABOUT YOUR ORDER</h2></ol>
+<dl>
+  <dt><textarea rows="3" name="BuyNote" cols="110"></textarea></dt>
+</dl>
+</div>
+<div class="paycol">
+<ol><h2 class="I_over">PAYMENT METHOD</h2></ol>
+<dl>
+  <dt>
+  <volist name="paymentlist" id="vo">
+  <eq name="vo['status']" value="1">
+   <ul>
+    <li><input type="radio" value="{$vo.name}" name="payment_module_code" style="border:0px" align="absmiddle"> <span>{$vo.name}</span></li>
+	<li><a href="http://www.paypal.com" target="_blank"><img src="../Public/images/{$vo.name}_icon.gif" alt="Paypal"></a></li>
+	<li>{:GetSettValue($vo['name']."_remark")}</li>
+  </ul>
+  </eq>
+  </volist>
+  </dt>
+</dl>
+</div>
+<ul class="Addsub">
+  <li class="Aright"><input type="image" name="submit2" src="../Public/images/btn_place.gif" align="absmiddle" /></li>
+</ul>
+</form>
+</div>
+</DIV>
+</div>
+</div>
+</div>
+<include file="../Public/footer" />

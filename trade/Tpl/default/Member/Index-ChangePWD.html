@@ -1,0 +1,29 @@
+<include file="../Public/header" />
+<div class="ind_con">
+<include file="../Public/memberleft" />
+<link rel="stylesheet" type="text/css" href="../Public/css/mc.css">
+<div class="ind_mc">
+<div class="right">
+<div class="ind_mc_1">
+<h5>HI, {$memberInfo.firstname}&nbsp;{$memberInfo.lastname}. WELCOME BACK TO {:GetSettValue('sitename')}</h5>
+<h6>Edit Password</h6>
+<ol class="note"><font color="#993300"><b>NOTE:</b></font> You can change your member password here .</ol>
+<ol class="requi">* Required information</ol>
+<form method="POST" action="{:U('Member-Index/doChangePWD')}">
+<input type="hidden" name="id" size="30" value="{$memberInfo.id}">
+<div class="address">
+<ol><h2>Member Information</h2></ol>
+<dl>
+  <dt><span>*</span> Old Password:</dt><dd><input type="password" name="password" size="30" ></dd>
+  <dt><span>*</span> New Password:</dt><dd><input type="password" name="new_password" size="30" ></dd>
+  <dt><span>*</span> Confirm Password:</dt><dd><input type="password" name="re_password" size="30" ></dd>
+</dl>
+</div>
+<div class="infosub"><INPUT type="image" name="submit2" src="../Public/images/Submit.jpg" align="absmiddle" cache tppabs=""></div>
+
+</form>
+</div>
+</div> 
+</div>
+</div>
+<include file="../Public/footer" />

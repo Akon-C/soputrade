@@ -1,0 +1,58 @@
+<include file="../Public/admintop" />
+<include file="../Public/adminleft" />
+<script type="text/javascript">
+$(document).ready (
+				   function(){
+					   
+					  $("a[name^='del_']").click(
+						function(){
+							var answer = confirm("确认要删除吗?");
+							if(answer){
+								window.location = $(this).attr("href");
+
+							}
+							else{
+							   
+								$(this).attr("href","javascript:void(0);");
+								
+							}
+
+						}
+						);
+				   }
+				   );
+
+</script>
+<!-- Content (Right Column) -->
+		<div id="content" class="box">
+
+			<h1>订单管理</h1>
+            <p class="msg info">提示：</p>
+            	
+            <table width="100%">
+				<tr pid="0">
+				    <th style="text-align:center" width="7%"></th>
+				    <th style="text-align:center" width="15%">编号</th>
+				    <th style="text-align:center" width="15%">创建时间</th>
+                    <th style="text-align:center" width="17%">金额</th>
+                    <th style="text-align:center" width="17%">状态</th>
+                    <th style="text-align:center" width="17%">会员</th>              
+                    <th style="text-align:center" >操作</th>
+				</tr>
+                <volist name="list" id="vo">
+                <tr >
+                    <td style="text-align:left" ><input type="checkbox" name="id[]" value="{$vo.id}" /></td>
+				    <td style="text-align:left" id="classname" >{$vo.sn}</td>
+				    <td style="text-align:left" >{:toDate($vo["dateline"],"Y-m-d H:i:s")}</td>
+                    <td style="text-align:left" >{:getprice($vo["orders_total"],$vo["orders_total"])}</td>
+                    <td style="text-align:left" >{:get_orders_status($vo['id'])}</td>
+                    <td style="text-align:left" >{:get_members_name($vo['member_id'])}</td>
+                    <td style="text-align:center" ><a href="{:u('Orders/edit',array('id'=>$vo['id']))}">编辑</a>&nbsp;|&nbsp;<a name="del_{$vo.id}"  href="{:u('Orders/Delete',array('id'=>$vo['id']))}" >移除</a></td>
+                </tr>
+                </volist>
+				
+			</table>
+            <p class="t-right">{$show}</p>
+		</div> <!-- /content -->
+
+<include file="../Public/adminfooter" />
