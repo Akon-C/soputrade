@@ -477,7 +477,7 @@ function sendmail($sendTo,$subject,$body){
 		import ( "@.ORG.phpmailer" );
 		$mail = new PHPMailer();
 		$mail->IsSMTP ();
-		$mail->SMTPDebug = true;
+		$mail->SMTPDebug = false;
 		$mail->SMTPAuth = true;
 		if (GetSettValue ( "smtpisssl" ) == "1") {
 			$mail->SMTPSecure = "ssl";
