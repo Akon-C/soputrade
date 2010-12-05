@@ -463,4 +463,38 @@ function get_type_inputtype_name($type){
 	
 }
 
+function sendmail($sendTo,$subject,$body){
+	
+	$body = eregi_replace ( "[\]", '', $body );	
+	$headers = "MIME-Version: 1.0\r\n";
+	$headers .= "Content-type: text/html; charset=utf-8\r\n";
+	if (GetSettValue ( "sendemailtype" ) == "phpmail") {
+		foreach ( $sendTo as $key => $val ) {
+			mail ( $val, $subject, $body, $headers );
+		}	
+	}
+	if (GetSettValue ( "sendemailtype" ) == "smtp") {
+		import ( "@.ORG.phpmailer" );
+		$mail = new PHPMailer();
+		$mail->IsSMTP ();
+		$mail->SMTPDebug = true;
+		$mail->SMTPAuth = true;
+		if (GetSettValue ( "smtpisssl" ) == "1") {
+			$mail->SMTPSecure = "ssl";
+		}
+		$mail->Host = GetSettValue ( 'smtphost' );
+		$mail->Port =GetSettValue( 'smtpport' );
+		$mail->Username = GetSettValue ( 'smtpusername' );
+		$mail->Password = GetSettValue ( 'smtppassword' ); // GMAIL password
+		$mail->SetFrom ( GetSettValue ( 'mailform' ), GetSettValue ( 'sitename' ) );
+		$mail->Subject = $subject;
+		$mail->AltBody = "To view the message, please use an HTML compatible email viewer!";
+		$mail->MsgHTML ( $body );
+		$mail->AddAddress(GetSettValue ( 'mailform' ));
+		$mail->Send();
+	}
+	
+	
+}
+
 ?>
