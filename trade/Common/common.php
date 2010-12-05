@@ -459,7 +459,7 @@ function get_type_inputtype_name($type){
 	switch ($type) {
 		case "0": return "手工录入";break;
 		case "1":return "从列表中选择";break;
-	}
+	}	
 	
 }
 
