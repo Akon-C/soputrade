@@ -13,7 +13,7 @@ class IndexAction extends AdminCommAction{
             '操作系统'=>PHP_OS,
             '运行环境'=>$_SERVER["SERVER_SOFTWARE"],
             'PHP运行方式'=>php_sapi_name(),
-            '版本'=>C('SYSTEM_NAME').C('SYSTEM_VAR').' [ <a href="http://#" target="_blank">查看最新版本</a> ]',
+            '版本'=>C('SYSTEM_NAME').C('SYSTEM_VAR').' [ <a href="http://http://soputrade.googlecode.com" target="_blank">查看最新版本</a> ]',
             '上传附件限制'=>ini_get('upload_max_filesize'),
             '执行时间限制'=>ini_get('max_execution_time').'秒',
             '服务器时间'=>date("Y年n月j日 H:i:s"),
