@@ -45,8 +45,7 @@ class CommAction extends Action{
 		if (! $this->memberID ) {
 			$this->memberID=0;
 		}
-		else{
-			
+		else{			
 			//读取用户信息
 			$this->mid=$this->memberID;
 			self::$Model=D("Members");
