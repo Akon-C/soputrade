@@ -17,9 +17,10 @@ class IndexAction extends CommAction {
 		
 	}
 	public function test() {
-		$pname="Paypal";
-		import('@.ORG.Payment.'.$pname);
-		$p=new $pname;
+		$mailclass=new PHPMailer();
+		$mailclass->Subject="测试邮件";
+		$mailclass->Body="你好，这个测试邮件！";
+		
 		
 	}
 	
