@@ -18,7 +18,8 @@ class IndexAction extends CommAction {
 	}
 	public function test() {
 		$sendto=array("pcicn.com@gmail.com","811046@qq.com");
-		sendmail($sendto,"testemail","this is a testemail")	;	
+		$body=$this->fetch_skin('mail','MailTpl');
+		//sendmail($sendto,"testemail","this is a testemail")	;	
 		
 	}
 	
