@@ -82,5 +82,8 @@ class SettingAction extends AdminCommAction{
 		$this->varlist=$varlist;
 		$this->display();
 	}
+	function mail(){
+		$this->display();
+	}
 }
 ?>
