@@ -14,6 +14,14 @@
 						<td><input type="radio" value="phpmail"  name="sendemailtype" class="input-text"  />系统自带(phpmail)<input type="radio" value="smtp"  name="sendemailtype" class="input-text"  />smtp</td>
 					</tr>
                     <tr>
+						<td style="width:120px;">发件人地址:</td>
+						<td><input type="text" size="40" name="mailfrom" class="input-text" value="{:GetSettValue('mailfrom')}" /></td>
+					</tr>
+                    <tr>
+						<td style="width:120px;">邮件抄送人:</td>
+						<td><input type="text" size="40" name="mailcopyTo" class="input-text" value="{:GetSettValue('mailcopyTo')}" /></td>
+					</tr>
+                    <tr>
 						<td style="width:120px;">smtp主机:</td>
 						<td><input type="text" size="40" name="smtphost" class="input-text" value="{:GetSettValue('smtphost')}" /></td>
 					</tr>
@@ -31,7 +39,7 @@
 					</tr>
                     <tr>
 						<td style="width:120px;">smtp是否使用ssl:</td>
-						<td><input type="radio" value="0"  name="smtpisssl" class="input-text"  />系统自带(phpmail)<input type="radio" value="1"  name="smtpisssl" class="input-text"  />smtp</td>
+						<td><input type="radio" value="0"  name="smtpisssl" class="input-text"  />否<input type="radio" value="1"  name="smtpisssl" class="input-text"  />是</td>
 					</tr>
                     
                    
