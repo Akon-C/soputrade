@@ -29,6 +29,10 @@
 						<td style="width:120px;">smtp端口:</td>
 						<td><input type="text" size="40" name="smtpport" class="input-text" value="{:GetSettValue('smtpport')}" /></td>
 					</tr>
+                    <tr>
+						<td style="width:120px;">smtp是否使用ssl:</td>
+						<td><input type="radio" value="0"  name="smtpisssl" class="input-text"  />系统自带(phpmail)<input type="radio" value="1"  name="smtpisssl" class="input-text"  />smtp</td>
+					</tr>
                     
                    
                     <tr valign="top">
@@ -38,6 +42,7 @@
             </table>
             <script language="javascript" type="text/javascript">
 			   $("input[name='sendemailtype'][value={:GetSettValue('sendemailtype')}]").attr("checked",true);
+			   $("input[name='smtpisssl'][value={:GetSettValue('smtpisssl')}]").attr("checked",true);
 			</script>
             </form>
 		</div> <!-- /content -->
