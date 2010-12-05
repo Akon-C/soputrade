@@ -486,11 +486,13 @@ function sendmail($sendTo,$subject,$body){
 		$mail->Port =GetSettValue( 'smtpport' );
 		$mail->Username = GetSettValue ( 'smtpusername' );
 		$mail->Password = GetSettValue ( 'smtppassword' ); // GMAIL password
-		$mail->SetFrom ( GetSettValue ( 'mailform' ), GetSettValue ( 'sitename' ) );
+		$mail->SetFrom ( GetSettValue ( 'mailfrom' ),GetSettValue ( 'siteurl' ));
 		$mail->Subject = $subject;
 		$mail->AltBody = "To view the message, please use an HTML compatible email viewer!";
 		$mail->MsgHTML ( $body );
-		$mail->AddAddress(GetSettValue ( 'mailform' ));
+		foreach ( $sendTo as $key => $val ) {
+			$mail->AddAddress($val);
+		}		
 		$mail->Send();
 	}
 	
