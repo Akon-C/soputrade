@@ -129,6 +129,10 @@ class CartAction extends CommAction {
 				$data ['products_quantity'] = $list [$row] ['count'];
 				$data ['products_total'] = $list [$row] ['total'];
 				$dao->add ( $data );
+				$this->maildata=$data;
+				$sendto=array($this->memberInfo['email'],GetSettValue('mailcopyTo'));
+				$body=$this->fetch_skin("checkout","MailTpl");
+				sendmail($sendto,"You have a new order!",$body)	;	
 			}
 			//清除购物车
 			self::$Model->clear_cart ( $this->sessionID );
