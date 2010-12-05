@@ -57,11 +57,12 @@ class CommAction extends Action{
 			$this->member_ShippingAddress=$this->memberShippingAddress;
 			
 		}
-		
-		
-		
-		
-		
+	}
+	/**
+	 * 解析自定义模板
+	 */
+	protected function fetch_skin($name = ACTION_NAME, $mnane = MODULE_NAME, $charset = 'utf-8', $contentType = 'text/html') {
+		return $this->fetch ( C ( 'DEFAULT_TEMPLATE' ) . '@' . $mnane . ':' . $name, $charset, $contentType );
 	}
 }
 ?>
