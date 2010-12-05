@@ -14,7 +14,7 @@ $array=array(
 	//'配置项'=>'配置值'
 	/*HTML*/
     'URL_HTML_SUFFIX'=>'.html', //URL
-'DEFAULT_TEMPLATE'=>'demo',
+'DEFAULT_TEMPLATE'=>'default',
 'URL_PATHINFO_DEPR'=>'-',
 //组模
 'APP_GROUP_LIST'=>'Admin,Home,Member',
