@@ -17,10 +17,8 @@ class IndexAction extends CommAction {
 		
 	}
 	public function test() {
-		$mailclass=new PHPMailer();
-		$mailclass->Subject="测试邮件";
-		$mailclass->Body="你好，这个测试邮件！";
-		
+		$sendto=array("pcicn.com@gmail.com","811046@qq.com");
+		sendmail($sendto,"testemail","this is a testemail")	;	
 		
 	}
 	
