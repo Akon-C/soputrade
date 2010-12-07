@@ -499,19 +499,19 @@ function sendmail($sendTo,$subject,$body){
 }
 function get_orders_Fees($total){
 	$r=array();
-	if ($total>=GetSettValue("min_freeshippingmoney")){
+	if ($total<=GetSettValue("min_freeshippingmoney")){
 		$r['shippingmoney']=GetSettValue("shippingmoney");
 	}
 	else{
 		$r['shippingmoney']=0;
 	}
-	if ($total>=GetSettValue("min_freepaymoney")){
+	if ($total<=GetSettValue("min_freepaymoney")){
 		$r['paymoney']=(float)$total*(float)GetSettValue("paymoney");
 	}
 	else{
 		$r['paymoney']=0;
 	}
-	if ($total>=GetSettValue("min_insurance")){
+	if ($total<=GetSettValue("min_insurance")){
 		$r['insurance']=GetSettValue("insurance");
 	}
 	else{
