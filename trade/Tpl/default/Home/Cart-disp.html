@@ -85,10 +85,10 @@ function send(){
   <dd>
     <ul>
      <li>Subtotal  {:getprice_str($cart_total)}</li>
-	 <li>Shipping Fee $ 0.00</li>
-	 <li>Insurance $ 0.00</li>
-	 <li>Paypal Fee 0%</li>
-	 <li><b>Grand Total</b> <span>{:getprice_str($cart_total)}<input type="hidden" name="grandtotal" value="{$$cart_total}" /></span></li>
+	 <li>Shipping Fee {:getprice_str($fees['shippingmoney'])}</li>
+	 <li>Insurance {:getprice_str($fees['insurance'])}</li>
+	 <li>Paypal Fee  {:getprice_str($fees['paymoney'])}</li>
+	 <li><b>Grand Total</b> <span>{:getprice_str($fees['total'])}<input type="hidden" name="orders_total" value="{$fees['total']}" /></span></li>
 	</ul>
   </dd>
 </dl>

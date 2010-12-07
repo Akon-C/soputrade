@@ -37,6 +37,7 @@ class CartAction extends CommAction {
 		$this->list = $dao->display_contents ( $this->sessionID );
 		$this->itemCount = $dao->get_item_count ( $this->sessionID );
 		$this->cart_total = $dao->cart_total ( $this->sessionID );
+		$this->fees=get_orders_Fees($dao->cart_total ( $this->sessionID ));
 		$this->display ();
 	}
 	function delete() {
@@ -78,6 +79,7 @@ class CartAction extends CommAction {
 		$this->list = $dao->display_contents ( $this->sessionID );
 		$this->itemCount = $dao->get_item_count ( $this->sessionID );
 		$this->cart_total = $dao->cart_total ( $this->sessionID );
+		$this->fees=get_orders_Fees($dao->cart_total ( $this->sessionID ));
 		//支付方式列表
 		self::$Model = D ( "Payment" );
 		$this->paymentlist = self::$Model->getlist ();
@@ -96,6 +98,7 @@ class CartAction extends CommAction {
 		$this->list = $dao->display_contents ( $this->sessionID );
 		$this->itemCount = $dao->get_item_count ( $this->sessionID );
 		$this->cart_total = $dao->cart_total ( $this->sessionID );
+		$this->fees=get_orders_Fees($dao->cart_total ( $this->sessionID ));
 		self::$Model = D ( "Countries" );
 		$this->countries = self::$Model->getlist ();
 		//支付方式列表
@@ -109,7 +112,7 @@ class CartAction extends CommAction {
 			$this->redirect ( 'Member-Public/Join' );
 		}
 		if (! isset ( $_POST ['payment_module_code'] )) {
-			$this->redirect ( 'Cart/disp' );
+			$this->error ( 'Please select PAYMENT METHOD! ' );
 		}
 		//生成订单
 		self::$Model = D ( "Orders" );
@@ -127,7 +130,8 @@ class CartAction extends CommAction {
 				$data ['products_price'] = $list [$row] ['price'];
 				$data ['products_pricespe'] = $list [$row] ['pricespe'];
 				$data ['products_quantity'] = $list [$row] ['count'];
-				$data ['products_total'] = $list [$row] ['total'];
+				$free=get_orders_Fees($list [$row] ['total']);
+				$data ['products_total'] = $free['total'];
 				$dao->add ( $data );
 				$this->maildata=$data;
 				$sendto=array($this->memberInfo['email'],GetSettValue('mailcopyTo'));

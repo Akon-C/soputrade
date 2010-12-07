@@ -462,7 +462,7 @@ function get_type_inputtype_name($type){
 	}	
 	
 }
-
+//发送邮件
 function sendmail($sendTo,$subject,$body){
 	
 	$body = eregi_replace ( "[\]", '', $body );	
@@ -496,7 +496,28 @@ function sendmail($sendTo,$subject,$body){
 		$mail->Send();
 	}
 	
-	
 }
-
+function get_orders_Fees($total){
+	$r=array();
+	if ($total>=GetSettValue("min_freeshippingmoney")){
+		$r['shippingmoney']=GetSettValue("shippingmoney");
+	}
+	else{
+		$r['shippingmoney']=0;
+	}
+	if ($total>=GetSettValue("min_freepaymoney")){
+		$r['paymoney']=(float)$total*(float)GetSettValue("paymoney");
+	}
+	else{
+		$r['paymoney']=0;
+	}
+	if ($total>=GetSettValue("min_insurance")){
+		$r['insurance']=GetSettValue("insurance");
+	}
+	else{
+		$r['insurance']=0;
+	}
+	$r['total']=$total+$r['shippingmoney']+$r['paymoney']+$r['insurance'];
+	return $r;
+}
 ?>

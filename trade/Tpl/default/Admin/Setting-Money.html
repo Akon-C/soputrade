@@ -1,0 +1,50 @@
+<include file="../Public/admintop" />
+<include file="../Public/adminleft" />
+<tagLib name="html" />
+<!-- Content (Right Column) -->
+		<div id="content" class="box">
+
+			<h1>费用设置</h1>
+            <p class="msg info">提示：</p>
+            
+            <form action="{:U('Setting/doBase')}" name="myform" method="post">
+            <table class="nostyle">
+                     
+                    <tr>
+						<td style="width:120px;">免运费最小金额:</td>
+						<td><input type="text" size="40" name="min_freeshippingmoney" class="input-text" value="{:GetSettValue('min_freeshippingmoney')}" /></td>
+					</tr>
+                    <tr>
+						<td style="width:120px;">运费:</td>
+						<td><input type="text" size="40" name="shippingmoney" class="input-text" value="{:GetSettValue('shippingmoney')}" /></td>
+					</tr>
+                    <tr>
+						<td style="width:120px;">免支付手续费最小金额:</td>
+						<td><input type="text" size="40" name="min_freepaymoney" class="input-text" value="{:GetSettValue('min_freepaymoney')}" /></td>
+					</tr>
+                    <tr>
+						<td style="width:120px;">支付手续费:</td>
+						<td><input type="text" size="40" name="paymoney" class="input-text" value="{:GetSettValue('paymoney')}" /></td>
+					</tr>
+                   <tr>
+						<td style="width:120px;">保险费:</td>
+						<td><input type="text" size="40" name="insurance" class="input-text" value="{:GetSettValue('insurance')}" /></td>
+					</tr>
+                    <tr>
+						<td style="width:120px;">免保险费最小金额:</td>
+						<td><input type="text" size="40" name="min_insurance" class="input-text" value="{:GetSettValue('min_insurance')}" /></td>
+					</tr>
+                    
+                   
+                    <tr valign="top">
+						<td colspan="2" class="t-right"><input type="submit" class="input-submit" value="设置" />
+                        </td>
+					</tr>
+            </table>
+            <script language="javascript" type="text/javascript">
+			   $("input[name='sendemailtype'][value={:GetSettValue('sendemailtype')}]").attr("checked",true);
+			   $("input[name='smtpisssl'][value={:GetSettValue('smtpisssl')}]").attr("checked",true);
+			</script>
+            </form>
+		</div> <!-- /content -->
+<include file="../Public/adminfooter" />
