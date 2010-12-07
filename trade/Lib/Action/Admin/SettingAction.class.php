@@ -85,5 +85,8 @@ class SettingAction extends AdminCommAction{
 	function mail(){
 		$this->display();
 	}
+	function Money(){
+		$this->display();
+	}
 }
 ?>
