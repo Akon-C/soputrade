@@ -122,9 +122,15 @@ class ProductsAction extends AdminCommAction {
 				$data['pagetitle']=$_POST['pagetitle'];
 				$data['pagekey']=$_POST['pagekey'];
 				$data['pagedec']=$_POST['pagedec'];*/
-				
-				$_POST ['tmp_name']=$_POST['name'];
-				$_POST ['name']=$_POST['name']."0".$j;
+				if ($_POST ['name']) {
+					$_POST ['tmp_name'] = $_POST ['name'];
+					$_POST ['name'] = $_POST ['name'] . "0" . $j;
+				}
+				else{
+					$fileinfo=pathinfo($_POST['imgname'][$i]);
+					dump($fileinfo);
+					$_POST['name']=$fileinfo['filename'];
+				}				
 				$_POST ['bigimage'] = $_POST ['imgurl'] [$i];
 				$_POST ['smallimage'] = get_thumb_name ( $_POST ['imgurl'] [$i] );
 				if ($this->dao->create()) {
@@ -148,7 +154,7 @@ class ProductsAction extends AdminCommAction {
 			}
 			
 		}
-		$this->success("本次操作共上传".$j."个新产品！");
+		//$this->success("本次操作共上传".$j."个新产品！");
 	}
 	function attredit(){
 		//dump($_REQUEST['id']);
