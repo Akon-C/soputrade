@@ -8,7 +8,7 @@
  * @lastupdate 2010-11-15
  */
 class AdminCommAction extends Action {
-	var $dao,$sort;
+	public $dao,$sort;
 	protected static $Model=null;	//数据Model
 	function _initialize() {
 		$this->roletree = get_roletree_arr ();
@@ -19,7 +19,8 @@ class AdminCommAction extends Action {
 		$this->type_id = self::$Model->where ( "status=1" )->order ( "id" )->findall ();
 		self::$Model=D("Countries");
 		$this->countries=self::$Model->getlist();
-		if (in_array(MODULE_NAME,array('Brand','Cate','Node','Products','Role','Setting','User','Ad','Currencies','Members','Orders'))){
+		//定义模型
+		if (in_array(MODULE_NAME,array('Brand','Cate','Node','Products','Role','Setting','User','Ad','Currencies','Members','Orders','Article','Article_cate'))){
 			$this->dao = D ( MODULE_NAME );
 		}
 		
