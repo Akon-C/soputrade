@@ -74,11 +74,7 @@ class Page extends Think {
 		if(0 == $this->totalRows) return '';
 		$p = C('VAR_PAGE');
 		$nowCoolPage      = ceil($this->nowPage/$this->rollPage);
-		if(C('URL_MODEL')==1){
-			$_SERVER['REQUEST_URI']=$_SERVER['PHP_SELF'].$_SERVER['PATH_INFO'];
-		}elseif(C('URL_MODEL')==2){
-			$_SERVER['REQUEST_URI']=$_SERVER['PATH_INFO'];
-		}
+		 
 		$url  =  $_SERVER['REQUEST_URI'].(strpos($_SERVER['REQUEST_URI'],'?')?'':"?").$this->parameter;
 		
 		$parse = parse_url($url);
