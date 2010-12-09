@@ -26,9 +26,9 @@
 					else{
 						$("#msg").text(data.info);
 						//var jsonObj = eval("("+data+")");						
-						$("#imgurlbox").attr("src","."+data.data); 
+						$("#imgurlbox").attr("src","."+data.data['savename']); 
 						$("#imgurlbox").show();
-						$("#imgurl").val(data.data);
+						$("#imgurl").val(data.data['savename']);
 					}
 
 

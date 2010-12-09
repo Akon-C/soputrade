@@ -113,7 +113,7 @@ function uploadSuccess(file, serverData) {
 		var progress = new FileProgress(file, this.customSettings.progressTarget);
 		var tst=eval("("+serverData+")"); 
 		
-		$("#picmsg").html($("#picmsg").html()+'<input type="hidden" name="imgurl[]" value="'+tst.data+'" />');
+		$("#picmsg").html($("#picmsg").html()+'<input type="hidden" name="imgurl[]" value="'+tst.data['savename']+'" /><input type="hidden" name="imgname[]" value="'+tst.data['name']+'" />');
 		
 		progress.setComplete();
 		progress.setStatus("上传成功");

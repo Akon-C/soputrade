@@ -30,10 +30,10 @@ function ajaxFileUpload(fileToUpload,timestamp)
 				}
 				else{
 					$("#msg").text(data.info);
-					$("#imgbox").attr("src","."+data.data);
+					$("#imgbox").attr("src","."+data.data['savename']);
 					$("#imgbox").show();
 					$("#fileToUpload_look_"+timestamp).preview();
-					$("#img_url").val(data.data);
+					$("#img_url").val(data.data['savename']);
 					//var jsonObj = eval("("+data+")");						
 					/*$("#imgurlbox").attr("src",".././Public/Uploads/Products/"+data.data); 
 					$("#imgurlbox").show();

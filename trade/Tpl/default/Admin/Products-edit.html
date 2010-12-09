@@ -29,10 +29,10 @@ function ajaxFileUpload(fileToUpload,timestamp)
 				}
 				else{
 					$("#msg").text(data.info);
-					$("#fileToUpload_look_"+timestamp).attr("href","."+data.data);
+					$("#fileToUpload_look_"+timestamp).attr("href","."+data.data['savename']);
 					$("#fileToUpload_look_"+timestamp).show();
 					$("#fileToUpload_look_"+timestamp).preview();
-					$("#fileToUpload_url_"+timestamp).val(data.data);
+					$("#fileToUpload_url_"+timestamp).val(data.data['savename']);
 					//var jsonObj = eval("("+data+")");						
 					/*$("#imgurlbox").attr("src",".././Public/Uploads/Products/"+data.data); 
 					$("#imgurlbox").show();

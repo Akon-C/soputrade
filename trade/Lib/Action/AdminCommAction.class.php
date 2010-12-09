@@ -81,6 +81,7 @@ class AdminCommAction extends Action {
 		}
 		if (MODULE_NAME == 'Products') {
 			//创建目录
+			
 			$upload->savePath = $upload->savePath . toDate ( time (), 'Ymd' ) . "/";
 			if (! file_exists ( "$upload->savePath" )) {
 				mk_dir ( $upload->savePath );
@@ -97,16 +98,18 @@ class AdminCommAction extends Action {
 		$upload->uploadReplace = true;
 		if (! $upload->upload ()) {
 			$error = $upload->getErrorMsg ();
+			
 			$this->ajaxReturn ( '', $error, 0 );
 		} else {
 			$uploadSuccess = true;
 			$uploadList = $upload->getUploadFileInfo ();
+			
 			foreach ( $uploadList as $key => $file ) {
-				$savename [] = $upload->savePath . $file ['savename'];
+				$savename ['savename'] = $upload->savePath . $file ['savename'];
+				$savename ['name'] = $file ['name'];
 			}
 			$this->ajaxReturn ( $savename, '上传成功！', 1 );
-		}
-	
+		}	
 	}
 	function _list($map = null) {
 		if (!$this->sort){
