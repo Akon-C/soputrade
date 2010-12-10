@@ -128,7 +128,7 @@ class ProductsAction extends AdminCommAction {
 				}
 				else{
 					$fileinfo=pathinfo($_POST['imgname'][$i]);
-					dump($fileinfo);
+					//dump($fileinfo);
 					$_POST['name']=$fileinfo['filename'];
 				}
 				$_POST ['bigimage'] = $_POST ['imgurl'] [$i];
@@ -228,11 +228,10 @@ class ProductsAction extends AdminCommAction {
 
 			self::$Model=D("Type_attr");
 			$attr=self::$Model->where(array('type_id'=>$typeid,'status'=>1))->order("sort desc")->findall();
-
 			self::$Model=D("Products_attr");
 			for ($row=0;$row<count($attr);$row++){
 				$map1['attr_id']=$attr[$row]['id'];
-				$attr[$row]['attrs']=self::$Model->where($map1)->findall();
+				$attr[$row]['attrs']=self::$Model->where($map1)->group('attr_value')->findall();
 				$attr[$row]['values']=explode(chr(13),$attr[$row]['values']);
 			}
 			$this->attr=$attr;
