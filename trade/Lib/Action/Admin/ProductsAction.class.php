@@ -221,7 +221,23 @@ class ProductsAction extends AdminCommAction {
 	 * 批量修改产品属性
 	 */
 	function batchedit(){
-			
+		if($this->isPost()){
+
+			self::$Model=D("Cate");
+			$typeid=self::$Model->field("type_id")->where(array('id'=>$_POST['cateid']))->getField('type_id');
+
+			self::$Model=D("Type_attr");
+			$attr=self::$Model->where(array('type_id'=>$typeid,'status'=>1))->order("sort desc")->findall();
+
+			self::$Model=D("Products_attr");
+			for ($row=0;$row<count($attr);$row++){
+				$map1['attr_id']=$attr[$row]['id'];
+				$attr[$row]['attrs']=self::$Model->where($map1)->findall();
+				$attr[$row]['values']=explode(chr(13),$attr[$row]['values']);
+			}
+			$this->attr=$attr;
+			$this->cateid=$_POST['cateid'];
+		}
 		$this->display();
 	}
 	function doBatchUpdate(){
@@ -233,7 +249,7 @@ class ProductsAction extends AdminCommAction {
 			//更改所有子类别
 			$cateid_list=$cateModel->getChildren($this->dao->cateid,$this->dao->cateid);
 			$map['cateid']=array('in',implode(",",$cateid_list));
-			//如果有产品则修改属性
+			//如果有产品则修改
 			$count=$this->dao->where($map)->count();
 			if($count){
 				$data=array();
@@ -242,8 +258,41 @@ class ProductsAction extends AdminCommAction {
 						$data[$key]=$value;
 					}
 				}
+
+
 				$this->dao->where($map)->data($data)->save();
 				$str="修改了".$count."个产品";
+
+				//产品id列表
+				$products_list=$this->dao->where($map)->field('id')->findall();
+				$products_id=array_map("reset",$products_list);
+				//修改属性
+				//先删除原来的属性
+				self::$Model=D("Products_attr");
+				unset($map);
+				$map['products_id']=array("in",$products_id);
+				self::$Model->where($map)->delete();
+				
+				foreach ($products_id as $key=>$pid){
+					foreach ($_POST ['attr_id'] as $key => $attr_id ) {
+
+						foreach ( $_POST ['attr_value_' . $attr_id] as $key => $attr_value ) {
+							if (!empty($attr_value))
+							{
+								//增加产品属性表
+								$data ['products_id'] = $pid;
+								$data ['attr_id'] = $attr_id;
+								$data ['attr_value'] = str_replace ( "\n", "", $attr_value );
+								if (self::$Model->create ( $data )) {
+									self::$Model->add ( $data );
+
+								} else {
+									$this->error ( self::$Model->geterror () );
+								}
+							}
+						}
+					}
+				}
 				$this->success("修改成功!\n".$str);
 			}else{
 				$this->error('修改失败,该类别下没有产品!');
