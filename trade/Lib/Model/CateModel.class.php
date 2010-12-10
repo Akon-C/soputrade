@@ -11,11 +11,11 @@ class CateModel extends Model {
 	/**
 	 * 取得该类别下的所有子类
 	 */
-	function getChildren($cid) {
+	function getChildren($id) {
 		static $children = array ();
-		$data = $this->where ( array ('pid' => $cid ) )->findall ();
+		$data = $this->where ( array ('pid' => $id ) )->findall ();
 		if (func_num_args () > 1) {
-			$children [] = $cid;
+			$children [] = $id;
 		}
 		foreach ( $data as $k => $v ) {
 			$children [] = $v ['id'];
