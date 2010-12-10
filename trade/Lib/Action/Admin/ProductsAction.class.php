@@ -49,7 +49,7 @@ class ProductsAction extends AdminCommAction {
 			$this->error ( $this->dao->getError () );
 		}
 	}
-	
+
 	public function edit() {
 		$map ['id'] = $_GET ['id'];
 		$list = $this->dao->where ( $map )->find ();
@@ -61,10 +61,10 @@ class ProductsAction extends AdminCommAction {
 		} else {
 			$this->error ( '没有数据！' );
 		}
-	
+
 	}
 	public function Update(){
-	for($i = 0; $i < count ( $_POST ['imgurl'] ); $i ++) {
+		for($i = 0; $i < count ( $_POST ['imgurl'] ); $i ++) {
 			//判断是否为封面
 			if ($_POST ['timestamp'] [$i] == $_POST ['isIndex']) {
 				//echo "It is Index! ";
@@ -83,7 +83,7 @@ class ProductsAction extends AdminCommAction {
 							$data ['img_url'] = $_POST ['imgurl'] [$i];
 							$data ['thumb_url'] = get_thumb_name ( $_POST ['imgurl'] [$i] );
 							$data ['img_desc'] = $_POST ['img_desc'] [$i];
-							$data ['sort'] = $_POST ['sort'] [$i]; //sort							
+							$data ['sort'] = $_POST ['sort'] [$i]; //sort
 							$model->add ( $data );
 						}
 					}
@@ -108,7 +108,7 @@ class ProductsAction extends AdminCommAction {
 		for($i=0;$i<count($_POST['imgurl']);$i++){
 			if (! empty ( $_POST ['imgurl'][$i] )) {
 				$j++;
-					/*$data['name']=$_POST['name']."0".$j;
+				/*$data['name']=$_POST['name']."0".$j;
 				$data['serial']=$_POST['serial'];
 				$data['price']=$_POST['price'];
 				$data['pricespe']=$_POST['pricespe'];
@@ -130,7 +130,7 @@ class ProductsAction extends AdminCommAction {
 					$fileinfo=pathinfo($_POST['imgname'][$i]);
 					dump($fileinfo);
 					$_POST['name']=$fileinfo['filename'];
-				}				
+				}
 				$_POST ['bigimage'] = $_POST ['imgurl'] [$i];
 				$_POST ['smallimage'] = get_thumb_name ( $_POST ['imgurl'] [$i] );
 				if ($this->dao->create()) {
@@ -147,12 +147,12 @@ class ProductsAction extends AdminCommAction {
 						$this->error ( $this->dao->getError () );
 					}
 				}
-				 else {
+				else {
 					$this->error ( $this->dao->getError () );
 				}
-				
+
 			}
-			
+
 		}
 		//$this->success("本次操作共上传".$j."个新产品！");
 	}
@@ -165,15 +165,15 @@ class ProductsAction extends AdminCommAction {
 		else{
 			$map['id']=$_REQUEST['id'];
 			$this->pid=$_REQUEST['id'];
-		}		
+		}
 		$cate=$this->dao->field("cateid")->where($map)->group("cateid")->findall();
 		if (count($cate)>1){
 			$this->error("请选择同一类别下的产品进行属性编辑！");
 		}
-		
+
 		self::$Model=D("Cate");
 		$typeid=self::$Model->field("type_id")->where("id=".$cate[0]['cateid'])->select();
-		
+
 		self::$Model=D("Type_attr");
 		$attr=self::$Model->where("type_id=".$typeid[0]['type_id']." and status=1")->order("sort desc")->findall();
 		self::$Model=D("Products_attr");
@@ -184,7 +184,7 @@ class ProductsAction extends AdminCommAction {
 			$attr[$row]['values']=explode(chr(13),$attr[$row]['values']);
 		}
 		//dump($attr);
-		$this->attr=$attr;		
+		$this->attr=$attr;
 		$this->display();
 	}
 	function attrUpdate(){
@@ -205,7 +205,7 @@ class ProductsAction extends AdminCommAction {
 						if (self::$Model->create ( $data )) {
 							self::$Model->add ( $data );
 							//echo self::$Model->getlastsql()."<br>";
-							
+
 						} else {
 							$this->error ( self::$Model->geterror () );
 						}
@@ -216,6 +216,43 @@ class ProductsAction extends AdminCommAction {
 		}
 		$this->jumpUrl=U('Products/productslist');
 		$this->success("操作成功！");
+	}
+	/**
+	 * 批量修改产品属性
+	 */
+	function batchedit(){
+			
+		$this->display();
+	}
+	function doBatchUpdate(){
+		if($this->dao->create()){
+			if(!$this->dao->cateid){
+				$this->error('请选择修改类别!');
+			}
+			$cateModel=D("Cate");
+			//更改所有子类别
+			$cateid_list=$cateModel->getChildren($this->dao->cateid,$this->dao->cateid);
+			$map['cateid']=array('in',implode(",",$cateid_list));
+			//如果有产品则修改属性
+			$count=$this->dao->where($map)->count();
+			if($count){
+				$data=array();
+				foreach ($_POST as $key=>$value){
+					if($_POST[$key] != ''){
+						$data[$key]=$value;
+					}
+				}
+				$this->dao->where($map)->data($data)->save();
+				$str="修改了".$count."个产品";
+				$this->success("修改成功!\n".$str);
+			}else{
+				$this->error('修改失败,该类别下没有产品!');
+			}
+		}else{
+			$this->error($this->dao->getError());
+		}
+
+
 	}
 }
 ?>
