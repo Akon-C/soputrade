@@ -220,6 +220,6 @@ window.onload = function() {
             </form>
 		</div> <!-- /content -->
 		<script type="text/javascript">
-		$("form[name='myform'] select[name='cateid'] option[value='{$cateid}']").attr('selected',true);
-			</script>
+		document.myform.cateid.value="{$cateid}";
+</script>
 <include file="../Public/adminfooter" />

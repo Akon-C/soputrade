@@ -147,6 +147,6 @@ function getattr(form){
             </form>
 		</div> <!-- /content -->
 		<script type="text/javascript">
-		$("form[name='myform'] select[name='cateid'] option[value='{$cateid}']").attr('selected',true);
+		document.myform.cateid.value="{$cateid}";
 			</script>
 <include file="../Public/adminfooter" />
