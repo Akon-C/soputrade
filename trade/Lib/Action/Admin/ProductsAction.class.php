@@ -103,6 +103,9 @@ class ProductsAction extends AdminCommAction {
 		$this->display();
 	}
 	public function doEasyUpload(){
+		if(!$_POST['cateid']){
+			$this->error('请选择产品分类!');
+		}
 		//dump($_POST);
 		$j=0;
 		for($i=0;$i<count($_POST['imgurl']);$i++){
@@ -154,7 +157,7 @@ class ProductsAction extends AdminCommAction {
 			}
 
 		}
-		//$this->success("本次操作共上传".$j."个新产品！");
+		$this->success("本次操作共上传".$j."个新产品！");
 	}
 	function attredit(){
 		//dump($_REQUEST['id']);
