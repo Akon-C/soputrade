@@ -5,55 +5,65 @@
 <script type="text/javascript" src="../Public/Js/swfupload.queue.js"></script>
 <script type="text/javascript" src="../Public/Js/fileprogress.js"></script>
 <script type="text/javascript" src="../Public/Js/handlers.js"></script>
+<style>
+.ui-tabs-panel label {
+ display:inline;
+}
+</style>
 <script type="text/javascript">
-		var swfu;
+function getattr(form){
+	form.action="{:U('Products/easyupload')}";
+	form.submit(); 
+}
 
-		window.onload = function() {
-			var settings = {
-				flash_url : "../Public/Js/swfupload.swf",
-				upload_url: "{:U('Products/upload')}",	
-				post_params: {"PHPSESSID" : "<?php echo session_id(); ?>"},
-				file_size_limit : "100 MB",
-				file_types : "*.jpg;*.gif;*.png;*.bmp",
-				file_types_description : "图片",
-				file_upload_limit : 10000000000,  //配置上传个数
-				file_queue_limit : 0,
-				custom_settings : {
-					progressTarget : "fsUploadProgress",
-					cancelButtonId : "btnCancel"
-				},
-				debug: true,
+var swfu;
 
-				// Button settings
-				button_image_url: "../Public/images/TestImageNoText_65x29.png",
-				button_width: "65",
-				button_height: "29",
-				button_placeholder_id: "spanButtonPlaceHolder",
-				button_text: '<span class="theFont">浏览</span>',
-				button_text_style: ".theFont { font-size: 16; }",
-				button_text_left_padding: 12,
-				button_text_top_padding: 3,
-				
-				file_queued_handler : fileQueued,
-				file_queue_error_handler : fileQueueError,
-				file_dialog_complete_handler : fileDialogComplete,
-				upload_start_handler : uploadStart,
-				upload_progress_handler : uploadProgress,
-				upload_error_handler : uploadError,
-				upload_success_handler : uploadSuccess,
-				upload_complete_handler : uploadComplete,
-				queue_complete_handler : queueComplete	
-			};
+window.onload = function() {
+	var settings = {
+		flash_url : "../Public/Js/swfupload.swf",
+		upload_url: "{:U('Products/upload')}",
+		post_params: {"PHPSESSID" : "<?php echo session_id(); ?>"},
+		file_size_limit : "100 MB",
+		file_types : "*.jpg;*.gif;*.png;*.bmp",
+		file_types_description : "图片",
+		file_upload_limit : 10000000000,  //配置上传个数
+		file_queue_limit : 0,
+		custom_settings : {
+			progressTarget : "fsUploadProgress",
+			cancelButtonId : "btnCancel"
+		},
+		debug: true,
 
-			swfu = new SWFUpload(settings);
-	     };
+		// Button settings
+		button_image_url: "../Public/images/TestImageNoText_65x29.png",
+		button_width: "65",
+		button_height: "29",
+		button_placeholder_id: "spanButtonPlaceHolder",
+		button_text: '<span class="theFont">浏览</span>',
+		button_text_style: ".theFont { font-size: 16; }",
+		button_text_left_padding: 12,
+		button_text_top_padding: 3,
+
+		file_queued_handler : fileQueued,
+		file_queue_error_handler : fileQueueError,
+		file_dialog_complete_handler : fileDialogComplete,
+		upload_start_handler : uploadStart,
+		upload_progress_handler : uploadProgress,
+		upload_error_handler : uploadError,
+		upload_success_handler : uploadSuccess,
+		upload_complete_handler : uploadComplete,
+		queue_complete_handler : queueComplete
+	};
+
+	swfu = new SWFUpload(settings);
+};
 	</script>
     
 <!-- Content (Right Column) -->
 		<div id="content" class="box">
 
 			<h1>批量上传图片</h1>
-            <p class="msg info">提示：请在上传图片分页中批量选择您要上传的产品图片！</span>	</p>
+            <p class="msg info">提示：请先选择分类，再在上传图片分页中批量选择您要上传的产品图片！再填写资料添加！</span>	</p>
             
             <p id="btn-create" class="box">
               <a href="{:U('Products/add')}">添加新产品</a>
@@ -69,6 +79,17 @@
             
             <div id="tab01" >
              <table class="nostyle" style="width:700px;" >
+             <tr>
+						<td style="">产品分类:</td>
+						<td>
+                        <select name="cateid" class="input-text"  onchange="getattr(this.form);"  >
+                        <option value="0">最上级...</option>
+                        <volist name="catetree" id="vo">
+                        <option value="{$vo['id']}">{:class_str_insert($vo['deep'],"&nbsp;&nbsp;&nbsp;")}{$vo.name}</option>
+                        </volist>
+                        </select>
+                        </td>
+					</tr>
                             <tr>
 						<td width="100" style="width:200px;">产品名称:</td>
 						<td width="563"><input type="text" size="40" name="name" class="input-text" value="" /></td>
@@ -82,17 +103,62 @@
 						<td style="">特价:</td>
 						<td><input type="text" size="40" name="pricespe" class="input-text" value="" /></td>
 					</tr>
+					  <present name="attr">
+                     <volist name="attr" id="vo">
                     <tr>
-						<td style="">产品分类:</td>
 						<td>
-                        <select name="cateid" class="input-text" >
-                        <option value="0">最上级...</option>
-                        <volist name="catetree" id="vo">
-                        <option value="{$vo['id']}">{:class_str_insert($vo['deep'],"&nbsp;&nbsp;&nbsp;")}{$vo.name}</option>
+                        <eq name="vo['input_type']" value="1">
+                        [<a href="javascript:void(0);" onClick="addvalues('{$vo.id}');">+</a>]
+                        </eq>
+                        {$vo.name}:
+                        <input type="hidden" name="attr_id[]" value="{$vo.id}">
+                        </td>
+						<td>
+                        <label id="values_{$vo.id}">
+                        <eq name="vo['input_type']" value="0">
+                        <input type="text" size="40" name="attr_value_{$vo.id}[]" class="input-text" value="" />
+                        </eq>
+                        <eq name="vo['input_type']" value="1">
+                        <select name="attr_value_{$vo.id}[]">
+                        <option value="">请选择或删除</option>
+                        <volist name="vo['values']" id="subvo">
+                        <option value="{$subvo}">{$subvo}</option>
                         </volist>
                         </select>
+                        </eq>
+                        
+                       
+                        <br>
+                        </label>
+                        
+                        <volist name="vo['attrs']" id="subvo1">
+                        
+                        
+                        <label id="values_{$vo.id}">
+                        <eq name="vo['input_type']" value="0">
+                        <input type="text" size="40" name="attr_value_{$vo.id}[]" class="input-text" value="{$subvo1}" />
+                        </eq>
+                        <eq name="vo['input_type']" value="1">
+                        <select name="attr_value_{$vo.id}[]" id="{$subvo1['id']}">
+                        <option value="">请选择或删除</option>
+                        <volist name="vo['values']" id="subvo">                       
+                         <option value="{$subvo}">{$subvo}</option>
+                        </volist>
+                        </select>
+                        <script type="text/javascript">
+                        $("#{$subvo1['id']}").val("{$subvo1['attr_value']}");
+						</script>
+                        </eq> 
+                        <br/>                       
+                        </volist>
+                        
+                        <label id="newvalues_{$vo.id}">
+                        </label>
                         </td>
 					</tr>
+                    </volist>
+                    </present>
+                    
                      <tr>
 						<td style="width:120px;">品牌:</td>
 						<td>
@@ -153,4 +219,7 @@
             <p class="t-right"><input type="submit" class="input-submit" value="添加" /></p>
             </form>
 		</div> <!-- /content -->
+		<script type="text/javascript">
+			$("form[name=myform] select[name='cateid']").val("{$cateid}");
+			</script>
 <include file="../Public/adminfooter" />
