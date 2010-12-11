@@ -32,7 +32,7 @@ window.onload = function() {
 			progressTarget : "fsUploadProgress",
 			cancelButtonId : "btnCancel"
 		},
-		debug: true,
+		debug: false,
 
 		// Button settings
 		button_image_url: "../Public/images/TestImageNoText_65x29.png",
@@ -220,6 +220,6 @@ window.onload = function() {
             </form>
 		</div> <!-- /content -->
 		<script type="text/javascript">
-			$("form[name=myform] select[name='cateid']").val("{$cateid}");
+		$("form[name='myform'] select[name='cateid'] option[value='{$cateid}']").attr('selected',true);
 			</script>
 <include file="../Public/adminfooter" />
