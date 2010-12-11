@@ -61,8 +61,56 @@ class ProductsAction extends AdminCommAction {
 		} else {
 			$this->error ( '没有数据！' );
 		}
-
+		/**
+		 * 关联产品
+		 */
+		parent::$Model=D("Products_related");
+		$this->related=parent::$Model->where(array('products_id'=>$map['id']))->findall();
+		dump($this->get('related'));
 	}
+	/**
+	 * 添加关联产品
+	 *
+	 */
+	function addrelated() {
+		if ($_GET['name']){
+			$map ['name'] = array ('like', '%' . $_GET ['name'] . '%' );
+		}
+		if ($_GET ['cateid']) {
+			$map ['cateid'] = $_GET ['cateid'];
+		}
+		$map['_logic']='or';
+
+		$_SESSION['products_id']=$_GET['id'];
+		$map['id']=array('neq',$_SESSION['products_id']);
+		$this->_list ($map);
+		$list=$this->get('list');
+
+		parent::$Model=D('Products_gallery');
+		foreach ($list as $k=>$v){
+			$list[$k]['thumb_url']=__ROOT__."/".parent::$Model->where(array('pid'=>$v['id']))->getField('thumb_url');
+		}
+		$this->list=$list;
+		$this->display ();
+	}
+	function doAddRelated(){
+		parent::$Model=D('Products_related');
+		$products_id=$_SESSION['products_id'];
+		$ids=explode(",",$_REQUEST['id']);
+		if(in_array($products_id,$ids)){
+			$this->error('产品不能和自己关联!');
+		}
+		$j=0;
+		foreach ($ids as $id){
+			if(!parent::$Model->where(array('products_id'=>$products_id,'related_products_id'=>$id))->count()){
+				$j++;
+				parent::$Model->data(array('products_id'=>$products_id,'related_products_id'=>$id))->add();
+
+			}
+		}
+		$this->success('增加了'.$j.'个关联产品!');
+	}
+
 	public function Update(){
 		for($i = 0; $i < count ( $_POST ['imgurl'] ); $i ++) {
 			//判断是否为封面
@@ -100,6 +148,22 @@ class ProductsAction extends AdminCommAction {
 
 	public function easyupload(){
 		//echo ACTION_NAME;
+		if($this->isPost()){
+
+			self::$Model=D("Cate");
+			$typeid=self::$Model->field("type_id")->where(array('id'=>$_POST['cateid']))->getField('type_id');
+
+			self::$Model=D("Type_attr");
+			$attr=self::$Model->where(array('type_id'=>$typeid,'status'=>1))->order("sort desc")->findall();
+			self::$Model=D("Products_attr");
+			for ($row=0;$row<count($attr);$row++){
+				$map1['attr_id']=$attr[$row]['id'];
+				$attr[$row]['attrs']=self::$Model->where($map1)->group('attr_value')->findall();
+				$attr[$row]['values']=explode(chr(13),$attr[$row]['values']);
+			}
+			$this->attr=$attr;
+			$this->cateid=$_POST['cateid'];
+		}
 		$this->display();
 	}
 	public function doEasyUpload(){
@@ -138,6 +202,33 @@ class ProductsAction extends AdminCommAction {
 				$_POST ['smallimage'] = get_thumb_name ( $_POST ['imgurl'] [$i] );
 				if ($this->dao->create()) {
 					$id = $this->dao->add ();
+
+				/**
+				 * 插入属性bof
+				 */
+				self::$Model=D("Products_attr");
+				foreach ($_POST ['attr_id'] as $key => $attr_id ) {
+
+					foreach ( $_POST ['attr_value_' . $attr_id] as $key => $attr_value ) {
+						if (!empty($attr_value))
+						{
+							//增加产品属性表
+							$data ['products_id'] = $id;
+							$data ['attr_id'] = $attr_id;
+							$data ['attr_value'] = str_replace ( "\n", "", $attr_value );
+							if (self::$Model->create ( $data )) {
+								self::$Model->add ( $data );
+
+							} else {
+								$this->error ( self::$Model->geterror () );
+							}
+						}
+					}
+				}
+				/**
+				 * 属性eof
+				 */
+
 					$_POST ['name']=$_POST['tmp_name'];
 					//开始插入相册
 					$_POST ['pid'] = $id;
@@ -274,7 +365,7 @@ class ProductsAction extends AdminCommAction {
 				unset($map);
 				$map['products_id']=array("in",$products_id);
 				self::$Model->where($map)->delete();
-				
+
 				foreach ($products_id as $key=>$pid){
 					foreach ($_POST ['attr_id'] as $key => $attr_id ) {
 

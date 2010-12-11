@@ -10,6 +10,7 @@
 class CateAction extends AdminCommAction {
 	
 	function catelist(){
+		cleanCache ();
 		$this->display();
 	}	
 	function Delete() {
