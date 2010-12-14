@@ -245,6 +245,21 @@ function dosql(){
 	//global $app_tmppath;
 	$sv=$_SESSION['setup_conf']['sql'];
 	$db_conf=$_SESSION['setup_conf']['conf'];
+	//创建配置文件
+	$set['DB_TYPE']='mysql';
+	$set['DB_HOST']=$db_conf['mysql_host'];
+	$set['DB_NAME']=$db_conf['db_name'];
+	$set['DB_USER']=$db_conf['mysql_user'];
+	$set['DB_PWD']=$db_conf['mysql_pwd'];
+	$set['DB_PORT']=$db_conf['mysql_port'];
+	$set['DB_PREFIX']=$db_conf['db_pre'];
+	$set['FILE_UPLOAD_MAXSIZE']='1024000000';
+	$set['FILE_UPLOAD_ALLOWEXTS']='jpg,gif,png,bmp';
+	$set['DEFAULT_CURRENCIES_SYMBOL']='USD';
+	$arr="<?php\n return ".var_export($set,"true").";\n?>"; 
+    $fp=fopen("../config.php","w"); 
+    fwrite($fp,$arr); 
+    fclose($fp); 
 	$dbserver=$db_conf['mysql_host'].(isset($db_conf['mysql_port'])?(":".$db_conf['mysql_port']):'');
 	$conn=@mysql_connect($dbserver,$db_conf['mysql_user'],$db_conf['mysql_pwd']);	//连接到MySQL Server
 	if($conn){
