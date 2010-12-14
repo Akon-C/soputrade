@@ -8,6 +8,16 @@
  * @lastupdate 2010-11-23
  */
 class CateModel extends Model {
+	protected $_validate=array(
+
+	array('name','require','类别名必须填写!'),
+	array('name','','类别名已经存在!',0,'unique',1),
+
+	);
+	/*protected $_auto = array (
+	array('addtime','time',1,'function'),
+	array('modify_time','time',1,'function'),
+	);*/
 	/**
 	 * 取得该类别下的所有子类
 	 */

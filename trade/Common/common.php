@@ -7,6 +7,27 @@
   * @version 1.0
   * @lastupdate 2010-11-15
 */ 
+function build_url($vo,$type){
+	switch ($type){
+		case 'pro_url':
+			return U(tourlstr($vo['name']).'@',array('pid'=>$vo['id']));
+		case 'pro_name':
+			return $vo['name'];
+		case 'pro_smallimage':
+			return $vo['smallimage'];
+		case 'pro_bigimage':
+			return $vo['pro_bigimage'];
+		case 'pro_price':
+			return $vo['price'];
+		case 'pro_pricespe':
+			return $vo['pricespe'];
+		case 'cate_url':
+			return U(tourlstr($vo['name']).'@',array('cid'=>$vo['id']));
+		case 'cate_name':
+			return $vo['name'];
+	}
+	
+}
 function toDate($time, $format = 'Y-m-d H:i:s') {
 	if (empty ( $time )) {
 		return '';
@@ -228,7 +249,7 @@ function get_subcate_arr($pid=0){
 //获取分类树
 function get_catetree_arr() {
 	if (S ( 'S_CATETREE' ) == "") {
-		$classDAO = D( "cate" );
+		$classDAO = D( "Cate" );
 		$result = $classDAO->order ( 'sort desc' )->findall ();
 		$arr = parse ( $result );
 		S('S_CATETREE',$arr);
@@ -238,7 +259,7 @@ function get_catetree_arr() {
 }
 //获取节点树
 function get_nodetree_arr() {
-	$classDAO = D( "node" );
+	$classDAO = D( "Node" );
 	$result = $classDAO->order ( 'sort' )->findall ();
 	
 	
@@ -251,7 +272,7 @@ function get_nodetree_arr() {
 
 
 function get_roletree_arr() {
-	$classDAO = D( "role" );
+	$classDAO = D( "Role" );
 	$result = $classDAO->order ( 'sort' )->findall ();
 	
 	/*	foreach($result as $var){		
@@ -306,7 +327,7 @@ function parent_cmp($a, $b) {
  */
 function GetSettValue($valuename){
 	if (S('S_'.$valuename)==""){
-		$setting=D('setting');
+		$setting=D('Setting');
 		$map=array();
 		$map['valuename']=$valuename;
 		$settInfo=$setting->where($map)->find();
@@ -333,7 +354,7 @@ function SetSettValue($valuename,$valuetxt=null){
 	if(is_null($valuetxt)){
 		return true;
 	}else{
-		$setting	=	D('setting');
+		$setting	=	D('Setting');
 		$map['valuename']=$valuename;
 		$info=$setting->where($map)->find();
 		if ($info) {
@@ -341,7 +362,7 @@ function SetSettValue($valuename,$valuetxt=null){
 			$setting->where($map)->data($date)->save();
 		}
 		else {
-			$d	=	D('setting');
+			$d	=	D('Setting');
 			$data['valuename']=$valuename;
 			$data['valuetxt']=$valuetxt;
 			$d->add($data);
@@ -357,7 +378,7 @@ function cleanCache() {
 	}
 }
 function get_brand_tree(){
-	$dao=D("brand");
+	$dao=D("Brand");
 	return $dao->where("status=1")->order("sort")->findAll();
 }
 //取得广告代码
@@ -416,8 +437,18 @@ function getprice_str($price){
  * @return String 过滤后
  */
 //返回类别导航条
-function tourlstr($name){
+/*function tourlstr($name){
 	return str_replace(array('*','&','#','（','）',';',' '),'_',$name);
+}*/
+function tourlstr($string){
+	if (preg_match("/[\x{4e00}-\x{9fa5}]+/u", $string)) {
+		return $string;
+	}
+	$regex='/[^-a-zA-z0-9_ ]/';
+	$string=preg_replace($regex,'',$string);
+	$string=trim($string);
+	$string=preg_replace('/[-_ ]+/','-',$string);
+	return $string;
 }
 function get_cate_info($cid){
 	$cate=get_catetree_arr();

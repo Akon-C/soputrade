@@ -5,13 +5,14 @@ function status(id){
 	$.post("{:U('Article_cate/status')}",'article_cateid='+id);
 }
 function delall(){
-	var id=$('input[name^=article_cateid]:checked').map(function(){
+	var id=$('input:checkbox[name^=article_cateid]:checked').map(function(){
 		return $(this).val();
 	}).get().join(",");
 	if(!id){
 		alert('请选择要删除的项!');
 	}else{
 		$.post("{:U('Article_cate/delete')}","article_cateid="+id);
+		$('input[name^=article_cateid]:checked').parent().parent().remove();
 	}
 }
 $(document).ready (

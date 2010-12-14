@@ -1,5 +1,27 @@
 <include file="../Public/admintop" />
 <include file="../Public/adminleft" />
+<script type="text/javascript">
+function delall(){
+	var id=$('input:checkbox[name^=id]:checked').map(function(){
+		return $(this).val();
+	}).get().join(",");
+	if(!id){
+		alert('请选择要删除的项!');
+	}else{
+		$.post("{:U('Ad/delete')}","id="+id);
+		$('input[name^=id]:checked').parent().parent().remove();
+	}
+}
+$(document).ready (
+function(){
+	//选中
+	$('#check').click(function(){
+		$('input[name^=id]').attr('checked',$(this).attr('checked'));
+	});
+	
+}
+);
+</script>
 <!-- Content (Right Column) -->
 		<div id="content" class="box">
 
@@ -11,7 +33,7 @@
             </p>
             <table width="100%">
 				<tr>
-				    <th style="text-align:center" width="7%"></th>
+				    <th style="text-align:center" width="7%"><input type="checkbox" id="check" /></th>
 				    <th style="text-align:center" width="35%">介绍</th>
 				    <th style="text-align:center" width="15%">类型</th>
                     <th style="text-align:center" width="7%">代码</th>          
@@ -28,6 +50,7 @@
                 </volist>
 				
 			</table>
+			 <p class="t-left"><input type="button" value="批量删除" onclick="delall();" /></p>
             <p class="t-right"></p>
 		</div> <!-- /content -->
 <include file="../Public/adminfooter" />

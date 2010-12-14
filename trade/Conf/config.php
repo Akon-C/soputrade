@@ -6,8 +6,11 @@ $array=array(
 //'APP_DOMAIN_DEPLOY' => true,
 //语言
 'LANG_SWITCH_ON'=>true,
-'DEFAULT_LANG'   =>	'zh-cn',	 // 默认语言
-
+'LANG_AUTO_DETECT'=>false,//老外自动切换语言
+//'DEFAULT_LANG'   =>	'zh-cn',	 // 默认语言
+'DEFAULT_LANG'   =>	'en-us',	 // 默认语言
+//允许上传的文件类型
+'FILE_UPLOAD_ALLOWEXTS'=>'jpg,jpeg,bmp,png,gif,tif,zip,rar,doc,xls,7z,rtf,csv',
 //站点信息
 'SYSTEM_NAME'=>'外贸易',
 'SYSTEM_VAR'=>'1.0BATE',

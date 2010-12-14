@@ -186,5 +186,5 @@ function uploadComplete(file) {
 // This event comes from the Queue Plugin
 function queueComplete(numFilesUploaded) {
 	var status = document.getElementById("divStatus");
-	status.innerHTML = numFilesUploaded + " 个文件" + (numFilesUploaded === 1 ? "" : "s") + "已上传.";
+	status.innerHTML = numFilesUploaded + " 个文件" /*+ (numFilesUploaded === 1 ? "" : "s")*/ + "已上传.";
 }

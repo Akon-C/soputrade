@@ -1,0 +1,3 @@
+<?php
+//-00000000001a:3:{i:0;a:8:{s:2:"id";s:2:"29";s:7:"img_url";s:37:"./Public/Uploads/Ad/4cebccf1b221d.jpg";s:7:"content";s:0:"";s:4:"code";s:7:"topleft";s:4:"type";s:3:"img";s:6:"remark";s:13:"首页右边1";s:4:"sort";s:1:"3";s:4:"link";s:1:"#";}i:1;a:8:{s:2:"id";s:2:"30";s:7:"img_url";s:37:"./Public/Uploads/Ad/4cebcd09c7293.jpg";s:7:"content";s:0:"";s:4:"code";s:7:"topleft";s:4:"type";s:3:"img";s:6:"remark";s:13:"首页右边2";s:4:"sort";s:1:"2";s:4:"link";s:1:"#";}i:2;a:8:{s:2:"id";s:2:"31";s:7:"img_url";s:37:"./Public/Uploads/Ad/4d0074b4952ff.jpg";s:7:"content";s:0:"";s:4:"code";s:7:"topleft";s:4:"type";s:3:"img";s:6:"remark";s:13:"首页右边3";s:4:"sort";s:1:"1";s:4:"link";s:1:"#";}}
+?>

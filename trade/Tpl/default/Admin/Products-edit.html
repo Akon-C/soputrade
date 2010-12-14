@@ -52,7 +52,7 @@ function ajaxFileUpload(fileToUpload,timestamp)
 }
 $(document).ready (
 				   function(){
-					   
+					   $(".preview").preview();
 					   $(".delimg").click(
 													function(){
 														 var v=$(this).attr("v");
@@ -205,10 +205,9 @@ $(document).ready (
            </table>
             </div>
                <div id="tab04">
-               <a href="{:U('Products/addrelated',array('id'=>$list['id']))}" target="_blank">从类别添加</a>
+               <a href="{:U('Products/addrelated',array('id'=>$list['id'],'cate'=>1))}" target="_blank">从类别添加</a>
             	| <a href="{:U('Products/addrelated',array('id'=>$list['id']))}" target="_blank">从产品添加</a>
                 <div>
-                
 <form action="{:U('Products/doDelRelated')}" method="post" id="listform">
 <table width="100%">
 				<tr pid="0">
@@ -219,8 +218,8 @@ $(document).ready (
                 <volist name="related" id="vo">
                 <tr >
                     <td style="text-align:left" ><input type="checkbox" name="id[]" value="{$vo.id}" /></td>
-				    <td style="text-align:left" id="classname" ><notempty name="vo['thumb_url']"><a class="preview" href="{$vo['thumb_url']}">{$vo.name}</a><else/>{$vo.name}</notempty></td>				   
-				    <td style="text-align:center" ><a href="{:u('Products/doAddRelated',array('id'=>$vo['id']))}">选择</a></td>
+				    <td style="text-align:left" id="classname" ><notempty name="vo['smallimage']"><a class="preview" href="../{$vo['smallimage']}">{$vo.name}</a><else/>{$vo.name}</notempty></td>				   
+				    <td style="text-align:center" ><a href="{:u('Products/doDelRelated',array('id'=>$vo['id']))}">删除</a></td>
 			      </tr>
                 </volist>
 				

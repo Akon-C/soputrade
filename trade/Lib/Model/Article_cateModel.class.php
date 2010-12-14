@@ -8,7 +8,12 @@
   * @lastupdate 2010-11-23
 */ 
 class Article_cateModel extends Model{
-	
+	protected $_validate=array(
+
+	array('article_catename','require','类别名称必须填写!'),
+	array('article_catename','','类别名称已经存在!',0,'unique',1),
+
+	);
 	
 	/**
 	 * 生成类别

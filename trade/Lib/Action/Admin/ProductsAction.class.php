@@ -52,6 +52,14 @@ class ProductsAction extends AdminCommAction {
 
 	public function edit() {
 		$map ['id'] = $_GET ['id'];
+		
+		/**
+		 * 关联产品
+		 */
+		parent::$Model=D("Products_related");
+		$this->related=parent::$Model->field('a.id,b.name,b.smallimage')->table(C('DB_PREFIX').products_related." a")->join(C('DB_PREFIX').'products b on a.products_id = b.id')->where(array('a.products_id'=>$map['id']))->findall();
+		unset($_SESSION['products_id']);
+		
 		$list = $this->dao->where ( $map )->find ();
 		if ($list) {
 			$this->list = $list;
@@ -61,12 +69,7 @@ class ProductsAction extends AdminCommAction {
 		} else {
 			$this->error ( '没有数据！' );
 		}
-		/**
-		 * 关联产品
-		 */
-		parent::$Model=D("Products_related");
-		$this->related=parent::$Model->where(array('products_id'=>$map['id']))->findall();
-		dump($this->get('related'));
+		
 	}
 	/**
 	 * 添加关联产品
@@ -79,13 +82,22 @@ class ProductsAction extends AdminCommAction {
 		if ($_GET ['cateid']) {
 			$map ['cateid'] = $_GET ['cateid'];
 		}
-		$map['_logic']='or';
-
-		$_SESSION['products_id']=$_GET['id'];
-		$map['id']=array('neq',$_SESSION['products_id']);
+		
+		$_SESSION['products_id']=$_SESSION['products_id']?$_SESSION['products_id']:$_GET['id'];//传参
+		$this->id=$_SESSION['products_id'];
+		/**
+		 * 排除
+		 */
+		
+		parent::$Model=D('Products_related');
+		$neq_products_id=array_map('reset',parent::$Model->field('related_products_id')->where(array('products_id'=>$_SESSION['products_id']))->findall());
+		
+		$neq_products_id[]=$_SESSION['products_id'];
+		$map['id']=array('not in',$neq_products_id);
+		
 		$this->_list ($map);
 		$list=$this->get('list');
-
+		
 		parent::$Model=D('Products_gallery');
 		foreach ($list as $k=>$v){
 			$list[$k]['thumb_url']=__ROOT__."/".parent::$Model->where(array('pid'=>$v['id']))->getField('thumb_url');
@@ -109,6 +121,33 @@ class ProductsAction extends AdminCommAction {
 			}
 		}
 		$this->success('增加了'.$j.'个关联产品!');
+	}
+	function doAddRelatedByCate(){
+		parent::$Model=D('Products');
+		$Products_list=parent::$Model->field('id')->where(array('cateid'=>$_POST['cateid']))->findall();
+		$ids=array_map('reset',$Products_list);
+		$products_id=$_SESSION['products_id'];
+		parent::$Model=D('Products_related');
+		$j=0;
+		foreach ($ids as $id){
+			if(($products_id!=$id) && !parent::$Model->where(array('products_id'=>$products_id,'related_products_id'=>$id))->count()){
+				$j++;
+				parent::$Model->data(array('products_id'=>$products_id,'related_products_id'=>$id))->add();
+
+			}
+		}
+		$this->success('增加了'.$j.'个关联产品!');
+	}
+	function doDelRelated(){
+		parent::$Model=D('Products_related');
+		$ids=explode(",",$_REQUEST['id']);
+		$j=0;
+		foreach ($ids as $id){
+			$j++;
+			parent::$Model->where(array('id'=>$id))->delete();
+
+		}
+		$this->success('删除了'.$j.'个关联产品!');
 	}
 
 	public function Update(){
@@ -251,7 +290,7 @@ class ProductsAction extends AdminCommAction {
 		$this->success("本次操作共上传".$j."个新产品！");
 	}
 	function attredit(){
-		//dump($_REQUEST['id']);
+		is_null($_REQUEST['id']) && $this->error('没有数据');
 		if (is_array($_REQUEST['id'])){
 			$map['id']=array("in",implode(",",$_REQUEST['id']));
 			$this->pid=implode(",",$_REQUEST['id']);
@@ -334,7 +373,7 @@ class ProductsAction extends AdminCommAction {
 		$this->display();
 	}
 	function doBatchUpdate(){
-		if($this->dao->create()){
+		if($arr=$this->dao->create()){
 			if(!$this->dao->cateid){
 				$this->error('请选择修改类别!');
 			}
@@ -346,8 +385,8 @@ class ProductsAction extends AdminCommAction {
 			$count=$this->dao->where($map)->count();
 			if($count){
 				$data=array();
-				foreach ($_POST as $key=>$value){
-					if($_POST[$key] != ''){
+				foreach ($arr as $key=>$value){
+					if($arr[$key] != ''){
 						$data[$key]=$value;
 					}
 				}
@@ -363,6 +402,7 @@ class ProductsAction extends AdminCommAction {
 				//先删除原来的属性
 				self::$Model=D("Products_attr");
 				unset($map);
+				unset($data);
 				$map['products_id']=array("in",$products_id);
 				self::$Model->where($map)->delete();
 

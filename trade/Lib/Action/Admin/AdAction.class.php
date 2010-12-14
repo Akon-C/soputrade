@@ -12,5 +12,18 @@ class AdAction extends AdminCommAction{
 		$this->_list();
 		$this->display();
 	}
+	function Delete() {
+		$id=intval($_REQUEST ['id']);{
+			$map ['id'] = array('in',$id);
+			if($list=$this->dao->where ( $map )->find ()){
+				$img=auto_charset($list['imgurl'],'utf-8','gbk');
+				if(file_exists($img)){
+					unlink($img);
+				}
+				$this->dao->where ( $map )->delete ();
+			}
+		}
+		$this->success ( "删除成功！" );
+	}
 }
 ?>

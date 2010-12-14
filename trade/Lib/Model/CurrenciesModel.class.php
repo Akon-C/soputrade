@@ -8,6 +8,11 @@
   * @lastupdate 2010-11-24
 */ 
 class CurrenciesModel extends Model{
-	
+	protected $_validate=array(
+
+	array('name','require','货币名称必须填写!'),
+	array('name','','货币名称已经存在!',0,'unique',1),
+
+	);
 }
 ?>

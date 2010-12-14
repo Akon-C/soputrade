@@ -9,7 +9,7 @@
  */
 class EmptyAction extends CommAction {
 	function _empty() {
-		$pathinfo = explode ( "-", $_SERVER ['PATH_INFO'] );
+		$pathinfo = explode ( "-", ltrim($_SERVER ['PATH_INFO'],'/' ));
 		$count = count ( $pathinfo );
 		for($i = 0; $i < $count; $i ++) {
 			if ($pathinfo [$i] == 'cid') {
@@ -21,6 +21,9 @@ class EmptyAction extends CommAction {
 			if ($pathinfo [$i] == 'p') {
 				$_GET ['p'] = $pathinfo [$i + 1];
 			}
+			if ($pathinfo [$i] == 'aid') {
+				$_GET ['aid'] = $pathinfo [$i + 1];
+			}
 		}
 		if (isset ( $_GET ['pid'] ) && ! empty ( $_GET ['pid'] )) {
 			$this->good ( intval ( $_GET ['pid'] ) );
@@ -28,14 +31,21 @@ class EmptyAction extends CommAction {
 		} elseif (isset ( $_GET ['cid'] ) && ! empty ( $_GET ['cid'] )) {
 			$this->cate ( intval ( $_GET ['cid'] ) );
 			//echo "cate";
+		} elseif (isset ( $_GET ['aid'] ) && ! empty ( $_GET ['aid'] )) {
+			$this->article ( intval ( $_GET ['aid'] ) );
+			//echo "article";
+		}	elseif (strlen($_SERVER ['PATH_INFO'])>1 && substr($_SERVER ['PATH_INFO'],-1)=='/') {
+			$title=trim($_SERVER ['PATH_INFO'],'/');
+			$this->article($title);
+			//echo "article";
 		} else {
-			$this->redirect ( 'Index/index' );
+			parent::_empty();
 		}
 		return;
 	}
 	function good($pid) {
 		$dao = D ( "Products" );
-		
+
 		$list = $dao->where ( "id=" . $pid )->find ();
 		if ($list) {
 			$dao->viewcounts ( $pid );
@@ -59,7 +69,7 @@ class EmptyAction extends CommAction {
 			} else {
 				$this->assign ( 'pagekeywords', $classModel->getKeywords ( $classid ) );
 			}
-			
+
 			if (! empty ( $list ['pagedec'] )) {
 				$this->assign ( 'pagedesc', $list ['name'] . ',' . $list ['pagedec'] );
 			} else {
@@ -74,13 +84,13 @@ class EmptyAction extends CommAction {
 		} else {
 			$this->redirect ( 'Index/index' );
 		}
-	
+
 	}
 	function cate($cid) {
 		$this->catep = get_catep_arr ( $cid );
 		//获取下级分类
 		$dao = D ( "Cate" );
-		
+
 		$this->assign('pagekeywords',$dao->getKeywords($cid));//关键字
 		$this->assign('pagedesc',$dao->getDescription($cid));//描述
 		$this->assign('pagetitle',$dao->getPageTitle($cid));//标题
@@ -90,12 +100,33 @@ class EmptyAction extends CommAction {
 			$classChildren [count ( $classChildren )] = $cid;
 			S ( $strFid_class, implode ( ",", $classChildren ) ); //取得所有子类
 		}
-		
+
 		$this->catec = $dao->where ( "pid=" . $cid )->order ( "sort desc" )->findAll ();
 		$dao = D ( "Products" );
 		$dao->_list ( $this->view, array ('cateid' => array ('in', S ( $strFid_class ) ) ), 'sort', false );
 		$this->cateinfo = get_cate_info ( $cid );
 		$this->display ( 'cate', 'Empty' );
+	}
+	function article($aid){
+		parent::$Model=D('Article');
+		if(!is_numeric($aid)){
+			$title=auto_charset($aid,'utf-8','gbk');
+			
+			$aid=parent::$Model->where(array('article_title'=>$title))->getField('article_id');
+			
+		}
+		if(!$aid){
+			parent::_empty();
+		}
+		$article_cache=md5('article_'.$aid);
+		if(S($article_cache)==''){
+			$list=parent::$Model->find($aid);
+			S($article_cache,$list);
+		}
+		$list= S($article_cache);
+
+		$this->assign($list);
+		$this->display ('article','Empty');
 	}
 }
 ?>

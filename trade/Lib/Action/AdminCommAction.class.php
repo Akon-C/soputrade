@@ -23,14 +23,14 @@ class AdminCommAction extends Action {
 		if (in_array(MODULE_NAME,array('Brand','Cate','Node','Products','Role','Setting','User','Ad','Currencies','Members','Orders','Article','Article_cate'))){
 			$this->dao = D ( MODULE_NAME );
 		}
-		
+
 		$this->userName = Session::get ( 'loginUserName' );
 		//echo APP_NAME;
 		// 用户权限检查
 		if (C ( 'USER_AUTH_ON' ) && ! in_array ( MODULE_NAME, explode ( ',', C ( 'NOT_AUTH_MODULE' ) ) )) {
 			import ( '@.ORG.RBAC' );
 			if (! RBAC::AccessDecision ()) {
-				
+
 				//检查认证识别号
 				if (! $_SESSION [C ( 'USER_AUTH_KEY' )]) {
 					//跳转到认证网关
@@ -51,7 +51,7 @@ class AdminCommAction extends Action {
 		}
 	}
 	function upload() {
-		
+
 		import ( "ORG.Net.UploadFile" );
 		$upload = new UploadFile ();
 		//检查客户端上传文件参数设置
@@ -61,13 +61,14 @@ class AdminCommAction extends Action {
 		} else {
 			$upload->maxSize = C ( 'FILE_UPLOAD_MAXSIZE' );
 		}
-		if (! empty ( $_POST ['_uploadFileType'] )) {
-			//设置上传文件类型
-			$upload->allowExts = explode ( ',', strtolower ( $_POST ['_uploadFileType'] ) );
+		/*if (! empty ( $_POST ['_uploadFileType'] )) {
+		//设置上传文件类型
+		$upload->allowExts = explode ( ',', strtolower ( $_POST ['_uploadFileType'] ) );
 		} else {
-			$upload->allowExts = explode ( ',', C ( 'FILE_UPLOAD_ALLOWEXTS' ) );
-		}
-		
+		$upload->allowExts = explode ( ',', C ( 'FILE_UPLOAD_ALLOWEXTS' ) );
+		}*/
+		$upload->allowExts = explode ( ',', C ( 'FILE_UPLOAD_ALLOWEXTS' ) );
+
 		if (! empty ( $_POST ['_uploadSavePath'] )) {
 			//设置附件上传目录
 			$upload->savePath = $_POST ['_uploadSavePath'];
@@ -82,7 +83,7 @@ class AdminCommAction extends Action {
 		}
 		if (MODULE_NAME == 'Products') {
 			//创建目录
-			
+
 			$upload->savePath = $upload->savePath . toDate ( time (), 'Ymd' ) . "/";
 			if (! file_exists ( "$upload->savePath" )) {
 				mk_dir ( $upload->savePath );
@@ -99,18 +100,18 @@ class AdminCommAction extends Action {
 		$upload->uploadReplace = true;
 		if (! $upload->upload ()) {
 			$error = $upload->getErrorMsg ();
-			
+
 			$this->ajaxReturn ( '', $error, 0 );
 		} else {
 			$uploadSuccess = true;
 			$uploadList = $upload->getUploadFileInfo ();
-			
+
 			foreach ( $uploadList as $key => $file ) {
 				$savename ['savename'] = $upload->savePath . $file ['savename'];
 				$savename ['name'] = $file ['name'];
 			}
 			$this->ajaxReturn ( $savename, '上传成功！', 1 );
-		}	
+		}
 	}
 	function _list($map = null) {
 		if (!$this->sort){
@@ -128,8 +129,12 @@ class AdminCommAction extends Action {
 		$this->show = $show;
 	}
 	function Delete() {
-		$map ['id'] = $_GET ['id'];		
-		$this->dao->where ( $map )->delete ();
+		$id=intval($_REQUEST ['id']);{
+			$map ['id'] = array('in',$id);
+			if($this->dao->where ( $map )->count ()){
+				$this->dao->where ( $map )->delete ();
+			}
+		}
 		$this->success ( "删除成功！" );
 	}
 	public function edit() {
@@ -137,12 +142,12 @@ class AdminCommAction extends Action {
 		$list = $this->dao->where ( $map )->find ();
 		if ($list) {
 			$this->list = $list;
-			
+
 			$this->display ();
 		} else {
 			$this->error ( '没有数据！' );
 		}
-	
+
 	}
 	public function Update() {
 		if (isset ( $_POST ['pid'] )) {
@@ -167,16 +172,34 @@ class AdminCommAction extends Action {
 	}
 	public function Insert() {
 		if ($this->dao->create ()) {
+
 			$id = $this->dao->add ();
 			$this->success ( '添加成功！' );
 		} else {
 			$this->error ( $this->dao->getError () );
 		}
 	}
-	
+
 	public function admenage() {
 		$this->display ();
 	}
+	
+	
+	public function status(){
+		$map['id']=intval($_REQUEST['id']);
+		$status=$this->dao->where($map)->getField('status');
+		if($status==1){
+			$status=0;
+			$data['imgurl']=__ROOT__.'/Tpl/default/Public/images/mod_0.gif';
+		}else{
+			$status=1;
+			$data['imgurl']=__ROOT__.'/Tpl/default/Public/images/mod_1.gif';
+		}
+		$this->dao->where($map)->data(array('status'=>$status))->save();
+		$this->ajaxReturn($data,'保存成功',1);
+
+	}
+	
 	/**
 	 * 解析自定义模板
 	 */

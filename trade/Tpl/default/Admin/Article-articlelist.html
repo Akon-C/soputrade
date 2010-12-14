@@ -5,13 +5,14 @@ function status(id){
 	$.post("{:U('Article/status')}",'article_id='+id);
 }
 function delall(){
-	var id=$('input[name^=article_id]:checked').map(function(){
+	var id=$('input:checkbox[name^=article_id]:checked').map(function(){
 		return $(this).val();
 	}).get().join(",");
 	if(!id){
 		alert('请选择要删除的项!');
 	}else{
 		$.post("{:U('Article/delete')}","article_id="+id);
+		$('input[name^=article_id]:checked').parent().parent().remove();
 	}
 }
 $(document).ready (
@@ -46,7 +47,7 @@ function(){
             <p class="msg info">提示：</p>
             	
             <p id="btn-create" class="box">
-              <a href="{:U('Article/add')}">添加新文章</a> <a href="javascript:delall();">批量删除</a>
+              <a href="{:U('Article/add')}">添加新文章</a> 
             </p>
             <table width="100%">
 				<tr pid="0">
@@ -70,6 +71,7 @@ function(){
                 </volist>
 				
 			</table>
+			  <p class="t-left"><input type="button" value="批量删除" onclick="delall();" /></p>
             <p class="t-right">{$show}</p>
 		</div> <!-- /content -->
 

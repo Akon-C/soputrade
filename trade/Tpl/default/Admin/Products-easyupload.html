@@ -11,6 +11,9 @@
 }
 </style>
 <script type="text/javascript">
+function addvalues(id){
+	$("#newvalues_"+id).html($("#newvalues_"+id).html()+$("#values_"+id).html());
+}
 function getattr(form){
 	form.action="{:U('Products/easyupload')}";
 	form.submit(); 

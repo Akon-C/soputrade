@@ -5,6 +5,17 @@ function attr(){
  $("#listform").attr("action","{:U('Products/attredit')}");
  $("#listform").submit();
 }
+function delprodcuts(){
+	var id=$('input:checkbox[name^=id]:checked').map(function(){
+		return $(this).val();
+	}).get().join(",");
+	if(!id){
+		alert('请选择要删除的项!');
+	}else{
+		$.post("{:U('Products/delete')}","id="+id);
+		$('input:checkbox[name^=id]:checked').parent().parent().remove();
+	}
+}
 $(document).ready (
 				   function(){
 					   
@@ -23,14 +34,9 @@ $(document).ready (
 
 						}
 						);
-					   $("#checkAll").toggle(
+					   $("#checkAll").click(
 						 function () {
-							 $("#checkAll").attr("checked",true);
-						   $("input:checkbox").attr("checked",true);
-						 },
-						 function () {
-						   $("input:checkbox").attr("checked",false);
-						   $("#checkAll").attr("checked",false);
+						   $("input:checkbox[name^=id]").attr("checked",$(this).attr("checked"));
 						 }
 					  );
 
@@ -84,7 +90,7 @@ $(document).ready (
                 </volist>
 				
 			</table>
-            <p class="t-left"><input type="button" value="编辑属性" onclick="attr();" /></p>
+            <p class="t-left"><input type="button" value="编辑属性" onclick="attr();" /> <input type="button" value="删除产品" onclick="delprodcuts();" /></p>
             <p class="t-right">{$show}</p>
             </form>
 		</div> <!-- /content -->
