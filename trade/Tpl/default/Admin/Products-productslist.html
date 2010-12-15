@@ -12,7 +12,7 @@ function delprodcuts(){
 	if(!id){
 		alert('请选择要删除的项!');
 	}else{
-		$.post("{:U('Products/delete')}","id="+id);
+		$.post("{:U('Products/Delete')}","id="+id);
 		$('input:checkbox[name^=id]:checked').parent().parent().remove();
 	}
 }

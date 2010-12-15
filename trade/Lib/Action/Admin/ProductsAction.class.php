@@ -18,6 +18,29 @@ class ProductsAction extends AdminCommAction {
 		$this->_list ($map);
 		$this->display ();
 	}
+	function Delete() {
+		if($_REQUEST['id']){
+			$map ['id'] = array('in',$_REQUEST ['id']);
+			$list = $this->dao->where ( $map )->findall ();
+			if ($list) {
+				foreach ($list as $k=>$v){
+					$v['bigimage']=auto_charset($v['bigimage'],'utf-8','gbk');
+					$v['smallimage']=auto_charset($v['smallimage'],'utf-8','gbk');
+
+					if(file_exists($v['bigimage'])){
+						unlink($v['bigimage']);
+					}
+					if(file_exists($v['smallimage'])){
+						unlink($v['smallimage']);
+					}
+				}
+				if($this->dao->where ( $map )->delete ()){
+					$this->success ( "删除成功！" );
+				}
+			}
+		}
+		$this->error('删除失败！');
+	}
 	function Insert() {
 		//dump($_POST['imgurl']);
 		//echo $_POST['isIndex'];
@@ -52,14 +75,14 @@ class ProductsAction extends AdminCommAction {
 
 	public function edit() {
 		$map ['id'] = $_GET ['id'];
-		
+
 		/**
 		 * 关联产品
 		 */
 		parent::$Model=D("Products_related");
 		$this->related=parent::$Model->field('a.id,b.name,b.smallimage')->table(C('DB_PREFIX').products_related." a")->join(C('DB_PREFIX').'products b on a.products_id = b.id')->where(array('a.products_id'=>$map['id']))->findall();
 		unset($_SESSION['products_id']);
-		
+
 		$list = $this->dao->where ( $map )->find ();
 		if ($list) {
 			$this->list = $list;
@@ -69,7 +92,7 @@ class ProductsAction extends AdminCommAction {
 		} else {
 			$this->error ( '没有数据！' );
 		}
-		
+
 	}
 	/**
 	 * 添加关联产品
@@ -82,22 +105,22 @@ class ProductsAction extends AdminCommAction {
 		if ($_GET ['cateid']) {
 			$map ['cateid'] = $_GET ['cateid'];
 		}
-		
+
 		$_SESSION['products_id']=$_SESSION['products_id']?$_SESSION['products_id']:$_GET['id'];//传参
 		$this->id=$_SESSION['products_id'];
 		/**
 		 * 排除
 		 */
-		
+
 		parent::$Model=D('Products_related');
 		$neq_products_id=array_map('reset',parent::$Model->field('related_products_id')->where(array('products_id'=>$_SESSION['products_id']))->findall());
-		
+
 		$neq_products_id[]=$_SESSION['products_id'];
 		$map['id']=array('not in',$neq_products_id);
-		
+
 		$this->_list ($map);
 		$list=$this->get('list');
-		
+
 		parent::$Model=D('Products_gallery');
 		foreach ($list as $k=>$v){
 			$list[$k]['thumb_url']=__ROOT__."/".parent::$Model->where(array('pid'=>$v['id']))->getField('thumb_url');
@@ -242,29 +265,29 @@ class ProductsAction extends AdminCommAction {
 				if ($this->dao->create()) {
 					$id = $this->dao->add ();
 
-				/**
+					/**
 				 * 插入属性bof
 				 */
-				self::$Model=D("Products_attr");
-				foreach ($_POST ['attr_id'] as $key => $attr_id ) {
+					self::$Model=D("Products_attr");
+					foreach ($_POST ['attr_id'] as $key => $attr_id ) {
 
-					foreach ( $_POST ['attr_value_' . $attr_id] as $key => $attr_value ) {
-						if (!empty($attr_value))
-						{
-							//增加产品属性表
-							$data ['products_id'] = $id;
-							$data ['attr_id'] = $attr_id;
-							$data ['attr_value'] = str_replace ( "\n", "", $attr_value );
-							if (self::$Model->create ( $data )) {
-								self::$Model->add ( $data );
+						foreach ( $_POST ['attr_value_' . $attr_id] as $key => $attr_value ) {
+							if (!empty($attr_value))
+							{
+								//增加产品属性表
+								$data ['products_id'] = $id;
+								$data ['attr_id'] = $attr_id;
+								$data ['attr_value'] = str_replace ( "\n", "", $attr_value );
+								if (self::$Model->create ( $data )) {
+									self::$Model->add ( $data );
 
-							} else {
-								$this->error ( self::$Model->geterror () );
+								} else {
+									$this->error ( self::$Model->geterror () );
+								}
 							}
 						}
 					}
-				}
-				/**
+					/**
 				 * 属性eof
 				 */
 
