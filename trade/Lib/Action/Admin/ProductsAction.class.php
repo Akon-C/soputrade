@@ -23,6 +23,7 @@ class ProductsAction extends AdminCommAction {
 			$map ['id'] = array('in',$_REQUEST ['id']);
 			$list = $this->dao->where ( $map )->findall ();
 			if ($list) {
+				parent::$Model = M ( "products_gallery" );
 				foreach ($list as $k=>$v){
 					$v['bigimage']=auto_charset($v['bigimage'],'utf-8','gbk');
 					$v['smallimage']=auto_charset($v['smallimage'],'utf-8','gbk');
@@ -33,6 +34,23 @@ class ProductsAction extends AdminCommAction {
 					if(file_exists($v['smallimage'])){
 						unlink($v['smallimage']);
 					}
+					//删除产品相册
+					$glist=parent::$Model->where(array("pid"=>$v['id']))->findAll();
+					foreach ($glist as $g){
+						$g['img_url']=auto_charset($g['img_url'],'utf-8','gbk');
+						$g['thumb_url']=auto_charset($g['thumb_url'],'utf-8','gbk');
+						if(file_exists($g['img_url'])){
+							unlink($g['img_url']);
+						}
+						if(file_exists($g['thumb_url'])){
+							unlink($g['thumb_url']);
+						}
+					}
+					parent::$Model->where(array("pid"=>$v['id']))->delete();
+					//删除关联产品连接
+					parent::$Model=D("Products_related");
+					parent::$Model->where(array("products_id"=>$v['id']))->delete();
+
 				}
 				if($this->dao->where ( $map )->delete ()){
 					$this->success ( "删除成功！" );
@@ -75,12 +93,11 @@ class ProductsAction extends AdminCommAction {
 
 	public function edit() {
 		$map ['id'] = $_GET ['id'];
-
 		/**
 		 * 关联产品
 		 */
 		parent::$Model=D("Products_related");
-		$this->related=parent::$Model->field('a.id,b.name,b.smallimage')->table(C('DB_PREFIX').products_related." a")->join(C('DB_PREFIX').'products b on a.products_id = b.id')->where(array('a.products_id'=>$map['id']))->findall();
+		$this->related=parent::$Model->field('a.id,b.name,b.smallimage')->table(C('DB_PREFIX').products_related." a")->join(C('DB_PREFIX').'products b on a.related_products_id = b.id')->where(array('a.products_id'=>$map['id']))->findall();
 		unset($_SESSION['products_id']);
 
 		$list = $this->dao->where ( $map )->find ();
@@ -163,17 +180,16 @@ class ProductsAction extends AdminCommAction {
 	}
 	function doDelRelated(){
 		parent::$Model=D('Products_related');
-		$ids=explode(",",$_REQUEST['id']);
-		$j=0;
-		foreach ($ids as $id){
-			$j++;
-			parent::$Model->where(array('id'=>$id))->delete();
-
+		if($_REQUEST['id']){
+			$map['id']=array('in',$_REQUEST['id']);
+			$j=parent::$Model->where($map)->delete();
+			$this->success('删除了'.$j.'个关联产品!');
 		}
-		$this->success('删除了'.$j.'个关联产品!');
+		$this->error('删除失败!');
 	}
 
 	public function Update(){
+
 		for($i = 0; $i < count ( $_POST ['imgurl'] ); $i ++) {
 			//判断是否为封面
 			if ($_POST ['timestamp'] [$i] == $_POST ['isIndex']) {
@@ -182,6 +198,7 @@ class ProductsAction extends AdminCommAction {
 				$_POST ['smallimage'] = get_thumb_name ( $_POST ['imgurl'] [$i] );
 			}
 			if ($this->dao->create ()) {
+
 				$list = $this->dao->save ();
 				if ($list !== false) {
 					$model = D( "products_gallery" );

@@ -56,7 +56,7 @@ class CateAction extends AdminCommAction {
 				$map['cateid']=array('in',$cate_ids);
 				$list=parent::$Model->where($map)->findall();
 				$count=parent::$Model->where($map)->count();
-				$j=$k=0;
+				$j=$k=$l=0;
 				if($list){
 					parent::$Model=D('Products_gallery');
 					foreach ($list as $v) {
@@ -69,7 +69,7 @@ class CateAction extends AdminCommAction {
 						if(file_exists($v['smallimage'])){
 							unlink($v['smallimage']);
 						}
-						//删除相关图片
+						//删除产品相册
 						$g=parent::$Model->where(array('pid'=>$v['id']))->find();
 						$g['img_url']=auto_charset($v['img_url'],'utf-8','gbk');
 						$g['thumb_url']=auto_charset($v['thumb_url'],'utf-8','gbk');
@@ -80,18 +80,24 @@ class CateAction extends AdminCommAction {
 						if(file_exists($v['thumb_url'])){
 							unlink($v['thumb_url']);
 						}
-						
+						parent::$Model->where(array('pid'=>$v['id']))->delete();
+
+						//删除关联产品数据
+						parent::$Model=D("Products_related");
+						parent::$Model->where(array("products_id"=>$v['id']))->delete();
+							$l++;
+
 					}
-					//删除相关产品
+					//最后删除产品
 					parent::$Model=D('Products');
 					parent::$Model->where($map)->delete();
-					$this->success('共删除了'.$count."个产品,其中删除了".$j."个产品图片,".$k."个相关图片!");
+					$this->success('共删除了'.$count."个产品,其中删除了".$j."个产品图片,".$k."个相关图片,".$l."个关联!");
 				}
 			}
 		}
 		$this->error('没有数据!');
 	}
-	
+
 	public function ishot(){
 		$map['id']=intval($_REQUEST['id']);
 		$ishot=$this->dao->where($map)->getField('ishot');
