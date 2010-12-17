@@ -8,16 +8,20 @@
   * @lastupdate 2010-11-26
 */ 
 class PublicAction extends CommAction{
+
 	public function Join(){
 		$this->display();
 	}
 	public function doJoin(){
-		
+
 		$dao=D("Members");
 		if ($dao->create()){
 			$id=$dao->add();
 			Session::set('memberID',$id);
-			$this->redirect ( 'Cart/disp' );			
+			if ($_SESSION['step']==1){
+				$this->redirect ( 'Home-Cart/checked_address' );
+			}
+			$this->redirect ( 'Index/index' );
 		}
 		else{
 			$this->error ( $dao->getError () );
@@ -30,7 +34,7 @@ class PublicAction extends CommAction{
 		$this->display ();
 	}
 	public function doLogin(){
-		if ($this->memberID>0){			
+		if ($this->memberID>0){
 			$this->redirect ( 'Index/index' );
 		}
 		$dao=D("Members");
@@ -47,6 +51,9 @@ class PublicAction extends CommAction{
 				$data['lastlogindate']=time();
 				$data['lastloginip']=get_client_ip();
 				$list=$dao->where("id ='".$list['id']."'")->save($data);
+				if ($_SESSION['step']==1){
+					$this->redirect ( 'Home-Cart/checked_address' );
+				}
 				$this->jumpUrl=U('Index/index');
 				$this->success("Login Successful!");
 			}

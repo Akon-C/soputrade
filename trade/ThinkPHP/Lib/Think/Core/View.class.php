@@ -48,7 +48,6 @@ class View extends Think
             $this->tVar[$name] = $value;
         }
     }
-
     /**
      +----------------------------------------------------------
      * Trace变量赋值

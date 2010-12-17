@@ -3,7 +3,6 @@
 body {
 	margin: 0px;
 	padding: 0px;
-	text-align: center;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	color: #000000;
@@ -11,6 +10,13 @@ body {
 	background-image: url(body_bg.png);
 	background-repeat: repeat-x;
 	background-position: left top;
+}
+a {
+    color: #000000;
+    text-decoration: none;
+}
+a:hover {
+    color: #009900;
 }
 ul,li {
 	margin: 0px;
@@ -82,6 +88,10 @@ form {
 	padding-left: 54px;
 	text-align: left;
 	padding-top: 30px;
+	color:#FFF:
+}
+.bottom a {
+	color:#FFF:
 }
 .input01 {
 	border-top-width: 0px;
@@ -247,4 +257,392 @@ form {
 }
 .footer_nav a:hover {
 	color: #009900;
+}
+#think_run_time {
+	clear:both;
+}
+
+
+
+
+
+
+
+
+/*附加*/
+
+
+.topnav {
+
+	float:left;
+	height:39px;
+	line-height:39px;
+	font-size:13px;
+	font-weight:bold;
+	width: 100%;
+	list-style: none;
+	}
+.topnav ul{
+margin:0px;
+padding:0px;
+list-style-type:none;
+}
+.topnav ul li{
+
+line-height:39px;
+float:left;
+margin-left:15px;
+margin-right:10px;
+}
+.topnav ul li a{
+color:#FFFFFF;
+text-decoration:none;
+}
+.topnav ul li a:hover{
+color:#FFFF00;
+}
+.topnav01{
+display:none;
+position:absolute;
+z-index:100;
+float:left; 
+ width:500px; 
+ border-top:10px;
+  background-color:#324900;
+}
+.topnav01 ul {
+background-color:#324900;
+margin:0px;
+padding:0px;
+line-height:12px;
+font-size:10px;
+padding:5px;
+padding-top:10px;
+font-weight:normal;
+font-family:Verdana, Arial, Helvetica, sans-serif;
+}
+.topnav01 ul  li{
+text-align: left;
+line-height:20px;
+
+float:left;
+width:200px;
+padding-left:5px;
+
+margin-bottom:5px;
+}
+
+.banner{
+width:960px;
+height:auto;
+background-color:#996666;
+margin-top:10px;
+float:left;
+}
+
+.middle01{
+width:960px;
+height:auto;
+line-height:16px;
+font-size:11px;
+margin-top:10px;
+float:left;
+}
+.middlelist{
+width:958px;
+height:auto;
+margin-top:10px;
+float:left;
+border:1px solid #628720;
+}
+.middle02{
+width:958px;
+height:25px;
+float:left;
+background-color:#bdd299;
+font-size:13px;
+font-weight:bold;
+color:#FFFFFF;
+}
+.middle02 ul li{
+width:160px;
+height:25px;
+line-height:25px;
+text-align:center;
+border-right:#86b92b 1px solid;
+float:left;
+display:block;
+}
+.middle02 ul li a{
+color:#003300;
+text-decoration:none;
+}
+.middle02 ul li a:hover{
+color: #006600;
+text-decoration:none;
+}
+.sd01{
+width:160px;
+background-color:#FFFFFF;
+height:25px;
+text-align:center;
+display:block;
+line-height:25px;
+font-weight:bold;
+
+}
+
+.sd02{
+width:160px;
+height:25px;
+text-align:center;
+display:block;
+line-height:25px;
+font-weight:bold;
+
+}
+.tagContent{
+clear:both;
+width:958px;
+height:auto;
+padding-top:10px;
+float:left;
+}
+.tagContent ul li{
+width:210px;
+height:140px;
+margin-top:10px;
+
+float:left;
+margin-left:6px;
+margin-right:5px;
+}
+.red{
+color:#FF0000;
+font-weight:bold;
+font-size:13px;
+}
+.bottom{
+width:960px;
+height:auto;
+float:left;
+margin-top:10px;
+color:#FFF;
+}
+.bottom a{
+color:#FFF;
+}
+.bottom01{
+width:938px;
+padding:10px;
+line-height:20px;
+font-size:12px;
+height:auto;
+float:left;
+border:1px solid #cccccc;
+margin-bottom:10px;
+}
+.span001{
+color:#009900;
+font-size:13px;
+font-weight:bold;
+}
+.bottom02{
+width:960px;
+height:auto; text-align:center;
+padding-bottom:10px;
+}
+.input01{
+width:160px;
+height:20px;
+border:1px solid #cccccc;
+}
+.input01{
+width:120px;
+height:20px;
+border:1px solid #cccccc;
+}
+/*product Document */
+.page_middle{
+width:960px;
+float:left;
+height:auto;
+margin-top:20px;
+}
+.pagemiddle_left{
+width:190px;
+height:auto;
+float:left;
+background-color:#b2cb87;
+padding:5px;
+
+text-align:left;
+}
+.pagemiddle_left ul{
+margin:0px;
+padding:0px;
+}
+.pagemiddle_left ul li{
+width:190px;
+float:left;
+font-size:13PX;
+
+height:auto;
+line-height:20px;
+
+}
+.pagemiddle_left ul li ul{
+margin:0px;
+padding:0px;
+}
+div.pagemiddle_left ul ul li{
+width:188px;
+font-size:11PX;
+
+float:left;
+background-color: #d5e3bc;
+border:#7db320 1px solid;
+
+}
+.pagemiddle_left ul li ul li ul {
+margin:0px;
+padding:0px;
+}
+.pagemiddle_left ul li ul li ul li{
+border:0px;
+padding-left:4px;
+width:184px;
+
+float:left;
+background-color:#f0fbdd; 
+}
+
+
+.pagemiddle_right{
+background-color:#FFFFFF;
+width:755px;
+height:auto;
+
+border-left:#FFFFFF 1px solid;
+}
+.pagemiddle_righttitle{
+font-size:12px;
+width:735px;
+line-height:25px;
+font-weight:bold;
+padding-left:20px;
+height:25px;
+background-color:#becfa0;
+}
+.pagemiddle_rightwz{
+font-size:11px;
+width:735px;
+
+padding-left:20px;
+line-height:16px;
+}
+
+.pagemiddle_righttitle2{
+font-size:12px;
+width:735px;
+line-height:25px;
+margin-top:10px;
+margin-bottom:10px;
+clear:both;
+
+
+padding-left:20px;
+height:auto;
+background-color:#f3fae6;
+}
+
+.pagemiddle_rightlist{
+width:755px;
+height:auto;
+
+}
+.pagemiddle_rightlist ul li{
+float:left;
+margin-left:20px;
+margin-right:20px;
+width:130px;
+height:200px;
+margin-bottom:10px;
+}
+/*page */
+.page_title{
+width:960px;
+height:auto;
+font-size:12px;
+}
+.page_box{
+width:960px;
+height:auto;
+text-align:left;
+margin-top:10px;
+}
+.similar{
+width:380px;
+height:auto;
+}
+.similar ul li{
+width:100px;
+text-align:center;
+font-size:12px;
+height:120px;
+float:left;
+margin-left:5px;
+margin-right:5px;
+margin-top:10px;
+}
+.orderkuan {
+	CLEAR: both;  WIDTH: 100%;
+
+}
+.orderkuan TD {
+	TEXT-ALIGN: center;
+		line-height:30px;
+}
+.orderkuan .title {
+	FONT-WEIGHT: bold; BACKGROUND: #f4f9fc
+}
+.orderkuan .title TD {
+	LINE-HEIGHT: 180%; TEXT-ALIGN: center
+}
+.orderkuan .detail {
+	BACKGROUND: #fdfdfe
+}
+.orderkuan .detail TD {
+	LINE-HEIGHT: 180%; BORDER-BOTTOM: #fff 3px solid; TEXT-ALIGN: center
+}
+.orderkuan .amount {
+	FONT-WEIGHT: bold; LINE-HEIGHT: 180%; BORDER-BOTTOM: #fff 3px solid; TEXT-ALIGN: right
+}
+.orderkuan .tp TD {
+	BACKGROUND: #f4f8fc
+}
+.orderkuan .button {
+	TEXT-ALIGN: right
+}
+.orderInfo{
+width:726px;
+}
+.orderInfo H4 {
+	FONT: bold 150%/260% arial; COLOR: #990000; TEXT-ALIGN: center
+}
+.orderInfo UL {
+margin:0px;
+padding:0px;
+}
+.orderInfo LI {
+	CLEAR: both; FLOAT: left; WIDTH: 98%; LINE-HEIGHT: 180%
+}
+.orderInfo LI SPAN {
+	FONT-WEIGHT: bold; FLOAT: left; WIDTH: 130px; COLOR: #000; LINE-HEIGHT: 180%; TEXT-ALIGN: right
+}
+.orderInfo LI FONT {
+	CLEAR: left; FLOAT: left; WIDTH: 100%; COLOR: #666; TEXT-INDENT: 11em
+}
+.orderInfo LI FONT B {
+	FONT-WEIGHT: normal; COLOR: red
 }

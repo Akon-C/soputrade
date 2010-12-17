@@ -1,13 +1,21 @@
 <include file="../Public/header" />
-<div class="ind_con">
-<include file="../Public/left" />
-<div class="ind_cate">
-<div class="right">
 
- <div class="cltitle"><a href="{:GetSettValue('siteurl')}" title="{:GetSettValue('sitename')}">{$article_title}</a> 
+<include file="../Public/left" />
+<td valign="top">
+
+	<div class="pagemiddle_right">
+	   <div class="pagemiddle_righttitle">
+	    <a href="/">HOME</a> &gt;&gt; {$article_title}
+	   </div>
+ 
  
 	</div>
 <div class="Apro">
 {$article_content}
 </div>
+
+	
+	</td>
+	</tr>
+	</table>
 <include file="../Public/footer" />

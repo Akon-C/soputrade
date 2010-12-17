@@ -14,19 +14,30 @@ function build_url($vo,$type){
 		case 'pro_name':
 			return $vo['name'];
 		case 'pro_smallimage':
-			return $vo['smallimage'];
+			return __ROOT__.$vo['smallimage'];
 		case 'pro_bigimage':
-			return $vo['pro_bigimage'];
+			return __ROOT__.$vo['bigimage'];
 		case 'pro_price':
-			return $vo['price'];
+			return getprice($vo['price'],$vo['pricespe']);//特价表示
+			//return $vo['price'];
 		case 'pro_pricespe':
 			return $vo['pricespe'];
 		case 'cate_url':
 			return U(tourlstr($vo['name']).'@',array('cid'=>$vo['id']));
 		case 'cate_name':
 			return $vo['name'];
+		case 'cate_img':
+			return __ROOT__.$vo['imgurl'];
+		case 'g_bigimage':
+			return __ROOT__.$vo['img_url'];
+		case 'g_smallimage':
+			return __ROOT__.$vo['thumb_url'];
 	}
 	
+}
+//调用购物车购买数量
+function itemCount(){
+		return D( "Cart" )->get_item_count ( Session::get ( 'sessionID' ) );
 }
 function toDate($time, $format = 'Y-m-d H:i:s') {
 	if (empty ( $time )) {
@@ -406,7 +417,7 @@ function get_currencies_arr(){
  * @param Integer $price 价格
  * @param Integer $spe 特价
  */
-function getprice($price,$spe){
+function getprice($price,$spe,$discount=true){
 	//如果没有选择汇率，读取系统默认汇率
 	$currencies=get_currencies_arr();
 	if (! isset ( $_SESSION ['currency'] )) {
@@ -422,7 +433,11 @@ function getprice($price,$spe){
 	} else {
 		$price *= $_SESSION ['currency'] ['rate'];
 		$spe *= $_SESSION ['currency'] ['rate'];
+		if($discount){
 		return  '<Span style="color:red;text-decoration: line-through;">'.$_SESSION ['currency'] ['code'] . $price . '</Span>&nbsp;&nbsp;&nbsp;<Span style="color:red;">' . $_SESSION ['currency'] ['code'] . $spe . '</span><BR>Save:' . number_format ( (($price - $spe) / $price * 100), 2 ) . '% off';
+		}else{
+			return $_SESSION ['currency'] ['code'] . $spe;
+		}
 	}
 	
 }

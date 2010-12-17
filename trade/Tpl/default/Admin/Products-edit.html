@@ -15,7 +15,7 @@ function delall(){
 }
 function ajaxFileUpload(fileToUpload,timestamp)
 {
-	
+
 	$("#loading")
 	.ajaxStart(function(){
 		$(this).show();
@@ -26,64 +26,64 @@ function ajaxFileUpload(fileToUpload,timestamp)
 
 	$.ajaxFileUpload
 	(
+	{
+		url:"{:U('Products/upload')}",
+		secureuri:false,
+		fileElementId:fileToUpload,
+		dataType: 'json',
+		success: function (data, status)
 		{
-			url:"{:U('Products/upload')}",
-			secureuri:false,
-			fileElementId:fileToUpload,
-			dataType: 'json',
-			success: function (data, status)
-			{
-				
-				if (status==1){
-					$("#msg").text(data.info);
-					
-				}
-				else{
-					$("#msg").text(data.info);
-					$("#fileToUpload_look_"+timestamp).attr("href","."+data.data['savename']);
-					$("#fileToUpload_look_"+timestamp).show();
-					$("#fileToUpload_look_"+timestamp).preview();
-					$("#fileToUpload_url_"+timestamp).val(data.data['savename']);
-					//var jsonObj = eval("("+data+")");						
-					/*$("#imgurlbox").attr("src",".././Public/Uploads/Products/"+data.data); 
-					$("#imgurlbox").show();
-					$("#imgurl").val(data.data);*/
-				}
 
+			if (status==1){
+				$("#msg").text(data.info);
 
-			},
-			error: function (data, status, e)
-			{
-				alert(e);
 			}
+			else{
+				$("#msg").text(data.info);
+				$("#fileToUpload_look_"+timestamp).attr("href","."+data.data['savename']);
+				$("#fileToUpload_look_"+timestamp).show();
+				$("#fileToUpload_look_"+timestamp).preview();
+				$("#fileToUpload_url_"+timestamp).val(data.data['savename']);
+				//var jsonObj = eval("("+data+")");
+				/*$("#imgurlbox").attr("src",".././Public/Uploads/Products/"+data.data);
+				$("#imgurlbox").show();
+				$("#imgurl").val(data.data);*/
+			}
+
+
+		},
+		error: function (data, status, e)
+		{
+			alert(e);
 		}
-	)		
+	}
+	)
 	return false;
 
 }
 $(document).ready (
-				   function(){
-					   $(".preview").preview();
-					   $(".delimg").click(
-													function(){
-														 var v=$(this).attr("v");
-														 $("#fileToUpload_look_"+v).attr("href","");
-														 $("#fileToUpload_url_"+v).val('');
-														 $(this).parents("p").hide(); 
-														 //alert($("#fileToUpload_url_"+v).val());
-													}
-													);
-					   $("#img_add").click(
-							   function(){
-								   var timestamp = Date.parse(new Date());
-								   var str="<p class='t-left'><input type='hidden'  name='timestamp[]' value='"+timestamp+"' /><input type='hidden' id='fileToUpload_url_"+timestamp+"' name='imgurl[]' value='' />描述：<input type='text' size='20' name='img_desc[]' class='input-text' />&nbsp排序：<input type='text' size='5' name='sort[]' class='input-text' />&nbsp图片：<input type='file' id='fileToUpload_"+timestamp+"' name='fileToUpload[]' class='input-text' /><input type='radio' name='isIndex'  class='input-text' value='"+timestamp+"'>封面&nbsp;&nbsp;<input class='input-submit' id='upload'  type='button' name='upload' value='上传' onClick=\"return ajaxFileUpload('fileToUpload_"+timestamp+"','"+timestamp+"');\" />&nbsp;<a id='fileToUpload_look_"+timestamp+"' href='javascript:void(0);' style='display:none;'  target='_blank'><img ' src='../Public/images/look.jpg' width='15' height='15' ></a></p>";
-								   //alert(str);
-								   $("#img_html").html($("#img_html").html()+str);
-								   
-							   }
-							   );
-				   }
-				   );
+function(){
+	$(".preview").preview();
+	$(".delimg").click(
+	function(){
+		var v=$(this).attr("v");
+		$("#fileToUpload_look_"+v).attr("href","");
+		$("#fileToUpload_url_"+v).val('');
+		$(this).parents("p").hide();
+		//alert($("#fileToUpload_url_"+v).val());
+	}
+	);
+	$("#img_add").click(
+	function(){
+		var timestamp = Date.parse(new Date());
+		var str="<p class='t-left'><input type='hidden'  name='timestamp[]' value='"+timestamp+"' /><input type='hidden' id='fileToUpload_url_"+timestamp+"' name='imgurl[]' value='' />描述：<input type='text' size='20' name='img_desc[]' class='input-text' />&nbsp排序：<input type='text' size='5' name='sort[]' class='input-text' />&nbsp图片：<input type='file' id='fileToUpload_"+timestamp+"' name='fileToUpload[]' class='input-text' /><input type='radio' name='isIndex'  class='input-text' value='"+timestamp+"'>封面&nbsp;&nbsp;<input class='input-submit' id='upload'  type='button' name='upload' value='上传' onClick=\"return ajaxFileUpload('fileToUpload_"+timestamp+"','"+timestamp+"');\" />&nbsp;<a id='fileToUpload_look_"+timestamp+"' href='javascript:void(0);' style='display:none;'  target='_blank'><img ' src='../Public/images/look.jpg' width='15' height='15' ></a></p>";
+		//alert(str);
+		$("#img_html").html($("#img_html").html()+str);
+
+	}
+	);
+}
+);
 </script>
 <!-- Content (Right Column) -->
 		<div id="content" class="box">
@@ -265,15 +265,15 @@ $(document).ready (
              </div>
             <p class="t-right"><input type="button" class="input-submit" onclick="document.myform.submit();" value="更新" /></p>
             <script language="javascript" type="text/javascript">
-			   <volist name="glist" id="vo">
-			  $("#fileToUpload_look_{$vo.id}").preview();
-			  </volist>
-			   $("#cateid").val({$list['cateid']});
-			   $("#brandid").val({$list['brandid']});
-			   $("input[name='isnew'][value={$list['isnew']}]").attr("checked",true);
-			   $("input[name='ishot'][value={$list['ishot']}]").attr("checked",true);
-			   $("input[name='isrec'][value={$list['isrec']}]").attr("checked",true);
-			   $("input[name='isprice'][value={$list['isprice']}]").attr("checked",true);
+            <volist name="glist" id="vo">
+            $("#fileToUpload_look_{$vo.id}").preview();
+            </volist>
+            $("#cateid").val({$list['cateid']});
+            $("#brandid").val({$list['brandid']});
+            $("input[name='isnew'][value={$list['isnew']}]").attr("checked",true);
+            $("input[name='ishot'][value={$list['ishot']}]").attr("checked",true);
+            $("input[name='isrec'][value={$list['isrec']}]").attr("checked",true);
+            $("input[name='isprice'][value={$list['isprice']}]").attr("checked",true);
 			</script>
            
 		</div> 

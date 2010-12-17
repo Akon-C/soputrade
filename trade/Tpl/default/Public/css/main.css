@@ -121,7 +121,10 @@ OTHERS
 .msg.info {background:url("../design/ico-info.gif") 10px 50% no-repeat;}
 .msg.done {background:url("../design/ico-done.gif") 10px 50% no-repeat;}
 .msg.error {background:url("../design/ico-delete.gif") 10px 50% no-repeat;}
-
+.info {
+    background-color: #E8F6FF;
+    border: 2px solid #B8E2FB;
+}
 /* =============================================================================
 FONT STYLES
 ============================================================================= */

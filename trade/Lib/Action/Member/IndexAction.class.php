@@ -19,6 +19,7 @@ class IndexAction extends MemberCommAction{
 		$this->display();
 	}
 	public function doShippingAddress(){
+		
 		self::$Model=D("ShippingAddress");
 		$list=self::$Model->where("id=".$this->memberID)->find();
 		if (self::$Model->create()){
@@ -27,6 +28,9 @@ class IndexAction extends MemberCommAction{
 			}
 			else{
 				self::$Model->add();
+			}
+			if ($_SESSION['step']==1){
+				$this->redirect ( 'Home-Cart/checked_address' );
 			}
 			$this->redirect ( 'Index/ShippingAddress' );
 		}

@@ -37,6 +37,7 @@ class MemberCommAction extends Action{
 			$this->memberShippingAddress = self::$Model->where ( "id=" . $this->memberID )->find ();
 		
 		}
+		
 	}
 }
 ?>

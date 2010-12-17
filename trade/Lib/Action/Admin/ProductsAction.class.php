@@ -11,12 +11,27 @@ class ProductsAction extends AdminCommAction {
 	function productslist() {
 		if ($_GET['name']){
 			$map ['name'] = array ('like', '%' . $_GET ['name'] . '%' );
+			$map['id']=$_GET['name'];
+			$map['_logic']='or';
 		}
 		if ($_GET ['cateid']) {
 			$map ['cateid'] = $_GET ['cateid'];
 		}
+		$this->sort='id desc';
 		$this->_list ($map);
 		$this->display ();
+	}
+	function move() {
+		if(!empty($_REQUEST['id'])){
+			$map['id']=array('in',$_REQUEST['id']);
+			$data['cateid']=$_REQUEST['cateid'];
+			if($count=$this->dao->where($map)->count()){
+				$this->dao->where($map)->data($data)->save();
+
+			}
+			$this->success('成功移动了'.$count.'个产品!');
+		}
+		$this->error('请选择要转移的产品!');
 	}
 	function Delete() {
 		if($_REQUEST['id']){
@@ -52,9 +67,8 @@ class ProductsAction extends AdminCommAction {
 					parent::$Model->where(array("products_id"=>$v['id']))->delete();
 
 				}
-				if($this->dao->where ( $map )->delete ()){
-					$this->success ( "删除成功！" );
-				}
+				$this->dao->where ( $map )->delete ();
+				$this->success ( "删除成功！" );
 			}
 		}
 		$this->error('删除失败！');
@@ -476,5 +490,44 @@ class ProductsAction extends AdminCommAction {
 
 
 	}
+
+	function SetStatus(){
+		if($_REQUEST['id']){
+			$type=$_REQUEST['type'];
+			$id=$_REQUEST['id'];
+			$time=time();
+			$status=$this->dao->where(array('id'=>$id))->getField($type);
+			if($status==1){
+				$status=0;
+				$data['imgurl']=__ROOT__.'/Tpl/default/Public/images/mod_0.gif';
+			}else{
+				$status=1;
+				$data['imgurl']=__ROOT__.'/Tpl/default/Public/images/mod_1.gif';
+			}
+			$map['id']=$id;
+			$data[$type]=$status;
+			$this->dao->where($map)->data($data)->save();
+			$this->ajaxReturn($data,'保存成功',1);
+		}
+	}
+	function SetStatus2(){
+		if($_REQUEST['id']){
+			$type=$_REQUEST['type'];
+			$id=$_REQUEST['id'];
+			$time=time();
+			$count=$this->dao->where(array('id'=>array('in',$id)))->count();
+			$list=$this->dao->where(array('id'=>array('in',$id)))->findall();
+			foreach ($list as $v){
+				if($_REQUEST['reverse']==1){
+					$this->dao->query("update __TABLE__ set `$type`=if(`$type`=1,0,1),`dateline`=\"$time\" where id={$v['id']};");
+				}else{
+					$this->dao->query("update __TABLE__ set `$type`=1,`dateline`=\"$time\" where id={$v['id']};");
+				}
+			}
+			$this->success('成功设置'.$count.'个产品!');
+		}
+		$this->error('请选择产品');
+	}
+
 }
 ?>

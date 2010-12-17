@@ -1,28 +1,6 @@
 <include file="../Public/header" />
-<div class="ind_con">
 <include file="../Public/left" />
-<link rel="stylesheet" type="text/css" href="../Public/css/cart.css">
-<div class="ind_cart">
-<div class="right">
- 
- <ol class="titt"><a href="__ROOT__" title="Home">Home</a> &gt;&gt; <span>Shopping Cart</span></ol> 
-<DIV class=right_big_con>
-<UL class=projects>
-  <LI class=current1><SPAN>Your Shopping Cart&nbsp;&nbsp;&nbsp;</SPAN></LI>
-  <LI class=li2><SPAN>Customer Info</SPAN></LI>
-  <LI class=li3><SPAN>Address Book</SPAN></LI>
-  <LI class=li4><SPAN>Review</SPAN></LI>
-  <LI class=li5><SPAN>Order Complete</SPAN></LI></UL></DIV>
-<DIV class="cart">
-<ol class="uh">Shopping Cart</ol>
- 
-<ul class="SC_T">
-<li class="t1"><h2 class="I_over">QTY.</h2></li>
-<li class="t2"><h2 class="I_over">ITEM DESCRIPTION</h2></li>
-<li class="t3"><h2 class="I_over">PRICE</h2></li>
-<li class="t4"><h2 class="I_over">TOTAL</h2></li>
-<li class="t5"></li>
-</ul>
+
 <script type="text/javascript"> 
 function save(){ 
 //document.form1.action="{:U('Cart/save')}";
@@ -30,89 +8,108 @@ function save(){
  $("#cartform").submit();
 }
 function send(){
- $("#cartform").attr("action","{:U('Cart/checked_address')}");
+ $("#cartform").attr("action","{:U('Cart/save',array('step'=>'checkout'))}");
+ $("#cartform").submit();
+}
+function drop(){
+ $("#cartform").attr("action","{:U('Cart/clear_cart')}");
  $("#cartform").submit();
 }
 </script>
+
+<div class="page_middle">
+	
+    <td valign="top">
+	<div class="pagemiddle_right">
+	   <div class="pagemiddle_righttitle">
+	    <a href="/">HOME</a> &gt;&gt; Shopping Cart &gt;&gt;Checkout
+	   </div>
+	   
+	    <h3>Shopping Cart</h3>
+		
+        <div style="padding: 5px;"><table width="98px;" cellspacing="0" cellpadding="0" class="orderkuan">
+			    
+			    
+  
 <form name="form1" id="cartform" method="post">
-<input type="hidden" name="cmdShow" value="Yes">
-<!--Cart List-->
-<ul class="SC_L">
-<volist name="list" id="vo">
-<li class="n1">
+  <tbody>
+  <tr class="title">
+    <td width="70">Image</td>
+    <td width="96">Product ID</td>
+    <td width="339">Product Name</td>
+    <td width="339">Model</td>
+    <td width="38">Price</td>
+    <td width="53">Quantity</td>
+    <td width="53">Subtotal</td>
+    <td width="43">Delete</td>
+  </tr>
+  
+  
+    <volist name="list" id="vo">
+    
 <input type="hidden" name="pid[]" value="{$vo.pid}">
 <input type="hidden" name="id[]" value="{$vo.id}">
-<input name="count[]" value="{$vo.count}" size="3" maxlength="3" style="margin-top:15px">
-</li>
-<li class="n2"><dl><dt><a href="{:U(tourlstr($vo['name']).'@',array('pid'=>$vo['pid']))}" target="_blank" title="{$vo.name}"><img src="/{$vo.smallimage}" alt="{$vo.name}" width="62"></a></dt><dd><a href="{:U(tourlstr($vo['name']).'@',array('cid'=>$vo['pid']))}" target="_blank" title="{$vo.name}"><b>{$vo.name}</b></a>
-<br>
-<!--<if condition="$vo['size']">
-<select name='size[]' id="size_{$vo.id}">
-<option value=''>Choose your size</option>
-<volist name="vo['size']" id="subvo">
-<option value="{$subvo}" >{$subvo}</option>
-</volist>
-</select>
-<script language="javascript">
-//$("#size_{$vo.id}").val({$vo["model"]});
-</script>
-<else/>
-<input type="hidden" name="size[]" value="0" />
-</if>-->
-<volist name="vo['model']" id="subvo">
+  <tr class="detail">
+    <td><img width="70" align="absMiddle" src="{:build_url($vo,'pro_smallimage')}"></td>
+    <td>{$vo.pid}</td>
+    <td><a href="{:build_url($vo,'pro_url')}">{:build_url($vo,'pro_name')}</a></td>
+    <td><volist name="vo['model']" id="subvo">
 {$subvo['name']}:{$subvo['value']}&nbsp;
 <input type="hidden" name="model_name_{$vo.id}[]" value="{$subvo['name']}" />
 <input type="hidden" name="model_value_{$vo.id}[]" value="{$subvo['value']}" />
-</volist>
+</volist></td>
+    <td>{:getprice($vo['price'],$vo['pricespe'],false)}</td>
+    <td><input type="text" size="3" value="{$vo.count}" name="count[]" ></td>
+    <td>{:getprice($vo['price_total'],$vo['pricespe_total'],false)}</td>
+    <td><a href="{:U('Cart/delete',array('id'=>$vo['id']))}"><img border="0" src="../Public/images/b-delete.gif"></a></td>
+  </tr>
+  </volist>
+	  
+	  
+	  
+	  
+  <tr class="tp">
+    <td colspan="6" class="amount">Goods Price:</td>
+    
+    <td>{:getprice_str($cart_total)}</td>
+    <td></td></tr>
+    
+   
+  <tr style="color: red;" class="tp">
+    <td colspan="6" class="amount">Shipping Fee:</td>
+    <td>{:getprice_str($fees['shippingmoney'])}</td>
+    <td></td></tr>
+  <tr style="color: red;" class="tp">
+    <td colspan="6" class="amount">Insurance:</td>
+    <td>{:getprice_str($fees['insurance'])}</td>
+    <td></td></tr>
+  <tr style="color: red;" class="tp">
+    <td colspan="6" class="amount">Paypal Fee:</td>
+    <td>{:getprice_str($fees['paymoney'])}</td>
+    <td></td></tr>
+		
+    
+  <tr class="tp">
+    <td colspan="6" class="amount">Total Price:</td>
+    <td>{:getprice_str($fees['total'])}
+    <input type="hidden" name="orders_total" value="{$fees['total']}" /></td>
+    <td></td></tr>
+  <tr>
+    <td colspan="8" class="button">
+    <input type="button" name="Submit2" value=" Update " onClick="save();">&nbsp;&nbsp;
+    <input type="button" name="Submit2" value=" Clear Cart " onclick="drop()">&nbsp;&nbsp;
+    <input type="button" name="Submit2" value="Continue Shopping" onclick="javascript:location.href='__APP__';">&nbsp;&nbsp; 
+<input type="button" name="Submit4" value="Checkout" onClick="send();" > 
+    </td></tr></tbody></table></div>
+  	   
+	</div>
+	
+	
+	</td>
+  </tr>
+</tbody></table></form>
 
-<br><b>Item#:</b>{$vo.pid}</dd></dl></li>
-<li class="n3">{:getprice($vo['price'],$vo['pricespe'])}</li>
-<li class="n4">{:getprice($vo['price_total'],$vo['pricespe_total'])}</li>
-<li class="n5"><a href="{:U('Cart/delete',array('id'=>$vo['id']))}"><img src="../Public/images/btn_delete.gif"></a></li>
-<li class="hr"></li>
-</volist>
- 
-<li class="sub"><dl><dt><input type="button" class="Update" onClick="save();"></dt><dd>{$itemCount} item(s) Subtotal {:getprice_str($cart_total)}</dd></dl></li>
- 
-</ul>
- 
- 
-<!--Cart Sum-->
- 
- 
-<dl class="sum">
-  <dt style="font-size:18px;color:#993300;line-height:100px;text-indent:10px;">Buy more than  free shipping.</dt>
-  <dd>
-    <ul>
-     <li>Subtotal  {:getprice_str($cart_total)}</li>
-	 <li>Shipping Fee {:getprice_str($fees['shippingmoney'])}</li>
-	 <li>Insurance {:getprice_str($fees['insurance'])}</li>
-	 <li>Paypal Fee  {:getprice_str($fees['paymoney'])}</li>
-	 <li><b>Grand Total</b> <span>{:getprice_str($fees['total'])}<input type="hidden" name="orders_total" value="{$fees['total']}" /></span></li>
-	</ul>
-  </dd>
-</dl>
- 
-<dl class="chekout"><dt><a href='javascript:history.go(-1)'><img src='../Public/images/continue_shop.gif' alt='Continue Shopping'></a></dt><dd><INPUT type="button" onClick="send();" class="chockout"></dd></dl>
- 
-</form>
-</DIV>
- 
-<div class="Inf">
-<dl>
-<dt class="ts"><ol><h2 class="I_over">Top Sellers</h2></ol>
-<ul>
-	    <volist name="FeaturedPorducts" id="vo">
-		<dl>
-		    <dt><a href="{:U(tourlstr($vo['name']).'@',array('pid'=>$vo['id']))}" target="_blank" title="{$vo.name}"><img src="__ROOT__/{$vo.smallimage}" alt="{$vo.name}"></a></dt>
-			<dd class="hname"><a href="{:U(tourlstr($vo['name']).'@',array('pid'=>$vo['id']))}" target="_blank" title="{$vo.name}">{$vo.name}</a><br>Item #{$vo.id}</dd>
-			<dd class="price">
-			{:getprice($vo['price'],$vo['pricespe'])}
-			</dd>
-		  </dl>
-		</volist>
-	  </ul></dt></dl></div>
-</div>
+
 </div>
 </div>
 <include file="../Public/footer" />

@@ -38,8 +38,11 @@ class SearchAction extends CommAction {
 		}
 
 		parent::$Model=D("Products");
-		$_COOKIE['map']=$sql;
-		$_COOKIE['map']['module']=MODULE_NAME;
+		if(isset($_REQUEST['key'])){
+			$_SESSION['map']=$sql;
+		}elseif(isset($_REQUEST['map'])){
+			$sql=$_SESSION['map'];
+		}
 		parent::$Model->_list($this->view,$sql,'name',false);
 		$this->display();
 	}

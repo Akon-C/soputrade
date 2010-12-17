@@ -1,10 +1,12 @@
 <include file="../Public/header" />
-<div class="ind_con">
+
 <include file="../Public/left" />
+<td valign="top">
+	<div class="pagemiddle_right" style="width:auto">
+	   <div class="pagemiddle_righttitle" style="width:auto">
 <link rel="stylesheet" type="text/css" href="../Public/css/cart.css">
 <div class="ind_cart">
-<div class="right">
-<ol class="titt"><a href="__ROOT__" title="Home">Home</a> &gt;&gt; <span>Billing, Shipping & Review</span></ol>
+<div class="right"><a href="__ROOT__" title="Home">Home</a> &gt;&gt; <span>Billing, Shipping & Review</span></ol>
 <DIV class="right_big_con">
 <UL class="projects">
   <LI class="li1"><SPAN>Your Shopping Cart&nbsp;&nbsp;&nbsp;</SPAN></LI>
@@ -22,10 +24,10 @@
 <li class="t4"><h2 class="I_over">TOTAL</h2></li>
 <li class="t5"></li>
 </ul>
-<ul class="SC_L">
+<ul class="SC_L" style="text-align:center">
 <volist name="list" id="vo">
 <li class="n1">{$vo.count}</li>
-<li class="n2"><dl><dt><a href="{:U(tourlstr($vo['name']).'@',array('pid'=>$vo['pid']))}" target="_blank" title="{$vo.name}"><img src="/{$vo.smallimage}" alt="{$vo.name}"></a></dt><dd><a href="{:U(tourlstr($vo['name']).'@',array('pid'=>$vo['pid']))}" target="_blank" title="{$vo.name}"><b>{$vo.name}</b></a><br>
+<li class="n2"><dl><dt style=" overflow: visible;" ><a href="{:build_url($vo,'pro_url')}" target="_blank" title="{:build_url($vo,'pro_name')}"><img src="{:build_url($vo,'pro_smallimage')}" alt="{:build_url($vo,'pro_name')}"></a></dt><dd><a href="{:build_url($vo,'pro_url')}" target="_blank" title="{:build_url($vo,'pro_name')}"><b>{:build_url($vo,'pro_name')}</b></a><br>
 
 <volist name="vo['model']" id="subvo">
 {$subvo['name']}:{$subvo['value']}&nbsp;
@@ -34,8 +36,8 @@
 </volist>
 
 <br><b>Item#:</b>{$vo.pid}</dd></dl></li>
-<li class="n3">{:getprice($vo['price'],$vo['pricespe'])}</li>
-<li class="n4">{:getprice($vo['price_total'],$vo['pricespe_total'])}</li>
+<li class="n3">{:getprice($vo['price'],$vo['pricespe'],false)}</li>
+<li class="n4">{:getprice($vo['price_total'],$vo['pricespe_total'],false)}</li>
 <li class="n5"></li>
 <li class="hr"></li>
 </volist>
@@ -59,7 +61,7 @@
 
 <div class="add">
 <div class="shippingdetails">
-<ol><h2 class="I_over">Shipping To</h2></ol>
+<ol style="height:auto"><h2 class="I_over">Shipping To</h2></ol>
 <dl>
   <dt>( or )</dt>
   <dd><a href="{:U('Cart/OtherAddress')}" title="Select a different address"><img src="../Public/images/seleckad.gif" alt="Select a different address"></a>
@@ -125,4 +127,7 @@
 </div>
 </div>
 </div>
+	</td>
+	</tr>
+	</table>
 <include file="../Public/footer" />

@@ -8,9 +8,9 @@
  * @lastupdate 2010-11-23
  */
 class ProductsModel extends Model {
-	
 
-	
+
+
 	protected $_validate = array (
 	array ('name', 'checknamelen', 'Products name too long!', self::EXISTS_VAILIDATE, 'callback' ),
 	array('name','require','产品名称必须填写!'),
@@ -48,22 +48,35 @@ class ProductsModel extends Model {
 			$sort = $asc?'asc':'desc';
 		}
 		//取得满足条件的记录数
-		$map=(isset($_COOKIE['map']) && $_COOKIE['map']['module']==MODULE_NAME)?$_COOKIE['map']:$map;
-
+		if(!empty($_SESSION['map']) && 'Search'==MODULE_NAME){
+			$map=$_SESSION['map'];
+		}
 		$count= $this->where($map)->count();
-
+		$pages=array(
+		'totalRows'=>0,//总记录
+		'totalPages'=>0,//总页数
+		'startRow'=>0,//开始行
+		'endRow'=>1,//结束行
+		'list'=>null,//当前数据
+		"page"=>null//表示字符串
+		);
 		if($count>0) {
 			import("ORG.Util.Page");
 			//创建分页数量
 
-			$p          = new Page($count,20);
+			$p   = new Page($count,20);
 			//分页查询数据
 			$voList = $this->where($map)->order("`".$order."` ". $sort)->limit($p->firstRow .','.$p->listRows)->findAll();
 			//分页显示
-			$page      = $p->show();
-			$view->assign('list',       $voList);
-			$view->assign("page",       $page);
+			$page = $p->show();
+			$pages['totalRows']=$p->totalRows;
+			$pages['totalPages']=$p->totalPages;
+			$pages['startRow']=$p->firstRow+1;
+			$pages['endRow']=($p->nowPage>1?$p->nowPage-1:1)*$p->listRows;
+			$pages['list']=$voList;
+			$pages['page']=$page;
 		}
+		$view->assign($pages);
 		return null ;
 	}
 
@@ -81,10 +94,11 @@ class ProductsModel extends Model {
 		for($row = 0; $row < count ( $attr ); $row ++) {
 			$map1 ['products_id'] = $pid;
 			$map1 ['attr_id'] = $attr [$row] ['id'];
-			$attr [$row] ['attrs'] = $dao->where ( $map1 )->findall ();
+			$attr [$row] ['attrs'] = $dao->where ( $map1 )->group('attr_value')->findall ();
 			$attr [$row] ['values'] = explode ( chr ( 13 ), $attr [$row] ['values'] );
 			$attr [$row] ['values_count'] = count($attr [$row] ['attrs']);
 		}
+		
 		return $attr;
 	}
 	//获取产品价格明细
@@ -110,7 +124,7 @@ class ProductsModel extends Model {
 			if ($discount>0){
 				$list['total']=$list['total']*$discount;
 			}
-			return $list;			
+			return $list;
 		}
 	}
 }

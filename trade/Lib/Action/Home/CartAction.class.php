@@ -18,6 +18,7 @@ class CartAction extends CommAction {
 		$attrlist = self::$Model->get_attrs ( $prolist ['cateid'], $_POST ['id'] );
 		for($row = 0; $row < count ( $_POST ['count'] ); $row ++) {
 			//if (empty ( $_POST ['count'] [$row] ) && $_POST ['count'] [$row] < 1) {
+			if(!$_POST['count'][$row]) continue;
 			$model = array ();
 			$i = 0;
 			foreach ( $attrlist as $key => $value ) {
@@ -35,9 +36,11 @@ class CartAction extends CommAction {
 		$dao = D ( "Cart" );
 		//dump($dao->display_contents ( $this->sessionID ));
 		$this->list = $dao->display_contents ( $this->sessionID );
+		
 		$this->itemCount = $dao->get_item_count ( $this->sessionID );
 		$this->cart_total = $dao->cart_total ( $this->sessionID );
 		$this->fees=get_orders_Fees($dao->cart_total ( $this->sessionID ));
+		Session::set('step',null);
 		$this->display ();
 	}
 	function delete() {
@@ -55,26 +58,23 @@ class CartAction extends CommAction {
 			}
 			$dao->modify_quantity ( $this->sessionID, $_POST ['id'] [$row], $_POST ['count'] [$row], serialize($model) );
 		}
-		$this->redirect ( 'Cart/disp' );
+		if(isset($_REQUEST['step']) && $_REQUEST['step']=='checkout'){
+			$this->redirect ( 'Cart/checked_address' );
+		}else{
+			$this->redirect ( 'Cart/disp' );
+		}
 	}
 	function checked_address() {
-		//保存数据
-		$dao = D ( "Cart" );
-		for($row = 0; $row < count ( $_POST ['pid'] ); $row ++) {
-			$model = array ();
-			for($ii = 0; $ii < count ( $_POST ['model_name_' . $_POST ['id'] [$row]] ); $ii ++) {
-				$model [$ii] ['name'] = $_POST ['model_name_' . $_POST ['id'] [$row]] [$ii];
-				$model [$ii] ['value'] = $_POST ['model_value_' . $_POST ['id'] [$row]] [$ii];
-			}
-			$dao->modify_quantity ( $this->sessionID, $_POST ['id'] [$row], $_POST ['count'] [$row], serialize($model) );
-		}
 		if ($this->memberID <= 0) {
+			Session::set('step',1);
 			$this->redirect ( 'Member-Public/Join' );
 		}
 		if (! $this->memberShippingAddress) {
+			Session::set('step',1);
 			$this->redirect ( 'Member-Index/ShippingAddress' );
 		}
-		
+		Session::set('step',null);
+		$dao = D ( "Cart" );
 		//读取订单信息
 		$this->list = $dao->display_contents ( $this->sessionID );
 		$this->itemCount = $dao->get_item_count ( $this->sessionID );
@@ -106,6 +106,11 @@ class CartAction extends CommAction {
 		$this->paymentlist = self::$Model->getlist ();
 		
 		$this->display ();
+	}
+	public function clear_cart(){
+		self::$Model=D('Cart');
+		self::$Model->clear_cart($this->sessionID);
+		$this->success('Clear Cart Item Success!');
 	}
 	public function checkout() {
 		if ($this->memberID <= 0) {

@@ -2,124 +2,104 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" media="screen,projection" type="text/css" href="../Public/css/css.css" /> 
 {:Meta($pagetitle,$pagekeywords,$pagedesc,$list)}
+<link href="../Public/images/style.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="../Public/Js/jquery.js"></script> 
+<script type="text/javascript">
+function setImage( ImgD, bw, bh ){ 
+
+	 var image = new Image(); 
+	 
+	 image.src = ImgD.src; 
+ 
+	 if( image.width > 0 && image.height > 0 ) { 
+	  
+		  if( image.width / image.height >= bw / bh ) { 
+		
+			    ImgD.width=bw; 
+			    ImgD.height=(image.height*bw)/image.width; 
+   	
+		  } 
+		  else { 
+ 
+				    ImgD.height=bh; 
+				    ImgD.width=(image.width*bh)/image.height; 
+		
+		  } 
+		    
+
+	 }
+	}
+	 
+
+</script> 
+
 </head>
 
+
 <body>
-<!--bof header--> 
-<div class="in_top">
-  <div class="left">
-     <ul>
-       <li class="up"><a href="{:GetSettValue('siteurl')}"><img src="../Public/images/logo.jpg" width="188" height="44" alt="{:GetSettValue('sitename')}"/></a> China Wholesale</li>
-       <li class="cent">
-         <a class="addthis_button" href="http://www.addthis.com/bookmark.php?v=250&amp;username=xyxxshs"><img src="http://s7.addthis.com/static/btn/v2/lg-bookmark-en.gif" width="125" height="16" alt="Bookmark and Share" style="border:0;margin-top:2px"/></a>
-       </li>
-       <li class="down"><img src="../Public/images/topbg.gif"  alt="China Wholesale"/></li>
-     </ul>
-  </div>
-  <div class="right">
-    <dl>
-      <dt class="up">
-      <gt name="mid" value="0">
-      <a alt="" href="{:U('Member/index')}">My Account</a><a alt="Log in" href="{:U('Member-Index/LogOut')}">Log Out
+  <div id="container">
+    <div id="header">
+	  <div class="top_text">
+	    {:GetSettValue('hottitle')}
+	  </div>
+	  <div class="logo">
+	    <a href="__APP__"><img src="../Public/images/logo01.jpg" alt="" border="0" /></a>
+	  </div>
+	  <div class="top_msn">
+	    <a href="__APP__"><img src="../Public/images/msn23.jpg" alt="" border="0" /></a>
+	  </div>
+	  <div class="top_search">
+	    <div class="top"><a href="{:U('Home-Cart/disp')}">Shopping Cart: {:itemCount()} item(S)</a></div>
+		<div class="bottom" style="padding-top:0">
+		<gt name="mid" value="0">
+		Welcome {$member_Info['lastname']} {$member_Info['firstname']},<a alt="" href="{:U('Member-Index/index')}">My Account</a> <a href="{:U('Member-Index/LogOut')}">LogOut</a>
       <else/>
-      <a alt="Log in" href="{:U('Member-Public/Login')}">Log in</a><a alt="Join Now" href="{:U('Member-Public/Join')}">Join Now</a>
+      <a alt="Log in" href="{:U('Member-Public/Login')}">Log in</a> <a alt="Join Now" href="{:U('Member-Public/Join')}">Join Now</a>
       </gt>
-      <a alt="" href="{:U('Help')}">Support Center</a><a  href="{:U('Home-Cart/disp')}" title="my cart"><img src="../Public/images/shopping-Cart.jpg" width="98" height="12" style="margin-top:5px"alt=""/></a>
-      <p><img src="../Public/images/topline.jpg" style="margin-top:11px" title=""/></p>
-      </dt>
-      <dt class="down">
-       <ul>
-         <li class="u1"><a  href="{:U('Cart/list')}" title="my cart"><img src="../Public/images/checkout.jpg" title=""/></a></li>
-         <li class="u2">Currencies:</li>
-		 <li class="u3">
-         <form name="form1" id="form1" action="{:U('Index/Currencies')}" method="post">
-         <select name="Currencies" onchange="document.form1.submit();">
-         <option value="">Please select...</option>
-         <volist name="currencies" id="vo">
-         <option value="{$vo.symbol}">{$vo.name}</option>
-         </volist>
-         </select>
-         </form>
-         </li>
-       </ul>
-      </dt>
-    </dl>
-  </div>
-</div>
-<div class="in_nav">
-  <ul>
-    <li class="left"><a alt="Home" href="__ROOT__">Home</a></li>
-    <li class="cent">
-<a href="/products/" title="Product">Product</a>
- 
-<a href="/Payment/" title="Payment">Payment</a>
- 
-<a href="__APP__/Shipping-Delivery/" title="Shipping">Shipping</a>
- 
-<a href="/privacy-and-policy/" title="Privacy Notice">Privacy Notice</a>
- 
-<a href="/Wholesale/" title="Wholesale">Wholesale</a>
- 
-<a href="/mc/" title="My Account">My Account</a>
-</li> 
-    <li class="right"><img src="../Public/images/navright.gif" title=""/></li>
-  </ul>
-</div>
-<div class="in_ser">
-    <div class="left"><img title="" style="float:left" src="../Public/images/srchcor.jpg">
-      <ul> <form name="form2" method="post" action="search/index.asp">
-        <li class="u1">Search:</li> 
-        <li class="u2"><input type="text" name="keyword" size="10" maxlength="40" class="search"></li>  
-        <li class="u3">
-			<select name="sort_id" id="sort_id" style="width:220px">
-		      <option value="0" SELECTED>All Categories</option>
-			  
-			  <option  value="1">Women's Clothing</option>
-			  
-			  <option  value="10">Women's Footwear</option>
-			  
-			  <option  value="12">Men's Wear</option>
-			  
-			  <option  value="13">Handbags & bags</option>
-			  
-			  <option  value="14">Hats & Belts</option>
-			  
-			  <option  value="15">Sunglasses</option>
-			  
-			  <option  value="16">Jerseys</option>
-			  
-			  <option  value="17">Sports Shoes</option>
-			  
-			  <option  value="18">Casual Shoes</option>
-			  
-			  <option  value="19">Children's Wear</option>
-			  
-			  <option  value="20">Hair Care Shop</option>
-			  
-			  <option  value="21">Fashion Accessories</option>
-			  
-			  <option  value="23">Electronics Products</option>
-			  
-			</select></li>
-            <li class="u4"><input type="image" src="../Public/images/go.jpg" class="quickbutton" border="0" alt="Product Search" title="Quick Find"></li>
-            </form>
-      </ul>
-    
-    </div>
-    <div class="right"><img title="" style="float:right" src="../Public/images/srchcor1.jpg">
-      <ul class="chat" id=nav_chat_sales>
-  <li class="nm"><span><A  style="color:#990000" class=red title=William onclick=show_chat_div(this); 
-  href="javascript:void(0);">Linda</A></span> is Online to help you</li>
-  <li class="cline" id=chat_div style="DISPLAY: none">
-  <dl>
+		  <form action="{:U('Search/index')}" method="POST">
+	 <table width="50%"  border="0" cellspacing="0" cellpadding="0">
+     <tr>
+    <td> <input name="key" type="text" />&nbsp;&nbsp;<input name="Input" type="image" src="../Public/images/search.jpg" value=""/>
+      </td>
+     </tr>
+   </table>
+
+	</form>
+		</div>
+	  </div>
+	  <DIV class=topnav>
+<SCRIPT language=javascript>
+	function showList(oid) {
+		document.getElementById(oid).style.display = "block";
+	}
+	function hideList(oid) {
+		document.getElementById(oid).style.display = "none";
+	}
+</SCRIPT>
+
+<UL>
+  <LI><A href="__APP__">Home</A> </LI>
   
-  <dd><IMG id="chat_div_close_img" title="close" onclick="close_chat_div()" height="13" alt="close" src="../Public/images/close.gif" width=13 border=0></dd></dl>
-</li>
-</ul>
-    </div>
-</div>
-<!--<div class="in_s">{:GetSettValue('hottitle')}</div>-->
-<!--eof header-->
+  <iterate name="topTwoClass" id="vo">
+  <LI onMouseOver="showList('oid{$i}')" onMouseOut="hideList('oid{$i}')">
+  
+  <DIV><A href="{:build_url($vo,'cate_url')}">{:build_url($vo,'cate_name')}
+  </A></DIV>
+  
+  <DIV class=topnav01 id=oid{$i} style="PADDING-BOTTOM: 10px">
+  <UL>
+  <volist name="vo['subclass']" id="v">
+    <LI><IMG src="../Public/images/navlist_arrow.png">&nbsp;<A 
+    href="{:build_url($v,'cate_url')}">{:build_url($v,'cate_name')}
+    </A></LI>
+  </volist>
+    </UL></DIV></LI>
+ </iterate>
+    
+    
+    
+  <LI><A href="__APP__/Wholesale/">Wholesale</A> 
+</LI>
+  <LI><A href="__APP__/Contact-Us/">Contact Us 
+  </A></LI></UL></DIV>

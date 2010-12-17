@@ -85,7 +85,7 @@ function getattr(form){
                         </volist>
                         </select>
                         <script type="text/javascript">
-						$("#{$subvo1['id']}").val("{$subvo1['attr_value']}");
+						document.getElementById{$subvo1['id']}.value="{$subvo1['attr_value']}";
 						</script>
                         </eq> 
                         <br/>                       

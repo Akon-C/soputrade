@@ -9,38 +9,48 @@
  */
 class EmptyAction extends CommAction {
 	function _empty() {
-		$pathinfo = explode ( "-", ltrim($_SERVER ['PATH_INFO'],'/' ));
-		$count = count ( $pathinfo );
-		for($i = 0; $i < $count; $i ++) {
-			if ($pathinfo [$i] == 'cid') {
-				$_GET ['cid'] = $pathinfo [$i + 1];
-			}
-			if ($pathinfo [$i] == 'pid') {
-				$_GET ['pid'] = $pathinfo [$i + 1];
-			}
-			if ($pathinfo [$i] == 'p') {
-				$_GET ['p'] = $pathinfo [$i + 1];
-			}
-			if ($pathinfo [$i] == 'aid') {
-				$_GET ['aid'] = $pathinfo [$i + 1];
-			}
+	
+		$pathinfo = str_replace('.html','',ltrim($_SERVER ['PATH_INFO'],'/' ));
+		
+		switch (true){
+			case strpos($pathinfo,'-pid-'):
+				$page=explode("-pid-",$pathinfo);
+				
+				$_GET['pid']=$pid=intval($page[1]);
+				$p=explode("-p-",$page[1]);
+				if($p){
+					$_GET['p']=intval($p[1]);
+				}
+				
+				$this->good($pid);
+				break;
+			case strpos($pathinfo,'-cid-'):
+				$page=explode("-cid-",$pathinfo);
+				$_GET['cid']=$cid=intval($page[1]);
+				$p=explode("-p-",$page[1]);
+				if($p){
+					$_GET['p']=intval($p[1]);
+				}
+				$this->cate($cid);
+				break;
+			case strpos($pathinfo,'-aid-'):
+				$page=explode("-aid-",$pathinfo);
+				$_GET['aid']=$aid=intval($page[1]);
+				$p=explode("-p-",$page[1]);
+				if($p){
+					$_GET['p']=intval($p[1]);
+				}
+				$this->cate($aid);
+				break;
+			case substr($pathinfo,-1)=='/':
+				$_GET['title']=$title=trim($pathinfo,'/');
+				$this->article($title);
+			default:
+				parent::_empty();
+				return;
+
 		}
-		if (isset ( $_GET ['pid'] ) && ! empty ( $_GET ['pid'] )) {
-			$this->good ( intval ( $_GET ['pid'] ) );
-			//echo "goods";
-		} elseif (isset ( $_GET ['cid'] ) && ! empty ( $_GET ['cid'] )) {
-			$this->cate ( intval ( $_GET ['cid'] ) );
-			//echo "cate";
-		} elseif (isset ( $_GET ['aid'] ) && ! empty ( $_GET ['aid'] )) {
-			$this->article ( intval ( $_GET ['aid'] ) );
-			//echo "article";
-		}	elseif (strlen($_SERVER ['PATH_INFO'])>1 && substr($_SERVER ['PATH_INFO'],-1)=='/') {
-			$title=trim($_SERVER ['PATH_INFO'],'/');
-			$this->article($title);
-			//echo "article";
-		} else {
-			parent::_empty();
-		}
+
 		return;
 	}
 	function good($pid) {
@@ -50,10 +60,32 @@ class EmptyAction extends CommAction {
 		if ($list) {
 			$dao->viewcounts ( $pid );
 			$this->list = $list;
+			//上一产品，下一产品
+			$prev=$dao->where(array("id"=>array("lt",$pid)))->order('id desc')->find();
+			$next=$dao->where(array("id"=>array("gt",$pid)))->order('id asc')->find();
+			if($prev){
+				$this->prev=build_url($prev,'pro_url');
+			}
+			if($next){
+				$this->next=build_url($next,'pro_url');
+			}
 			//获取产品属性
 			$attrlist=$dao->get_attrs($list['cateid'],$pid);
 			$this->attrlist=$attrlist;
 			$this->attrcount=count($attrlist[0]['attrs']);
+			//获取同类产品
+			$this->smaeclass=$dao->where(array('cateid'=>$list['cateid']))->limit(12)->findall();
+			//获取关联产品
+			$dao=D('Products_related');
+			$this->related=$dao->field('b.*')->table(C('DB_PREFIX').'products_related a')->join(C('DB_PREFIX').'products b on a.related_products_id=b.id')->where(array('a.products_id'=>$pid))->limit(12)->findall();
+			if(!$this->get('related')){
+				$this->related=$this->smaeclass;
+			}
+
+			//欢迎词
+			$dao= D('Ad');
+			$this->welcome = $dao->where(array('remark'=>'产品内页欢迎词'))->getField('content');
+			//获取产品
 			//相册
 			$dao = D ( "Products_gallery" );
 			$this->gallerys = $dao->where ( "pid=" . $pid )->order ( "sort desc" )->findAll ();
@@ -80,14 +112,14 @@ class EmptyAction extends CommAction {
 			} else {
 				$this->assign ( 'pagetitle', $list ['name'] . ',' . $classModel->getPageTitle ( $classid ) );
 			}
-			$this->display ( 'disp', 'Empty' );
+			$this->display ( 'Home:disp' );
 		} else {
 			$this->redirect ( 'Index/index' );
 		}
 
 	}
 	function cate($cid) {
-		$this->catep = get_catep_arr ( $cid );
+		$this->catep = get_catep_arr ( $cid );//导航
 		//获取下级分类
 		$dao = D ( "Cate" );
 
@@ -101,19 +133,19 @@ class EmptyAction extends CommAction {
 			S ( $strFid_class, implode ( ",", $classChildren ) ); //取得所有子类
 		}
 
-		$this->catec = $dao->where ( "pid=" . $cid )->order ( "sort desc" )->findAll ();
+		$this->catec = $dao->where ( "pid=" . $cid )->order ( "sort desc" )->findAll ();//下级分类
 		$dao = D ( "Products" );
 		$dao->_list ( $this->view, array ('cateid' => array ('in', S ( $strFid_class ) ) ), 'sort', false );
 		$this->cateinfo = get_cate_info ( $cid );
-		$this->display ( 'cate', 'Empty' );
+		$this->display ( 'Home:cate' );
 	}
 	function article($aid){
 		parent::$Model=D('Article');
 		if(!is_numeric($aid)){
 			$title=auto_charset($aid,'utf-8','gbk');
-			
+
 			$aid=parent::$Model->where(array('article_title'=>$title))->getField('article_id');
-			
+
 		}
 		if(!$aid){
 			parent::_empty();
@@ -126,7 +158,7 @@ class EmptyAction extends CommAction {
 		$list= S($article_cache);
 
 		$this->assign($list);
-		$this->display ('article','Empty');
+		$this->display ('Home:article');
 	}
 }
 ?>

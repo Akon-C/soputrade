@@ -56,14 +56,14 @@ h2{
 
 
 <p id="trace">
-You can choose [ <A HREF="<?php echo($_SERVER['PHP_SELF'])?>">Retry</A> ] [ <A HREF="javascript:history.back()">Back</A> ] Or [ <A HREF="__ROOT__">Go Home</A> ]
+You can choose [ <A HREF="<?php echo($_SERVER['PHP_SELF'])?>">Retry</A> ] [ <A HREF="javascript:history.back()">Back</A> ] Or [ <A HREF="__APP__">Go Home</A> ]
 </p>
 
 </div>
 <script>
 function go()
 {
-        location.href = "__ROOT__";
+        location.href = "__APP__";
 }
 setTimeout("go()", 3000);
 

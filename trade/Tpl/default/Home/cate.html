@@ -1,98 +1,70 @@
 <include file="../Public/header" />
-<div class="ind_con">
 <include file="../Public/left" />
-<div class="ind_cate">
-<div class="right">
 
- <div class="cltitle"><a href="{:GetSettValue('siteurl')}" title="{:GetSettValue('sitename')}">HOME</a> >
- <volist name="catep" id="vo">
-  <eq name="vo['id']" value="$cateinfo['id']">
-  {$vo.name}
-  <else/>
-  <a href="{:U(tourlstr($vo['name']).'@',array('cid'=>$vo['id']))}" title="{$vo.name}">{$vo.name}</a> >
-  </eq>
- </volist>
+	
+    <td valign="top">
+	<div class="pagemiddle_right">
+   <div class="pagemiddle_righttitle">
+     <a href="__APP__">Home</a> 
+    	   
+    	     <volist name="catep" id="vo"> &gt;&gt; 
+			  <eq name="vo['id']" value="$cateinfo['id']">
+			  {$vo.name}
+			  <else/>
+			  <a href="{:build_url($vo,'cate_url')}" title="{:build_url($vo,'cate_name')}">{:build_url($vo,'cate_name')}</a> 
+			  </eq>
+		 </volist>
  </div>
- <div class="catae">		
-	<ul>
-    <volist name="catec" id="vo">	    
-		<li ><a href="{:U(tourlstr($vo['name']).'@',array('cid'=>$vo['id']))}" title="{$vo.name}">{$vo.name}</a></li>
-	</volist>
-		
-	  </ul>
-	</div>
-<div class="Apro">
-<ol><h2>{$cateinfo['name']}</h2>
-<ul id="List_title" class="plist">
-<li class="p_views">View:</li>
-<li class="p_list">List</li>
-<li class="p_grid">Grid</li>
-<!--<li class="p_views">Sorted by:</li>
-<li class="p_sort">
-		<a href="http://www.jerseysmaker.com/Women-s-Clothing/p-do.html"><img src="../Public/images/sortby_price_down_act.gif" align="absmiddle" alt="Price from high to low."></a>
-		</li>-->
-</ul></ol>
-	<div class="aprov">
-	  
-	   <ul id="Listchange" class="gridcont">
-	    <li>
-        <volist name="list" id="vo">
-		  <dl>
-		    <dt><a href="{:U(tourlstr($vo['name']).'@',array('pid'=>$vo['id']))}" target="_blank" title="{$vo.name}"><img src="__ROOT__/{$vo.smallimage}" alt="{$vo.name}"></a></dt>
-			<dd class="hname"><a href="{:U(tourlstr($vo['name']).'@',array('pid'=>$vo['id']))}" target="_blank" title="{$vo.name}">{$vo.name}</a><br>Item #{$vo.id}</dd>
-			<dd class="price">
-			{:getprice($vo['price'],$vo['pricespe'])}
-			</dd>
-			<form name="cart_quantity1" action="Cart/add/index.asp" method="post">
-			<input type="hidden" name="id" value="59255">
-			<dd class="icart"><input type="image" src="../Public/images/button_cart.gif" alt="Add to cart" title="Add to cart"></a></dd>
-			</form>
-		  </dl>
-		</volist>
-		</li>
-	  </ul>
-	  
+    	    
+    	   </div>
+	   <div class="pagemiddle_rightwz">
+      {$cateinfo['pagedec']}
 
-	  <ul class="propath" style="margin-top:3px;margin-bottom:3px;background-color:#fafafa">
-	  {$page}
-	  </ul>
+	   </div>
+	   
+	   <div class="pagemiddle_righttitle2">
+	
+		 <table width="100%" cellspacing="0" cellpadding="0" border="0">
+  <tbody><tr>
+    <td width="50%">{$totalRows} items ( {$totalPages} pages )</td>
+    <td width="50%" align="left">
+        {$startRow}/{$endRow}&nbsp;|&nbsp;{$page}&nbsp;&nbsp;
+	</td>
+  </tr>
+</tbody></table>
 
- 
+	   </div>
+	   
+	   <div class="pagemiddle_rightlist">
+	     <ul>
+	     <iterate name="list" id="vo">
+		  		 <li>
+		 <div><a title="{:build_url($vo,'pro_name')}" href="{:build_url($vo,'pro_url')}"><img width="120" height="79" onload="setImage(this,120,120);"  alt="{:build_url($vo,'pro_name')}" src="{:build_url($vo,'pro_smallimage')}"></a></div>
+		  <div><a title="{:build_url($vo,'pro_name')}" href="{:build_url($vo,'pro_url')}">{:build_url($vo,'pro_name')}</a></div>
+		 <div><span class="red">US {:build_url($vo,'pro_price')} </span></div>
+		 </li>
+		  </iterate>		
+		  		 </ul>
+	   </div>
+	   
+	   	  <div class="pagemiddle_righttitle2">
+	
+		 <table width="100%" cellspacing="0" cellpadding="0" border="0">
+  <tbody><tr>
+    <td width="50%">{$totalRows} items ( {$totalPages} pages )</td>
+    <td width="50%" align="left">
+    {$startRow}/{$endRow}&nbsp;|&nbsp;{$page}&nbsp;&nbsp;</td>
+  </tr>
+</tbody></table>
+
+	   </div> 
 	</div>
-	</div> 
-  </div>
-</div>
-<script type="text/javascript"> 
-var List_title = document.getElementById("List_title");
-var List_title_Lis = List_title.getElementsByTagName("li");
-var Listchange = document.getElementById("Listchange");
- 
-function changeL() {
-	if (Listchange.getAttribute("class")) {
-		Listchange.setAttribute("class","listcont");
-	} else {
-		Listchange.setAttribute("className","listcont");
-	}
-	List_title_Lis[1].style.background = "url(../Public/css/P_list.gif) 5px 3px no-repeat";
-	List_title_Lis[2].style.background = "url(../Public/css/P_grid_s.gif) 5px 3px no-repeat";
-}
-function changeG() {
-	if (Listchange.getAttribute("class")) {
-		Listchange.setAttribute("class","gridcont");
-	} else {
-		Listchange.setAttribute("className","gridcont");
-	}
- 
-	List_title_Lis[1].style.background = "url(../Public/css/P_list_s.gif) 5px 3px no-repeat";
-	List_title_Lis[2].style.background = "url(../Public/css/P_grid.gif) 5px 3px no-repeat";
-}
-List_title_Lis[1].onclick = function() {
-	return changeL();
-}
- 
-List_title_Lis[2].onclick = function() {
-	return changeG();
-}
-</script>
+	
+	
+	</td>
+  </tr>
+</tbody></table>
+
+
 </div>
 <include file="../Public/footer" />
