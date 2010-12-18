@@ -96,9 +96,12 @@ class ProductsModel extends Model {
 			$map1 ['attr_id'] = $attr [$row] ['id'];
 			$attr [$row] ['attrs'] = $dao->where ( $map1 )->group('attr_value')->findall ();
 			$attr [$row] ['values'] = explode ( chr ( 13 ), $attr [$row] ['values'] );
+			foreach ($attr[$row]['values'] as $k=>$v){
+				$attr[$row]['values'][$k]=str_replace("\n","",$v);
+			}
 			$attr [$row] ['values_count'] = count($attr [$row] ['attrs']);
 		}
-		
+
 		return $attr;
 	}
 	//获取产品价格明细

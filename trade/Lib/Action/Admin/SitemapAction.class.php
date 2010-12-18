@@ -8,13 +8,17 @@
  * @lastupdate 2010-11-16
  */
 class SitemapAction extends AdminCommAction {
+	public $xmlpath;
+	function __construct(){
+		parent::__construct();
+		$this->xmlpath=__ROOT__.'./sitemap.xml';
+	}
 	function index(){
 		$dao=D('Products');
 		$count=$dao->count();
 		$this->assign('count', $count);
-	
-		if(file_exists("../sitemap.xml")){
-			$this->assign('mtime',date('Y-m-d H:i:s',filemtime("../sitemap.xml")));
+		if(file_exists($this->xmlpath)){
+			$this->assign('mtime',date('Y-m-d H:i:s',filemtime($this->xmlpath)));
 		}
 		if($this->isPost()){
 			$this->create();
@@ -31,7 +35,7 @@ class SitemapAction extends AdminCommAction {
 		$sitemap=new google_sitemap();
 		if($num==0){
 			//写入头部
-			$fh = fopen('../sitemap.xml', 'w');
+			$fh = fopen($this->xmlpath, 'w');
 			fwrite($fh, $sitemap->header);
 			fclose($fh);
 			$dao=D('Cate');
@@ -48,7 +52,7 @@ class SitemapAction extends AdminCommAction {
 		$data=$dao->order('id desc')->limit("$num,$unit")->findall();
 		if(!$data){
 			//写入底部
-			$fh = fopen('../sitemap.xml', 'a');
+			$fh = fopen($this->xmlpath, 'a');
 			fwrite($fh, $sitemap->footer);
 			fclose($fh);
 			$sitemap="http://".$_SERVER['HTTP_HOST'].'/sitemap.xml';
@@ -59,7 +63,7 @@ class SitemapAction extends AdminCommAction {
 			curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
 			curl_exec($ch);
 			$this->assign('jumpUrl',U("Sitemap/index"));
-			$this->success('生成Google SiteMap成功！');
+			$this->success('生成网站成功！');
 		}
 		foreach($data as $k => $v){
 			$cats[]=array("loc" => "http://".$_SERVER['HTTP_HOST']."$app/".tourlstr($v['name'])."-pid-".$v['id'].".html",
@@ -80,7 +84,7 @@ class SitemapAction extends AdminCommAction {
 		}
 		header( "Content-type: application/xml; charset=\"".$sitemap->charset . "\"", true );
 		header( 'Pragma: no-cache' );
-		$sitemap->build('../sitemap.xml');
+		$sitemap->build($this->xmlpath);
 		$more=$num+$unit;
 		$this->assign('jumpUrl',U("Sitemap/create?num=$more"));
 		$this->success("正在生成产品从".$num."到".$more);

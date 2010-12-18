@@ -253,6 +253,9 @@ class ProductsAction extends AdminCommAction {
 				$map1['attr_id']=$attr[$row]['id'];
 				$attr[$row]['attrs']=self::$Model->where($map1)->group('attr_value')->findall();
 				$attr[$row]['values']=explode(chr(13),$attr[$row]['values']);
+				foreach ($attr[$row]['values'] as $k=>$v){
+					$attr[$row]['values'][$k]=str_replace("\n","",$v);
+				}
 			}
 			$this->attr=$attr;
 			$this->cateid=$_POST['cateid'];
@@ -369,12 +372,16 @@ class ProductsAction extends AdminCommAction {
 			$map1['attr_id']=$attr[$row]['id'];
 			$attr[$row]['attrs']=self::$Model->where($map1)->findall();
 			$attr[$row]['values']=explode(chr(13),$attr[$row]['values']);
+			foreach ($attr[$row]['values'] as $k=>$v){
+					$attr[$row]['values'][$k]=str_replace("\n","",$v);
+				}
 		}
 		//dump($attr);
 		$this->attr=$attr;
 		$this->display();
 	}
 	function attrUpdate(){
+		
 		$products_id=explode(",",$_POST['products_id']);
 		//先删除原来的属性
 		self::$Model=D("Products_attr");
@@ -420,6 +427,10 @@ class ProductsAction extends AdminCommAction {
 				$map1['attr_id']=$attr[$row]['id'];
 				$attr[$row]['attrs']=self::$Model->where($map1)->group('attr_value')->findall();
 				$attr[$row]['values']=explode(chr(13),$attr[$row]['values']);
+				foreach ($attr[$row]['values'] as $k=>$v){
+					$attr[$row]['values'][$k]=str_replace("\n","",$v);
+				}
+				
 			}
 			$this->attr=$attr;
 			$this->cateid=$_POST['cateid'];

@@ -1,47 +1,47 @@
 <include file="../Public/admintop" />
 <include file="../Public/adminleft" />
 <script type="text/javascript">
-	function ajaxFileUpload()
+function ajaxFileUpload()
+{
+	$("#loading")
+	.ajaxStart(function(){
+		$(this).show();
+	})
+	.ajaxComplete(function(){
+		$(this).hide();
+	});
+
+	$.ajaxFileUpload
+	(
 	{
-		$("#loading")
-		.ajaxStart(function(){
-			$(this).show();
-		})
-		.ajaxComplete(function(){
-			$(this).hide();
-		});
-
-		$.ajaxFileUpload
-		(
-			{
-				url:"{:U('Cate/upload')}",
-				secureuri:false,
-				fileElementId:'fileToUpload',
-				dataType: 'json',
-				success: function (data, status)
-				{
-					if (status==1){
-						$("#msg").text(data.info);
-					}
-					else{
-						$("#msg").text(data.info);
-						//var jsonObj = eval("("+data+")");						
-						$("#imgurlbox").attr("src","."+data.data['savename']); 
-						$("#imgurlbox").show();
-						$("#imgurl").val(data.data['savename']);
-					}
-
-
-				},
-				error: function (data, status, e)
-				{
-					alert(e);
-				}
+		url:"{:U('Cate/upload')}",
+		secureuri:false,
+		fileElementId:'fileToUpload',
+		dataType: 'json',
+		success: function (data, status)
+		{
+			if (status==1){
+				$("#msg").text(data.info);
 			}
-		)		
-		return false;
+			else{
+				$("#msg").text(data.info);
+				//var jsonObj = eval("("+data+")");
+				$("#imgurlbox").attr("src","."+data.data['savename']);
+				$("#imgurlbox").show();
+				$("#imgurl").val(data.data['savename']);
+			}
 
+
+		},
+		error: function (data, status, e)
+		{
+			alert(e);
+		}
 	}
+	)
+	return false;
+
+}
 </script>
 <!-- Content (Right Column) -->
 		<div id="content" class="box">
@@ -114,9 +114,9 @@
             </table>
             <input type="hidden" name="id" value="{$list['id']}" />
             <script language="javascript" type="text/javascript">
-			   $("#pid").val({$list['pid']});
-			   $("#type_id").val({$list['type_id']});
-			   $("input[name='ishot'][value={$list['ishot']}]").attr("checked",true);
+            document.myform.pid.value="{$list['pid']}";
+            document.myform.type_id.value="{$list['type_id']}";
+            $("input[name='ishot'][value={$list['ishot']}]").attr("checked",true);
 			</script>
             </form>
 		</div> <!-- /content -->
