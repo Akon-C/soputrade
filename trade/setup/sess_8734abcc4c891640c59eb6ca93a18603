@@ -1,1 +1,0 @@
-app_conf|a:1:{i:0;a:8:{s:10:"mysql_host";s:9:"localhost";s:10:"mysql_port";s:4:"3306";s:10:"mysql_user";s:4:"root";s:9:"mysql_pwd";s:0:"";s:7:"db_name";s:8:"thinkphp";s:9:"db_isdrop";s:1:"1";s:6:"db_pre";s:3:"tp_";s:8:"app_root";s:3:"../";}}
