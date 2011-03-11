@@ -1,4 +1,4 @@
-3.10更新记录
+﻿3.10更新记录
 
 新增lib/model/Members_groupsModel.class.php文件
 修改tpl/default/Public/adminleft.html
@@ -36,3 +36,6 @@ update `{key}members` set points=0;
 修改了admin/Products_addAction.class.php和admin/Products_editAction.class.php 添加赠送积分功能
 修改了home/PaymentAction.class.php 添加给用户增加积分功能
 
+删除了很多不必要的文件
+
+将程序更新至https://soputrade.googlecode.com/svn/trunk/
