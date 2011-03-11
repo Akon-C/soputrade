@@ -1,0 +1,12 @@
+  <div id="footer">
+          {$Footer}{$footcode}
+          </div>
+      </div>
+</div>
+
+<if condition="GetSettValue('365webcall_status') eq 1">
+{$_365call}
+  <script type='text/javascript' src='http://p.365webcall.com/IMMeForPartner.aspx?email={:GetSettValue('365webcall_email')}&accountid={:GetSettValue('365webcall_accountid')}&LL=0'></script>
+</if>
+</body>
+</html>

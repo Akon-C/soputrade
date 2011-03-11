@@ -1,0 +1,88 @@
+<include file="../Public/header" />
+
+<include file="../Public/left" />
+
+<include file="address_top" />
+<p style="width: 80%;margin:5px 10px" align="left"><em>Fill in <span style="color: #F00;">your full name,shipping address,email and phone number</span>.The address you enter below will be where you product will be ship to.(make sure to double check address!)<br />
+<span style="color: #F00;">A valid Email address is required</span>! We will email you the tracking number or notice of replacement if Out of Stock unexpectedly. </em></p>
+       <table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding-top:10px;padding-bottom:10px;">
+          <tr>
+            <td colspan="2" height="25" bgcolor="#F5f5f5" align="left" style="padding-left:1%;"><strong style="color:#4F617B; font-size:16px;">Shipping To</strong></td>
+          </tr>
+           <tr>
+            <th colspan="2" style="padding-left:10px;font-weight:bold">1.Your Personal Details</th>
+          </tr>
+          
+          <tr>
+            <td height="25" style="padding-left:10px;" width="20%" align="left">Email:</td>
+            <td height="25" style="padding-left:10px;" align="left">
+          
+            <input name="member_email" value="{$member_Info['email']}" type="text" style="width:180px;"  class="required email"/><span style="color:red">*</span>
+            </td>
+          </tr>
+          <tr>
+            <td height="25" style="padding-left:10px;" width="20%" align="left">First Name:</td>
+            <td height="25" style="padding-left:10px;" align="left"><input name="delivery_firstname" type="text" style="width:180px;"  class="required"/><span style="color:red">*</span></td>
+          </tr>
+          <tr>
+            <td height="25" style="padding-left:10px;" width="20%" align="left">Last Name:</td>
+            <td height="25" style="padding-left:10px;" align="left"><input name="delivery_lastname" type="text" style="width:180px;"  class="required"/><span style="color:red">*</span></td>
+          </tr>
+            <tr>
+            <th colspan="2" style="padding-left:10px;font-weight:bold">2.Your Address</th>
+          </tr>
+          <tr>
+            <td height="25" style="padding-left:10px;" width="20%" align="left">Address:</td>
+            <td height="25" style="padding-left:10px;" align="left"><input name="delivery_address" type="text" style="width:180px;"  class="required" /><span style="color:red">*</span></td>
+          </tr>
+          <tr>
+            <td height="25" style="padding-left:10px;" width="20%" align="left">State/Province:</td>
+            <td height="25" style="padding-left:10px;" align="left"><input name="delivery_state" type="text" style="width:180px;"  class="required"/><span style="color:red">*</span></td>
+          </tr>
+          <tr>
+            <td height="25" style="padding-left:10px;" width="20%" align="left">City:</td>
+            <td height="25" style="padding-left:10px;" align="left"><input name="delivery_city" type="text" style="width:180px;"  class="required"/><span style="color:red">*</span></td>
+          </tr>
+          <tr>
+            <td height="25" style="padding-left:10px;" width="20%" align="left">Zip/Postal Code:</td>
+            <td height="25" style="padding-left:10px;" align="left"><input name="delivery_zip" type="text" style="width:180px;"  class="required"/><span style="color:red">*</span></td>
+          </tr>
+          <tr>
+            <td height="25" style="padding-left:10px;" width="20%" align="left">Country:</td>
+            <td height="25" style="padding-left:10px;" align="left"> <select name="delivery_country" id="country" class="required" style="font-size:11px;font-family:Verdana, Arial, Helvetica, sans-serif;">
+  <option value="">Please Select</option> 
+  <volist name="countries" id="vo"> 
+  <option value="{$vo.countries_id}" <eq name="vo['countries_id']" value="223">selected</eq> >{$vo.countries_name}</option> 
+  </volist>
+  </select><span style="color:red">*</span></td>
+          </tr>
+          <tr>
+            <td height="25" style="padding-left:10px;" width="20%" align="left">Telephone:</td>
+            <td height="25" style="padding-left:10px;" align="left"><input name="delivery_telephone" type="text" style="width:180px;"  class="required"/><span style="color:red">*</span></td>
+          </tr>
+        </table>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding-top:10px;padding-bottom:10px;">
+        <tr>
+            <th colspan="2" style="padding-left:10px;font-weight:bold">3.Leave Word</th>
+          </tr>
+          <tr>
+          
+          
+    <td colspan="2" height="25" bgcolor="#F5f5f5" align="left" style="padding-left:1%;"><strong style="color:#4F617B; font-size:16px;">SPECIAL COMMENTS ABOUT YOUR ORDER</strong></td>
+  </tr>
+  <tr>
+    <td align="left" style="padding:10px">
+      <textarea name="BuyNote" cols="110" rows="3" style="width:95%"></textarea>
+    </td>
+  </tr>
+   <tr>
+    <td colspan="2" height="25" bgcolor="#F5f5f5" align="left" style="padding-left:1%;"><strong style="color:#4F617B; font-size:16px;">Shipping Method:EMS International Express</strong></td>
+  </tr>
+  <tr>
+            <th colspan="2" style="padding-left:10px;font-weight:bold">4.Payment Method<span style="color:red">*</span></th>
+          </tr>
+ 
+    
+</table>
+<include file="address_bottom" />
+<include file="../Public/footer" />

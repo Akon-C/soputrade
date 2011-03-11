@@ -1,0 +1,39 @@
+<include file="Public:header" />
+<include file="Public:left" />
+
+ <div class="col5">
+   <div class="list_nav">Your Position: <a href="__APP__">Home</a> > Search Result </div>
+        <div class="list1">
+          <div class="list1_title">
+          
+            <div class="title1"><strong>  Search Result</strong></div>
+            <div class="title2"><form method="get"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="70" align="right">Display：</td>
+    <td width="250"><select name="order" style="width:120px;">
+              <option value="id" <eq name="order" value="id">selected</eq>>Sort by time</option><option value="price" <eq name="order" value="price">selected</eq>>Sort by price</option><option value="dateline" <eq name="order" value="dateline">selected</eq>>Sort by update</option>              </select>
+              <select name="sort" style="width:120px;">
+              <option value="desc" <eq name="sort" value="desc">selected</eq>>Descending</option><option value="asc" <eq name="sort" value="asc">selected</eq>>Ascending</option>              </select>
+              </td> 
+    <td width="35"><input type="image" name="imageField" src="../Public/images/go1.gif" alt="go"/></td>
+  </tr>
+</table></form>
+</div>
+          </div>
+          <div class="list1_content">
+             <iterate name="list" id="vo">
+            <div class="list_pro">
+              <div class="list_pro_img"><a href="{:build_url($vo,'pro_url')}" altimg="{:build_url($vo,'pro_bigimage')}" title="{:build_url($vo,'pro_name')}"><img src="{:build_url($vo,'pro_smallimage')}" alt="{:build_url($vo,'pro_name')}"  width="150" height="115" border="0" /></a></div>
+              <div class="list_pro_name"><a href="{:build_url($vo,'pro_url')}">{:build_url($vo,'pro_name')}</a></div>
+              <div class="list_pro_pri">Shop price:{:build_url($vo,'pro_price')}</div>
+              <div class="list_pro_button"><a href="{:build_url($vo,'pro_url')}"><img src="../Public/images/add-to-cart.gif" alt="" border="0" /></a></div>
+            </div>
+             </iterate>
+          </div>
+        </div>
+        <div class="list_page">{$page}</div>
+      </div>
+    </div>
+
+  <include file="Public:footer" />
+

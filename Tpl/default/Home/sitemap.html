@@ -1,0 +1,102 @@
+<include file="../Public/header" />
+<include file="../Public/left" />
+
+<style>
+.cate {
+	text-align: left;
+	float: left;
+	width: 98%;
+	padding-right: 1%;
+	padding-left: 1%;
+}
+.cate ul {
+    text-align: left;
+	float: left;
+	width: 100%;
+}
+.cate ul li {
+    float: left;
+	width: 100%;
+}
+.cate ul li ul {
+    float: left;
+	width: 100%;
+}
+.cate ul li ul li {
+    float: left;
+	width: 100%;
+	text-align:left;
+}
+.cate ul li ul li a {
+	font-weight: normal;
+	color: #000000;
+	text-decoration: none;
+	display: block;
+	float: left;
+	width: 24%;
+}
+.cate ul li ul li a:hover {
+	text-decoration: underline;
+}
+.cate ul li a {
+	line-height: 20px;
+	font-weight: bold;
+	color: #000000;
+	text-decoration: none;
+}
+fieldset {
+	border:1px solid #ccc;
+	padding-left:1%;
+	width:98%;
+	float:left;
+}
+.list_content1 {
+	width:96%;
+	padding:2%;
+	background-color:#FFFFFF;
+	float:left;
+}
+</style>
+
+ <div class="col2">
+        <div class="list">
+          <div class="list_title"><a href="__APP__">Home</a> >  Sitemap </div>
+          <div class="list_content1">
+
+                  <fieldset>
+                    <legend>All Categoty</legend>
+                    
+         	           
+                    <div class="cate">
+                    
+<ul>
+
+ <volist name="catetree" id="vo">
+	  <ul>
+	  
+ <eq name="vo['subcount']" value="0">
+	    <li><a href="{:build_url($vo,'cate_url')}">{:build_url($vo,'cate_name')}</a></li>
+</eq>
+ <gt name="vo['subcount']" value="0">
+ 		 <li><a href="{:build_url($vo,'cate_url')}">{:build_url($vo,'cate_name')}</a>
+ 		
+ 		 <ul>
+ 		 	<li>
+ 		 	<volist name="vo['sub']" id="subvo">
+	        <a href="{:build_url($subvo,'cate_url')}">{:build_url($subvo,'cate_name')}</a>
+	        </volist>
+	        </li>
+	      </ul>
+	    </li>
+ </gt>
+	  </ul>
+	  </volist>
+</ul>
+                                 
+                    </div>
+                  </fieldset>
+           </div>
+        </div>
+      </div>
+
+<include file="../Public/footer" />    

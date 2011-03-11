@@ -1,0 +1,135 @@
+<include file="Member:Member-top" />
+
+      <div class="page">
+          <div id="main">
+              <include file="Member:Member-right" /> 
+
+
+ <div id="col3" >
+                <div class="col3_nav"><h2>Order form information - examination</h2> </div>
+                <div class="col3_content">
+                  <fieldset>
+                    <legend>Order information</legend>
+                    <div class="cate">
+                      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+         
+          <tr>
+            <td height="25" style="padding-left:10px;" width="10%" align="right"><strong>Order time :</strong></td>
+            <td height="25" style="padding-left:10px;" align="left">{:toDate($list['dateline'],'Y-m-d H:i:s')}</td>
+          </tr>
+          <tr>
+            <td height="25" style="padding-left:10px;" width="10%" align="right"><strong>Order No.:</strong></td>
+            <td height="25" style="padding-left:10px;" align="left">{$list.sn}</td>
+          </tr>
+          <tr>
+            <td height="25" style="padding-left:10px;" width="10%" align="right"><strong>Total:</strong></td>
+            <td height="25" style="padding-left:10px;" align="left">{:getprice($list['orders_total'],$list['orders_total'])}</td>
+          </tr>
+          <tr>
+            <td height="25" style="padding-left:10px;" width="10%" align="right"><strong>Payment:</strong></td>
+            <td height="25" style="padding-left:10px;" align="left">{$list.payment_module_code}</td>
+          </tr>
+          <tr>
+            <td height="25" style="padding-left:10px;" width="10%" align="right"><strong>First Name:</strong></td>
+            <td height="25" style="padding-left:10px;" align="left">{$list.member_firstname}</td>
+          </tr>
+          <tr>
+            <td height="25" style="padding-left:10px;" width="10%" align="right"><strong>Last Name:</strong></td>
+            <td height="25" style="padding-left:10px;" align="left">{$list.member_lastname}</td>
+          </tr>
+          <tr>
+            <td height="25" style="padding-left:10px;" width="10%" align="right"><strong>Telephone Number:</strong></td>
+            <td height="25" style="padding-left:10px;" align="left">{$list.delivery_telephone}</td>
+          </tr>
+          <tr>
+            <td height="25" style="padding-left:10px;" width="10%" align="right"><strong>Street Address:</strong></td>
+            <td height="25" style="padding-left:10px;" align="left">{$list.delivery_address}</td>
+          </tr>
+          <tr>
+            <td height="25" style="padding-left:10px;" width="10%" align="right"><strong>City:</strong></td>
+            <td height="25" style="padding-left:10px;" align="left">{$list.delivery_city}</td>
+          </tr>
+          <tr>
+            <td height="25" style="padding-left:10px;" width="10%" align="right"><strong>State/Province:</strong></td>
+            <td height="25" style="padding-left:10px;" align="left">{$list.delivery_state}</td>
+          </tr>
+          <tr>
+            <td height="25" style="padding-left:10px;" width="10%" align="right"><strong>Zip Code:</strong></td>
+            <td height="25" style="padding-left:10px;" align="left">{$list.delivery_zip}</td>
+          </tr>
+          <tr>
+            <td height="25" style="padding-left:10px;" width="10%" align="right"><strong>Country:</strong></td>
+            <td height="25" style="padding-left:10px;" align="left">{$list.delivery_country}</td>
+          </tr>
+          <tr>
+            <td height="25" style="padding-left:10px;" width="10%" align="right"><strong>Customer message:</strong></td>
+            <td height="25" style="padding-left:10px;" align="left">{$list.BuyNote}</td>
+          </tr>
+          <tr>
+            <td height="25" style="padding-left:10px;" width="10%" align="right"><strong>Processing:</strong></td>
+            <td height="25" style="padding-left:10px;" align="left">{:get_orders_status($list['id'])}</td>
+          </tr>
+          <eq name="orders_status" value="3">
+          <notempty name="express_method">
+           <tr>
+            <td height="25" style="padding-left:10px;" width="10%" align="right"><strong>Express delivery:</strong></td>
+            <td height="25" style="padding-left:10px;" align="left">{$list.express_method}</td>
+          </tr>
+          </notempty>
+          </eq>
+          <tr>
+            <td height="25" style="padding-left:10px;" width="10%" align="right"><strong>Shopping list:</strong></td>
+            <td height="25" style="padding-left:10px;" align="right">
+              <table border="1" width="100%" style="border-collapse: collapse" bordercolor="#CCCCCC" cellspacing="0" cellpadding="4">
+					<tr align="center">
+						<td width="20%" bgcolor="#EAEAEA"><b>Item name</b></td>
+						<td width="17%" bgcolor="#EAEAEA"><b>Product ID</b></td>
+						<td width="13%" bgcolor="#EAEAEA"><b>Model</b></td>
+						<td width="17%" bgcolor="#EAEAEA"><b>Qty</b></td>
+						<td width="13%" bgcolor="#EAEAEA"><b>Price</b></td>
+						<td width="20%" bgcolor="#EAEAEA"><b>Subtotal</b></td>
+					</tr>	
+					<volist name="plist" id="vo">	
+                    <tr align='center'><td><a href="__APP__/{:tourlstr($vo['products_name'])}-pid-{$vo['products_id']}.html" target='_blank' class='class'>{$vo.products_name}</a></td><td>{$vo.products_id}</td><td>&nbsp;
+<volist name="vo['products_model']" id="subvo">
+{$subvo['name']}:{$subvo['value']}&nbsp;
+</volist>
+                    </td><td>{$vo.products_quantity}</td><td><Span style="color:red;text-decoration: line-through;">{:getprice($vo['products_price'],$vo['products_pricespe'])}</Span>&nbsp;&nbsp;&nbsp;</td><td>{:getprice($vo['products_total'],$vo['products_total'])}</td></tr>
+</volist>	
+                    </table>
+                    <br />Subtotal {:getprice($list['orders_total'],$list['orders_total'])}<br>
+                    <if condition="getprice_str($fees['shippingmoney']) eq 0">
+					<s>Shipping Fee  <b>{:getprice_str($fees['shippingmoney'])}</b></s><br>
+					<else/>
+					Shipping Fee  <b>{:getprice_str($fees['shippingmoney'])}</b><br>
+					</if>
+					
+					<if condition="getprice_str($fees['insurance']) eq 0">
+					<s>Insurance  <b>{:getprice_str($fees['insurance'])}</b></s><br>
+					<else/>
+					Insurance  <b>{:getprice_str($fees['insurance'])}</b><br>
+					</if>
+					
+					<if condition="getprice_str($fees['paymoney']) eq 0">
+					<s>Pay Fee  <b>{:getprice_str($fees['paymoney'])}</b></s><br>
+					<else/>
+					Pay Fee  <b>{:getprice_str($fees['paymoney'])}</b><br>
+					</if>
+					
+					<b>Grand Total</b> <span>{:getprice($list['orders_total'],$list['orders_total'])}</span>
+            </td>
+          </tr>
+          
+          <tr>
+            <td colspan="2" align="center" height="25">【<a href='javascript:window.print()' class="class">Prints this page</a>】</td>
+          </tr>
+        </table>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+          </div>
+
+
+     <include file="Member:Member-footer" />
+
