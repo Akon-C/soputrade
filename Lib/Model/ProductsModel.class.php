@@ -63,15 +63,15 @@ class ProductsModel extends Model {
 		if($count>0) {
 			import("ORG.Util.Page");
 			//创建分页数量
-			if('Search' == MODULE_NAME && !$pro_num=GetSettValue('search_num')){
-				$pro_num=21;
-			}elseif('cid' == ACTION_NAME && !$pro_num=GetSettValue('cate_num')){
-				$pro_num=21;
-			}elseif('Pro' == MODULE_NAME && !$pro_num=GetSettValue('pro_num')){
-				$pro_num=21;
-			}elseif(!$pro_num){
-				$pro_num=21;
-			}else{
+
+			if('Search' == MODULE_NAME){
+				$pro_num=GetSettValue('search_num');
+			}elseif('cid' == ACTION_NAME){
+				$pro_num=GetSettValue('cate_num');
+			}elseif('Pro' == MODULE_NAME){
+				$pro_num=GetSettValue('pro_num');
+			}
+			if(!$pro_num){
 				$pro_num=21;
 			}
 			$p   = new Page($count,$pro_num);
