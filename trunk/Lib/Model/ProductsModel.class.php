@@ -1,0 +1,146 @@
+<?php
+/**
+ * @author nanze
+ * @link 
+ * @todo 
+ * @copyright 811046@qq.com
+ * @version 1.0
+ * @lastupdate 2010-11-23
+ */
+class ProductsModel extends Model {
+
+
+
+	protected $_validate = array (
+	array ('name', 'checknamelen', 'Products name too long!', self::EXISTS_VAILIDATE, 'callback' ),
+	array('name','require','产品名称必须填写!'),
+	array('name','','产品名称已经存在!',0,'unique',1),
+	);
+	protected function checknamelen(){
+		if (strlen($_REQUEST['name'])>=60){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
+	/**
+	 * 分页
+	 *
+	 * @param Model $model
+	 * @param Array $map
+	 * @param String $sortBy
+	 * @param Boolean $asc
+	 */
+	public function _list($view,$map,$sortBy='',$asc=true)
+	{
+		//排序字段 默认为主键名
+		if(isset($_REQUEST['order'])) {
+			$order = $_REQUEST['order'];
+		}else {
+			$order = !empty($sortBy)? $sortBy: $model->getPk();
+		}
+		//排序方式默认按照倒序排列
+		//接受 sost参数 0 表示倒序 非0都 表示正序
+		if(isset($_REQUEST['sort'])) {
+			$sort = $_REQUEST['sort']?'asc':'desc';
+		}else {
+			$sort = $asc?'asc':'desc';
+		}
+		//取得满足条件的记录数
+		if(!empty($_SESSION['map']) && 'Search'==MODULE_NAME){
+			$map=$_SESSION['map'];
+		}
+		$count= $this->where($map)->count();
+		$pages=array(
+		'totalRows'=>0,//总记录
+		'totalPages'=>0,//总页数
+		'startRow'=>0,//开始行
+		'endRow'=>1,//结束行
+		'list'=>null,//当前数据
+		"page"=>null//表示字符串
+		);
+		if($count>0) {
+			import("ORG.Util.Page");
+			//创建分页数量
+			if('Search' == MODULE_NAME && !$pro_num=GetSettValue('search_num')){
+				$pro_num=21;
+			}elseif('cid' == ACTION_NAME && !$pro_num=GetSettValue('cate_num')){
+				$pro_num=21;
+			}elseif('Pro' == MODULE_NAME && !$pro_num=GetSettValue('pro_num')){
+				$pro_num=21;
+			}elseif(!$pro_num){
+				$pro_num=21;
+			}else{
+				$pro_num=21;
+			}
+			$p   = new Page($count,$pro_num);
+			
+			//分页查询数据
+			$voList = $this->where($map)->order("`".$order."` ". $sort)->limit($p->firstRow .','.$p->listRows)->findAll();
+			//分页显示
+			$page = $p->show();
+			$pages['totalRows']=$p->totalRows;
+			$pages['totalPages']=$p->totalPages;
+			$pages['startRow']=$p->firstRow+1;
+			$pages['endRow']=($p->nowPage>1?$p->nowPage-1:1)*$p->listRows;
+			$pages['list']=$voList;
+			$pages['page']=$page;
+		}
+		$view->assign($pages);
+		return null ;
+	}
+
+	public function viewcounts($pid){
+		$data['viewcount']=array('exp',"viewcount+1");
+		$this->where('id='.$pid)->save($data);
+	}
+
+	public function get_attrs($cateid,$pid){
+		$dao=D("Cate");
+		$typeid=$dao->field("type_id")->where("id=".$cateid)->select();
+		$dao=D("Type_attr");
+		$attr = $dao->where ( "type_id=" . $typeid [0] ['type_id'] . " and status=1" )->order ( "sort desc" )->findall ();
+		$dao = D ( "Products_attr" );
+		for($row = 0; $row < count ( $attr ); $row ++) {
+			$map1 ['products_id'] = $pid;
+			$map1 ['attr_id'] = $attr [$row] ['id'];
+			$attr [$row] ['attrs'] = $dao->where ( $map1 )->group('attr_value')->findall ();
+			$attr [$row] ['values'] = explode ( chr ( 13 ), $attr [$row] ['values'] );
+			foreach ($attr[$row]['values'] as $k=>$v){
+				$attr[$row]['values'][$k]=str_replace("\n","",$v);
+			}
+			$attr [$row] ['values_count'] = count($attr [$row] ['attrs']);
+		}
+
+		return $attr;
+	}
+	//获取产品价格明细
+	public function getpriceInfo($pid,$count){
+		$list=$this->where("id=".$pid)->find();
+		if (!$list){
+			return null;
+		}
+		else{
+			$discount=0;
+			$list['price']=(float)$list['price'];
+			$list['pricespe']=(float)$list['pricespe'];
+			$list['count']=$count;
+			$list['discount']=$discount;
+			$list['price_total']=$list['price']*$count;
+			$list['pricespe_total']=$list['pricespe']*$count;
+			if ($list['price_total']<=$list['pricespe_total']){
+				$list['total']=$list['price_total'];
+			}
+			else{
+				$list['total']=$list['pricespe_total'];
+			}
+			if ($discount>0){
+				$list['total']=$list['total']*$discount;
+			}
+			
+			return $list;
+		}
+	}
+}
+?>

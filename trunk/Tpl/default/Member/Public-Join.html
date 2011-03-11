@@ -1,0 +1,53 @@
+<include file="Member:Member-top" />
+
+
+      <div class="page">
+          <div id="main">
+            <include file="Member:Member-right" />
+              
+              <div id="col3" >
+                <div class="col3_nav"><h2>My Account Information</h2></div>
+                <div class="left_col3">
+                  <form action="{:U('Member-Public/doJoin')}" method="post" name="dojoin">
+<fieldset>
+<legend>Enter your email address and create a password</legend>
+
+<div class="information">NOTE: If you already have an account with us, please login at the login page.</div>
+<label class="inputLabel" for="firstname">First Name:</label>
+<input type="text" name="firstname" size = "35" class="required" minlength="3" /><span class="alert"> *</span><br class="clearBoth" />
+
+<label class="inputLabel" for="lastname">Last Name:</label>
+<input type="text" name="lastname" size = "35" class="required" minlength="3"/><span class="alert"> *</span><br class="clearBoth" />
+
+<label class="inputLabel" for="email-address">Email Address:</label>
+<input type="text" name="email" size = "35"  class="required email" /><span class="alert"> *</span>
+<br class="clearBoth" />
+<label class="inputLabel" for="password-new">Password:</label>
+<input type="password" name="password" size = "21"  class="required" minlength="5" id="password1"/><span class="alert"> * (at least 6 characters)</span><br class="clearBoth" />
+<label class="inputLabel" for="password-new">Confirm Password:</label>
+<input type="password" name="repassword" size = "21"  class="required" minlength="5" equalTo="#password1"  /><label class="radioButtonLabel" for="email-format-html">
+<div class="forward"><input name="" type="submit" value="Create New Account" /></div></fieldset>
+</form>
+                </div>
+                <div class="right_col3">
+                <form method="POST" name="dologin" action="{:U('Member-Public/doLogin')}" >
+                  <fieldset>
+                    <legend>Returning Customers</legend>
+                    <div class="information">If you've shopped with us before ,please enter your email address and password</div>
+                    <label class="inputLabel" for="firstname">E-mail:</label>
+<input type="text" name="email" size = "35"  class="required email"/><span class="alert"> *</span><br class="clearBoth" />
+<label class="inputLabel" for="firstname">Password:</label>
+<input type="password" name="password" size = "35" class="required" minlength="5"  /><span class="alert"> *</span><br class="clearBoth" />
+<div class="forward"><input name="" type="submit" value="Log In" /></div>
+<div class="forgot"><a href="{:U('Member-Public/ForgotPWD')}">Forgot your password ? </a></div>
+                  </fieldset>
+                  </form>
+                </div>
+              </div>
+          </div>
+          
+<script language="JavaScript" type="text/javascript">
+		$("form[name=dojoin]").validate();
+		$("form[name=dologin]").validate();
+</script>
+<include file="Member:Member-footer" />

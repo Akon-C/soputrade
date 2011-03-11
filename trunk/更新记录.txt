@@ -1,0 +1,38 @@
+3.10更新记录
+
+新增lib/model/Members_groupsModel.class.php文件
+修改tpl/default/Public/adminleft.html
+修改lib/action/admin/MembersAction.class.php文件（有备注)
+修改数据库
+
+DROP TABLE IF EXISTS `{key}members_group`;
+CREATE TABLE `{key}members_group` (
+    `id` int(11) NOT NULL auto_increment,
+  `minpoints` int(11) default NULL,
+  `maxpoints` int(11) default NULL,
+  `name` varchar(50) default NULL,
+  `discount` float default '1',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+
+ALTER TABLE `{key}products`
+ADD COLUMN `points`  int(11) NULL DEFAULT 0 AFTER `brand`;
+
+ALTER TABLE `{key}members`
+ADD COLUMN `points`  int(11) NULL  DEFAULT 0 AFTER `profav`;
+update `{key}members` set points=0;
+
+
+
+添加模板 admin/Members-points.html
+
+更新了common.php的getprice函数
+
+修改了emptyAction.class.php文件中的产品显示，添加了显示vip价格的功能（有备注)
+
+修改了CartActin.class.php 的一些产品价格计算，有备注
+修改了admin/Orders-orderslist.html模板中的价格显示
+修改了admin/Products_addAction.class.php和admin/Products_editAction.class.php 添加赠送积分功能
+修改了home/PaymentAction.class.php 添加给用户增加积分功能
+

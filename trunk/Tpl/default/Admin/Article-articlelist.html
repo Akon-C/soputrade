@@ -1,0 +1,94 @@
+<include file="../Public/admintop" />
+<include file="../Public/adminleft" />
+<script type="text/javascript">
+function status(id,_this){
+	$.post("{:U('Article/status')}",'article_id='+id,function(data){
+		$('img',_this).attr('src',data.data['imgurl']);
+	},'json');
+	
+}
+function delall(){
+	var id=$('input:checkbox[name^=article_id]:checked').map(function(){
+		return $(this).val();
+	}).get().join(",");
+	if(!id){
+		alert('请选择要删除的项!');
+	}else{
+		$.post("{:U('Article/delete')}","article_id="+id);
+		$('input[name^=article_id]:checked').parent().parent().remove();
+	}
+}
+$(document).ready (
+function(){
+	//选中
+	$('#check').click(function(){
+		$('input[name^=article_id]').attr('checked',$(this).attr('checked'));
+	});
+	$("a[name^='del_']").click(
+	function(){
+		var answer = confirm("确认要删除吗?");
+		if(answer){
+			window.location = $(this).attr("href");
+
+		}
+		else{
+
+			$(this).attr("href","javascript:void(0);");
+
+		}
+
+	}
+	);
+}
+);
+
+</script>
+<!-- Content (Right Column) -->
+		<div id="content" class="box">
+
+			<h1>文章管理</h1> 
+            <p class="msg info">提示：文章标题如有空格，请以-减号代替，前台会自动处理成空格</p>
+            	
+            <p id="btn-create" class="box">
+              <a href="{:U('Article/add')}">添加新文章</a> 
+            </p>
+             <p id="btn-create" class="box">
+            <form action="{:U('Article/articlelist')}" method="get" >
+           <select name="article_cateid" class="input-text" >
+						{$cateoption}
+						</select>
+            标题:<input type="text" size="20" name="key" class="input-text" value="" />
+            
+                        <input type="submit" value="搜索" />
+            </form>
+            </p>
+            <table width="100%">
+				<tr pid="0">
+				    <th style="text-align:center" width="7%"><input type="checkbox" id="check" /></th>
+				    <th style="text-align:center" width="15%">标题</th>
+				    <th style="text-align:center" width="15%">排序</th>
+                    <th style="text-align:center" width="7%">状态</th>
+				    <th style="text-align:center" width="35%">分类</th>                 
+                    <th style="text-align:center" >操作</th>
+				</tr>
+                <volist name="list" id="vo">
+                <tr >
+                    <td style="text-align:left" ><input type="checkbox" name="article_id[]" value="{$vo.article_id}" /></td>
+				    
+                    <td style="text-align:left" >{$vo.article_title}</td>
+				    <td style="text-align:left" >{$vo['sort']}</td>
+                    <td style="text-align:left" ><a href="javascript:void(0);" onclick="javascript:status({$vo['article_id']},this);">{:getStatus($vo["status"],true)}</a></td>
+                    <td style="text-align:left" >{$vo['article_catename']}</td>
+                    <td style="text-align:center" ><a href="{:U('Article/edit',array('article_id'=>$vo['article_id']))}">编辑</a>&nbsp;|&nbsp;<a name="del_{$vo.article_id}"  href="{:U('Article/delete',array('article_id'=>$vo['article_id']))}" >移除</a></td>
+                </tr>
+                </volist>
+				
+			</table>
+			  <p class="t-left"><input type="button" value="批量删除" onclick="delall();" /></p>
+            <p class="t-right">{$show}</p>
+		</div> <!-- /content -->
+		<script language="JavaScript" type="text/javascript">
+			$('form select[name=article_cateid]').val("{$article_cateid}");
+		</script> 
+
+<include file="../Public/adminfooter" />

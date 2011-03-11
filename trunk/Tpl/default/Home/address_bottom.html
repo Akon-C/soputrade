@@ -1,0 +1,28 @@
+ <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <?php $count=count($paymentlist); ?>
+        <volist name="paymentlist" id="vo">
+	        <eq name="i" value="1">  <tr>  	</eq>
+			   <eq name="i%2" value="1">  <tr>  </eq>
+			    <td width="49%" align="left" style="padding-right:1%;">
+			      <fieldset style=" padding:10px;">
+			        <input type="radio" value="{$vo.name}" name="payment_module_code"><span>{$vo.name}</span><br />
+			        <a href="#"><img src="../Public/payment/{$vo['name']}_icon.gif" alt="" border="0" /></a><br />
+			        {:GetSettValue($vo['name']."_remark")}
+			      </fieldset>
+			    </td>
+	     <eq name="i%2" value="0">  </tr>  </eq>
+	     <eq name="i" value="$count">  </tr>  </eq>
+     </volist>
+  
+</table>
+
+
+         <div style="text-align:right">
+          
+		       <input type="submit"  name="Submit2" value="Submit" />
+	    </div>
+        </div>
+      </div>
+    </div>
+
+ 

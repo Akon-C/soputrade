@@ -1,0 +1,97 @@
+<style>
+label.error { float: none; color: red;}
+
+</style>
+<script language="JavaScript" type="text/javascript" src="../Public/Js/jqvalidate.js"></script>
+<script language="JavaScript" type="text/javascript">
+	$(function(){
+		$('form[name=shipping]').validate();
+	})
+</script>
+
+ <div class="col5">
+        <div class="list_nav">Your Position: <a href="__APP__">Home</a> >  Billing, Shipping & Review , Finish </div>
+        <div class="list1">
+          <div class="list1_title">
+            <div class="title1"><strong> Billing, Shipping & Review</strong></div>
+            <div class="title2">&nbsp;
+</div>
+          </div>
+          <div class="list2_content"> 
+          
+          
+          <p style="font-weight:bold;margin:5px" align="left" ><a href="{:U('Cart/disp')}">Step1:The Shopping Cart</a> -> <strong style="color:red">Step2:Shipping Address -> Step3:Finish Order</strong>  </p>
+
+
+<form name="shipping" action="{:U('Cart/checkout')}" method="post" >
+<input type="hidden" name="orders_total" value="{$fees['total']}" />
+<input type="hidden" name="member_firstname" value="{$member_Info['firstname']}">
+<input type="hidden" name="member_lastname" value="{$member_Info['lastname']}">
+<input type="hidden" name="member_address" value="{$member_ShippingAddress['address']}">
+<input type="hidden" name="member_city" value="{$member_ShippingAddress['city']}">
+<input type="hidden" name="member_state" value="{$member_ShippingAddress['state']}">
+<input type="hidden" name="member_zip" value="{$member_ShippingAddress['zip']}">
+<input type="hidden" name="member_country" value="{:get_country($member_ShippingAddress['country'])}">
+<input type="hidden" name="member_telephone" value="{$member_ShippingAddress['telphone']}">
+<input type="hidden" name="member_id" value="{$member_Info['id']}">
+<input type="hidden" name="member_email" value="{$member_Info['email']}">
+<input type="hidden" name="delivery_firstname" value="{$member_Info['firstname']}">
+<input type="hidden" name="delivery_lastname" value="{$member_Info['lastname']}">
+<input type="hidden" name="delivery_address" value="{$member_ShippingAddress['address']}">
+<input type="hidden" name="delivery_city" value="{$member_ShippingAddress['city']}">
+<input type="hidden" name="delivery_state" value="{$member_ShippingAddress['state']}">
+<input type="hidden" name="delivery_zip" value="{$member_ShippingAddress['zip']}">
+<input type="hidden" name="delivery_country" value="{:get_country($member_ShippingAddress['country'])}">
+<input type="hidden" name="delivery_telephone" value="{$member_ShippingAddress['telphone']}">
+   <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="18%" height="25" bgcolor="#F5f5f5" align="center">IMAGE</td>
+    <td width="8%" height="25" bgcolor="#F5f5f5" align="center">ID</td>
+    <td width="32%" height="25" bgcolor="#F5f5f5" align="center">ITEM NAME</td>
+    <td width="20%" height="25" bgcolor="#F5f5f5" align="center">Model</td>
+    <td width="10%" height="25" bgcolor="#F5f5f5" align="center">QTY.</td>
+    <td width="20%" height="25" bgcolor="#F5f5f5" align="center">PRICE</td>
+    <td width="20%" height="25" bgcolor="#F5f5f5" align="center">TOTAL</td>
+  </tr>
+  <volist name="list" id="vo">
+  <tr>
+    <td width="18%" align="center"><a href="{:build_url($vo,'pid')}" target="_blank" title="{:build_url($vo,'pro_name')}"><img src="{:build_url($vo,'pro_smallimage')}" alt="{:build_url($vo,'pro_name')}" width="100" height="75"></a></td>
+    <td width="8%" align="center">{$vo.pid}</td>
+    <td width="32%" align="center">{:build_url($vo,'pro_name')}</td>
+    <td width="20%" align="center">
+    <volist name="vo['model']" id="subvo">
+{$subvo['name']}:{$subvo['value']}&nbsp;
+<input type="hidden" name="model_name_{$vo.id}[]" value="{$subvo['name']}" />
+<input type="hidden" name="model_value_{$vo.id}[]" value="{$subvo['value']}" />
+</volist></td>
+    <td width="10%" align="center">{$vo.count}
+    </td>
+    <td width="20%" align="center">{:getprice($vo['price'],$vo['pricespe'],false)}</td>
+    <td width="20%" align="center">{:getprice($vo['price_total'],$vo['pricespe_total'],false)}</td>
+  </tr>
+  </volist>
+</table>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="line-height:25px;">
+  <tr>
+    <td align="left" width="50%"><strong style=" font-size:18px; color:#CC3300">Buy more than free shipping.</strong></td>
+    <td align="right" width="50%">
+      <table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><strong>Subtotal: {:getprice_str($cart_total)}</strong></td>
+  </tr>
+  <tr>
+    <td><strong>Shipping Fee: {:getprice_str($fees['shippingmoney'])}</strong></td>
+  </tr>
+  <tr>
+    <td><strong>Insurance: {:getprice_str($fees['insurance'])}</strong></td>
+  </tr>
+  <tr>
+    <td><strong>Pay Fee(<strong style="color:red;font-weight:bold">{:getprice_str($cart_total+$fees['shippingmoney']+$fees['insurance'])}*{:GetSettValue("paymoney")*100}%</strong>): {:getprice_str($fees['paymoney'])}</strong></td>
+  </tr>
+  <tr>
+    <td><strong>Grand Total:</strong> <font color="#FF0000">{:getprice_str($fees['total'])}</font></td>
+  </tr>
+</table>
+    </td>
+  </tr>
+</table>

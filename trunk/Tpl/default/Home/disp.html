@@ -1,0 +1,182 @@
+<include file="../Public/header" />
+<include file="../Public/left" />
+
+<script language="JavaScript" type="text/javascript" src="../Public/Js/lib.js"></script>
+<script language="JavaScript" type="text/javascript" src="../Public/Js/webdm.js"></script>
+<link rel="stylesheet" rev="stylesheet" href="../Public/css/jqzoom.css" />
+<script language="JavaScript" type="text/javascript">
+function check(){
+	if(document.getElementById('model').value==''){
+		alert('Please select a size!');
+		return false;
+	}
+
+}
+</script>
+
+
+  <div class="col5">
+        <div class="list_nav">Your Position: <a href="__APP__">Home</a> <volist name="catep" id="vo"> >
+			  <eq name="vo['id']" value="$cateinfo['id']">
+			  {$vo.name}
+			  <else/>
+			  <a href="{:build_url($vo,'cate_url')}" title="{:build_url($vo,'cate_name')}">{:build_url($vo,'cate_name')}</a> 
+			  </eq>
+		 </volist> > {:build_url($list,'pro_name')} </div>
+        <div class="list1">
+          <div class="list1_title">
+            <div class="title1"><strong>{:build_url($list,'pro_name')}</strong></div>
+            <div class="title2">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="right" style="padding-right:10px;"><a href="{$prev}"><img src="../Public/images/up.gif" alt="" border="0" /></a>&nbsp;&nbsp;<a href="{$next}"><img src="../Public/images/down.gif" alt="" border="0" /></a></td>
+  </tr>
+</table>
+              
+            </div>
+          </div>
+          <div class="list1_content">
+            <form name="cart_quantity" action="{:U('Cart/add')}" method="post">
+			<input type="hidden" name="id" value="{$list.id}">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="left" width="50%">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="center"><div class="jqzoom" id="spec-n1" style="z-index:1"><img src="{:build_url($list,'pro_bigimage')}" width="310" height="290" jqimg="{:build_url($list,'pro_bigimage')}"/></div><br />
+                  <a href="{:build_url($list,'pro_bigimage')}">larger image</a> <br/>
+                  <div id="spec-n5">
+		<div class="control" id="spec-left">
+			<img src="../Public/css/left.gif">
+		</div>
+		<div id="spec-list">
+			<div style="position: relative; overflow: hidden; z-index: 1; width: 350px; height: 56px;"><ul style="width: 744px; overflow: hidden; position: absolute; left: 30px; _left: 0pt; top: 0pt; margin-top: 0pt; margin-left: 0pt;" class="list-h">
+			<iterate name="gallerys" id="vo">
+				<li><img src="{:build_url($vo,'g_bigimage')}"> </li>
+				</iterate>
+			</ul></div>
+		</div>
+		<div class="control" id="spec-right">
+			<img src="../Public/css/right.gif">
+		</div></td>
+  </tr>
+  <tr>
+    <td align="center" style="padding-top:5px;"><a href="{$prev}"><img src="../Public/images/prev.gif" alt="" border="0" /></a> &nbsp;&nbsp;&nbsp;&nbsp;<a href="{:U('Pro/index')}"><img src="../Public/images/listing.gif" alt="" border="0" /></a> &nbsp;&nbsp;&nbsp;&nbsp;<a href="{$next}"><img src="../Public/images/next.gif" alt="" border="0" /></a></td>
+  </tr>
+</table>
+    </td>
+    <td width="50%" valign="top" align="left">
+      <table width="100%" cellspacing="0" cellpadding="0" style=" border: #CCCCCC 1px solid;" class="biankuan">
+  <tr style="background-color:#F5f5f5;line-height:25px;" >
+    <td width="35%" align="right"><strong>Product Name:</strong></td>
+    <td width="65%">{:build_url($list,'pro_name')}</td>
+  </tr>
+  <tr>
+    <td width="35%" align="right" style="background-color:#F5f5f5;line-height:25px;"><strong>Product ID:</strong></td>
+    <td width="65%">{$list.id}</td>
+  </tr>
+  <eq name="isVip" value="1">
+  <tr style="background-color:#F5f5f5;line-height:25px;" >
+    <td width="35%" align="right"><strong>{$memberGropuInfo['name']}'s Price:</strong></td>
+    <td width="65%"><strong><font color="#FF0000">USD{$vipPrice}</font></strong></td>
+  </tr>
+  </eq>
+  <tr style="background-color:#F5f5f5;line-height:25px;" >
+    <td width="35%" align="right"><strong>Price:</strong></td>
+    <td width="65%"><strong><font color="#FF0000">USD{$list.pricespe}</font></strong></td>
+  </tr>
+  <tr style="background-color:#F5f5f5;line-height:25px;" >
+    <td width="35%" align="right"><strong>Original Price:</strong></td>
+    <td width="65%"><strong><font color="#FF0000">USD{$list.price}</font></strong></td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="xiao1">
+  <tr>
+    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding-left:10px;">
+  <tr>
+    <td align="center" height="25"><strong>Size</strong></td>
+    <td align="center" height="25"><strong>Quantity</strong></td>
+  </tr>
+  <volist name="attrlist[0]['attrs']" id="vo">
+ <tr>
+    <td  align="center" height="25"> {$attrlist[0]['name']}:{$vo['attr_value']}</td>
+    <td  align="center" height="25"><input name="{$attrlist[0]['name']}[]" value="{$vo['attr_value']}" type="hidden" />
+  <volist name="attrlist" id="subvo">
+   <gt name="i" value="1">
+  <gt name="subvo['values_count']" value="0">
+  <span>{$subvo['name']}</span>&nbsp;:
+     <select name="{$subvo['name']}[]">
+     <volist name="subvo['attrs']" id="subsubvo">
+     <option value="{$subsubvo['attr_value']}">{$subsubvo['attr_value']}</option>
+     </volist>
+     </select>
+  </gt>  
+  </gt>  
+  </volist>Qty:<input size="3" name="count[]" />
+ </tr>
+ </volist> 
+</table></td>
+</tr>
+<tr>
+    <td bgcolor="#ffffff" colspan="2" align="right"><a href="#" onClick="javascript:document.cart_quantity.submit();"><img src='../Public/images/add-to-cart.gif'  border=0></a></td>
+  </tr>
+</table>
+    </td>
+  </tr>
+  <tr>
+    <td width="35%" align="right"><strong>Contact Us:</strong></td>
+    <td>
+      <table width="100%" border="0" class="xiao1" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="25"><img src="../Public/images/msn1.gif" alt="" /></td>
+    <td>:{:GetSettValue('hotmail')}</td>
+  </tr>
+  <tr>
+    <td width="25"><img src="../Public/images/yahoo.gif" alt="" /></td>
+    <td>:{:GetSettValue('yahoo')}</td>
+  </tr>
+</table>
+    </td>
+  </tr>
+</table>
+    </td>
+  </tr>
+</table>
+          </div>
+        </div>
+      
+        <div class="list1">
+          <div class="list1_title">
+            <div class="title1"><strong>Description</strong></div>
+            <div class="title2">&nbsp;
+</div>
+          </div>
+          <div class="list2_content">
+            {$list.remark}
+          </div>
+        </div>
+          <div class="list1">
+          <div class="list1_title">
+            <div class="title1"><strong>Related products</strong></div>
+            <div class="title2">&nbsp;
+</div>
+          </div>
+          <div class="list1_content">
+          
+          <iterate name="related" id="vo">
+            <div class="list_pro">
+              <div class="list_pro_img"><a href="{:build_url($vo,'pro_url')}" altimg="{:build_url($vo,'pro_bigimage')}" title="{:build_url($vo,'pro_name')}"><img src="{:build_url($vo,'pro_smallimage')}" alt="{:build_url($vo,'pro_name')}" width="150" height="115" border="0" /></a></div>
+              <div class="list_pro_name"><a href="{:build_url($vo,'pro_url')}">{:build_url($vo,'pro_name')}</a></div>
+              <div class="list_pro_pri">Shop price:{:build_url($vo,'pro_price')}</div>
+              <div class="list_pro_button"><a href="{:build_url($vo,'pro_url')}"><img src="../Public/images/add-to-cart.gif" alt="" border="0" /></a></div>
+            </div>
+            </iterate>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+<include file="../Public/footer" />

@@ -1,0 +1,51 @@
+<include file="Public:header" />
+<include file="Public:left" />
+  
+  
+<td valign="top"><table width="100%" cellspacing="1" cellpadding="0" border="0" style="background-color: rgb(156, 167, 239);">
+        <tbody><tr>
+          <td bgcolor="#ffffff"><table width="100%" cellspacing="0" cellpadding="2" border="0">
+            <tbody><tr>
+              <td style="background-image: url(&quot;images/title_bg.gif&quot;); padding-left: 12px;"><strong>批量下载：</strong></td>
+            </tr>
+            <tr>
+              <td>
+  <table width="100%" cellspacing="0" cellpadding="3" border="0" align="center">
+    <tbody>
+    <?php $count=count($list); ?>
+    <iterate name="list" id="vo">
+    <eq name="i" value="0">
+    <tr>
+    </eq>
+    <eq name="i%3" value="0">
+    <tr>
+    </eq>
+    
+	  <td width="15" height="22" align="center"> <strong>·</strong></td>
+	  <td height="22">
+      <a target="_blank" href="/{$vo.fileurl}">
+      {$vo.title}
+      </a></td>
+       <eq name="i%2" value="0">
+     </tr>
+    </eq> 
+       <eq name="i" value="$count">
+     </tr>
+    </eq> 
+     
+      </iterate>
+      
+      
+      <tr>
+	</tr>
+</tbody></table>
+</td>
+            </tr>
+          </tbody></table></td>
+        </tr>
+    </tbody></table></td>
+     </tr>
+    </tbody></table></td></tr>
+    </tbody></table>
+
+  <include file="Public:footer" />

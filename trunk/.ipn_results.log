@@ -1,0 +1,302 @@
+[01/18/2011 11:04 AM] - FAIL: IPN Validation Failed.
+IPN POST Vars from Paypal:
+
+IPN Response from Paypal Server:
+ HTTP/1.1 302 Moved Temporarily
+Date: Tue, 18 Jan 2011 03:05:18 GMT
+Server: Apache
+X-Powered-By: PHP/5.2.14
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Set-Cookie: PHPSESSID=1jgk1ljjnibuvbf28fss0l72a3; path=/
+Location: /index.php/Ipblock-login.html
+Vary: Accept-Encoding
+Content-Length: 0
+Connection: close
+Content-Type: text/html; charset=utf-8
+
+
+
+[01/18/2011 11:10 AM] - FAIL: IPN Validation Failed.
+IPN POST Vars from Paypal:
+0=1, 1=2, 
+IPN Response from Paypal Server:
+ HTTP/1.1 302 Moved Temporarily
+Date: Tue, 18 Jan 2011 03:10:59 GMT
+Server: Apache
+X-Powered-By: PHP/5.2.14
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Set-Cookie: PHPSESSID=gssc7lp9he2p46gke1eofc7232; path=/
+Location: /index.php/Ipblock-login.html
+Vary: Accept-Encoding
+Content-Length: 0
+Connection: close
+Content-Type: text/html; charset=utf-8
+
+
+
+[01/18/2011 11:10 AM] - FAIL: IPN Validation Failed.
+IPN POST Vars from Paypal:
+0=1, 1=2, 
+IPN Response from Paypal Server:
+ HTTP/1.1 302 Moved Temporarily
+Date: Tue, 18 Jan 2011 03:11:16 GMT
+Server: Apache
+X-Powered-By: PHP/5.2.14
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Set-Cookie: PHPSESSID=dbf8up5mhkjk7a8cgihdjgmda7; path=/
+Location: /index.php/Ipblock-login.html
+Vary: Accept-Encoding
+Content-Length: 0
+Connection: close
+Content-Type: text/html; charset=utf-8
+
+
+
+[01/18/2011 11:11 AM] - FAIL: IPN Validation Failed.
+IPN POST Vars from Paypal:
+
+IPN Response from Paypal Server:
+ HTTP/1.1 302 Moved Temporarily
+Date: Tue, 18 Jan 2011 03:11:51 GMT
+Server: Apache
+X-Powered-By: PHP/5.2.14
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Set-Cookie: PHPSESSID=uimi919ekdau4o7fjcd9oo3vg2; path=/
+Location: /index.php/Ipblock-login.html
+Vary: Accept-Encoding
+Content-Length: 0
+Connection: close
+Content-Type: text/html; charset=utf-8
+
+
+
+[01/18/2011 11:27 AM] - FAIL: IPN Validation Failed.
+IPN POST Vars from Paypal:
+mc_gross=131.44, protection_eligibility=Eligible, address_status=confirmed, payer_id=KDYYRC257BQ9J, tax=0.00, address_street=1 Main St, payment_date=19:27:13 Jan 17, 2011 PST, payment_status=Completed, charset=windows-1252, address_zip=95131, first_name=Test, mc_fee=4.11, address_country_code=US, address_name=Test User, notify_version=3.0, custom=, payer_status=verified, business=dre_1289554110_biz@qq.com, address_country=United States, address_city=San Jose, quantity=1, verify_sign=AXg5C-oB6Kb8bDcYi3YQE04AZrkwASESclxbOCD1GoE8SDbqNzC0KC4L, payer_email=dre_1289554251_per@qq.com, txn_id=05M43293NA721082H, payment_type=instant, last_name=User, address_state=CA, receiver_email=dre_1289554110_biz@qq.com, payment_fee=4.11, receiver_id=LTCPYW8EU5XME, txn_type=web_accept, item_name=Porducts For SN:20110118112613, mc_currency=USD, item_number=20110118112613, residence_country=US, test_ipn=1, handling_amount=0.00, transaction_subject=Porducts For SN:20110118112613, payment_gross=131.44, shipping=0.00, 
+IPN Response from Paypal Server:
+ HTTP/1.1 302 Moved Temporarily
+Date: Tue, 18 Jan 2011 03:27:45 GMT
+Server: Apache
+X-Powered-By: PHP/5.2.14
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Set-Cookie: PHPSESSID=qgjcombrpgt9f3di942r4qkgc4; path=/
+Location: /index.php/Ipblock-login.html
+Vary: Accept-Encoding
+Content-Length: 0
+Connection: close
+Content-Type: text/html; charset=utf-8
+
+
+
+[01/18/2011 11:34 AM] - FAIL: IPN Validation Failed.
+IPN POST Vars from Paypal:
+mc_gross=131.44, protection_eligibility=Eligible, address_status=confirmed, payer_id=KDYYRC257BQ9J, tax=0.00, address_street=1 Main St, payment_date=19:34:54 Jan 17, 2011 PST, payment_status=Completed, charset=windows-1252, address_zip=95131, first_name=Test, mc_fee=4.11, address_country_code=US, address_name=Test User, notify_version=3.0, custom=, payer_status=verified, business=dre_1289554110_biz@qq.com, address_country=United States, address_city=San Jose, quantity=1, verify_sign=ATfW4iH5j7OCLQRFccDG5yp1kc7TA0QoMlMqo2Boro2aknPpWLARlpsP, payer_email=dre_1289554251_per@qq.com, txn_id=33G42347VT322521U, payment_type=instant, last_name=User, address_state=CA, receiver_email=dre_1289554110_biz@qq.com, payment_fee=4.11, receiver_id=LTCPYW8EU5XME, txn_type=web_accept, item_name=Porducts For SN:20110118113353, mc_currency=USD, item_number=20110118113353, residence_country=US, test_ipn=1, handling_amount=0.00, transaction_subject=Porducts For SN:20110118113353, payment_gross=131.44, shipping=0.00, 
+IPN Response from Paypal Server:
+ HTTP/1.1 302 Moved Temporarily
+Date: Tue, 18 Jan 2011 03:35:08 GMT
+Server: Apache
+X-Powered-By: PHP/5.2.14
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Set-Cookie: PHPSESSID=l1n8gdk5nh3ob8q00h7b4qntq7; path=/
+Location: /index.php/Ipblock-login.html
+Vary: Accept-Encoding
+Content-Length: 0
+Connection: close
+Content-Type: text/html; charset=utf-8
+
+
+
+[01/18/2011 11:37 AM] - FAIL: IPN Validation Failed.
+IPN POST Vars from Paypal:
+
+IPN Response from Paypal Server:
+ HTTP/1.1 302 Moved Temporarily
+Date: Tue, 18 Jan 2011 03:37:46 GMT
+Server: Apache
+X-Powered-By: PHP/5.2.14
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Set-Cookie: PHPSESSID=vmftmgp80dlt02fvipcdp2uck2; path=/
+Location: /index.php/Ipblock-login.html
+Vary: Accept-Encoding
+Content-Length: 0
+Connection: close
+Content-Type: text/html; charset=utf-8
+
+
+
+[01/18/2011 11:38 AM] - FAIL: IPN Validation Failed.
+IPN POST Vars from Paypal:
+mc_gross=131.44, protection_eligibility=Eligible, address_status=confirmed, payer_id=KDYYRC257BQ9J, tax=0.00, address_street=1 Main St, payment_date=19:34:54 Jan 17, 2011 PST, payment_status=Completed, charset=windows-1252, address_zip=95131, first_name=Test, mc_fee=4.11, address_country_code=US, address_name=Test User, notify_version=3.0, custom=, payer_status=verified, business=dre_1289554110_biz@qq.com, address_country=United States, address_city=San Jose, quantity=1, verify_sign=ATfW4iH5j7OCLQRFccDG5yp1kc7TA0QoMlMqo2Boro2aknPpWLARlpsP, payer_email=dre_1289554251_per@qq.com, txn_id=33G42347VT322521U, payment_type=instant, last_name=User, address_state=CA, receiver_email=dre_1289554110_biz@qq.com, payment_fee=4.11, receiver_id=LTCPYW8EU5XME, txn_type=web_accept, item_name=Porducts For SN:20110118113353, mc_currency=USD, item_number=20110118113353, residence_country=US, test_ipn=1, handling_amount=0.00, transaction_subject=Porducts For SN:20110118113353, payment_gross=131.44, shipping=0.00, 
+IPN Response from Paypal Server:
+ HTTP/1.1 302 Moved Temporarily
+Date: Tue, 18 Jan 2011 03:39:12 GMT
+Server: Apache
+X-Powered-By: PHP/5.2.14
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Set-Cookie: PHPSESSID=r61rmre69euqopngvl24r2abm6; path=/
+Location: /index.php/Ipblock-login.html
+Vary: Accept-Encoding
+Content-Length: 0
+Connection: close
+Content-Type: text/html; charset=utf-8
+
+
+
+[01/18/2011 11:38 AM] - FAIL: IPN Validation Failed.
+IPN POST Vars from Paypal:
+mc_gross=131.44, protection_eligibility=Eligible, address_status=confirmed, payer_id=KDYYRC257BQ9J, tax=0.00, address_street=1 Main St, payment_date=19:34:54 Jan 17, 2011 PST, payment_status=Completed, charset=windows-1252, address_zip=95131, first_name=Test, mc_fee=4.11, address_country_code=US, address_name=Test User, notify_version=3.0, custom=, payer_status=verified, business=dre_1289554110_biz@qq.com, address_country=United States, address_city=San Jose, quantity=1, verify_sign=ATfW4iH5j7OCLQRFccDG5yp1kc7TA0QoMlMqo2Boro2aknPpWLARlpsP, payer_email=dre_1289554251_per@qq.com, txn_id=33G42347VT322521U, payment_type=instant, last_name=User, address_state=CA, receiver_email=dre_1289554110_biz@qq.com, payment_fee=4.11, receiver_id=LTCPYW8EU5XME, txn_type=web_accept, item_name=Porducts For SN:20110118113353, mc_currency=USD, item_number=20110118113353, residence_country=US, test_ipn=1, handling_amount=0.00, transaction_subject=Porducts For SN:20110118113353, payment_gross=131.44, shipping=0.00, 
+IPN Response from Paypal Server:
+ HTTP/1.1 302 Moved Temporarily
+Date: Tue, 18 Jan 2011 03:39:12 GMT
+Server: Apache
+X-Powered-By: PHP/5.2.14
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Set-Cookie: PHPSESSID=r61rmre69euqopngvl24r2abm6; path=/
+Location: /index.php/Ipblock-login.html
+Vary: Accept-Encoding
+Content-Length: 0
+Connection: close
+Content-Type: text/html; charset=utf-8
+
+HTTP/1.1 302 Moved Temporarily
+Date: Tue, 18 Jan 2011 03:39:13 GMT
+Server: Apache
+X-Powered-By: PHP/5.2.14
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Set-Cookie: PHPSESSID=unq6blrkr1cg0q5jh16jjhdni0; path=/
+Location: /index.php/Ipblock-login.html
+Vary: Accept-Encoding
+Content-Length: 0
+Connection: close
+Content-Type: text/html; charset=utf-8
+
+
+
+[01/18/2011 11:39 AM] - FAIL: IPN Validation Failed.
+IPN POST Vars from Paypal:
+mc_gross=131.44, protection_eligibility=Eligible, address_status=confirmed, payer_id=KDYYRC257BQ9J, tax=0.00, address_street=1 Main St, payment_date=19:34:54 Jan 17, 2011 PST, payment_status=Completed, charset=windows-1252, address_zip=95131, first_name=Test, mc_fee=4.11, address_country_code=US, address_name=Test User, notify_version=3.0, custom=, payer_status=verified, business=dre_1289554110_biz@qq.com, address_country=United States, address_city=San Jose, quantity=1, verify_sign=ATfW4iH5j7OCLQRFccDG5yp1kc7TA0QoMlMqo2Boro2aknPpWLARlpsP, payer_email=dre_1289554251_per@qq.com, txn_id=33G42347VT322521U, payment_type=instant, last_name=User, address_state=CA, receiver_email=dre_1289554110_biz@qq.com, payment_fee=4.11, receiver_id=LTCPYW8EU5XME, txn_type=web_accept, item_name=Porducts For SN:20110118113353, mc_currency=USD, item_number=20110118113353, residence_country=US, test_ipn=1, handling_amount=0.00, transaction_subject=Porducts For SN:20110118113353, payment_gross=131.44, shipping=0.00, 
+IPN Response from Paypal Server:
+ HTTP/1.1 302 Moved Temporarily
+Date: Tue, 18 Jan 2011 03:39:47 GMT
+Server: Apache
+X-Powered-By: PHP/5.2.14
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Set-Cookie: PHPSESSID=cqu2041maascqktt0et6n7dom7; path=/
+Location: /index.php/Ipblock-login.html
+Vary: Accept-Encoding
+Content-Length: 0
+Connection: close
+Content-Type: text/html; charset=utf-8
+
+
+
+[01/18/2011 11:39 AM] - FAIL: IPN Validation Failed.
+IPN POST Vars from Paypal:
+mc_gross=131.44, protection_eligibility=Eligible, address_status=confirmed, payer_id=KDYYRC257BQ9J, tax=0.00, address_street=1 Main St, payment_date=19:34:54 Jan 17, 2011 PST, payment_status=Completed, charset=windows-1252, address_zip=95131, first_name=Test, mc_fee=4.11, address_country_code=US, address_name=Test User, notify_version=3.0, custom=, payer_status=verified, business=dre_1289554110_biz@qq.com, address_country=United States, address_city=San Jose, quantity=1, verify_sign=ATfW4iH5j7OCLQRFccDG5yp1kc7TA0QoMlMqo2Boro2aknPpWLARlpsP, payer_email=dre_1289554251_per@qq.com, txn_id=33G42347VT322521U, payment_type=instant, last_name=User, address_state=CA, receiver_email=dre_1289554110_biz@qq.com, payment_fee=4.11, receiver_id=LTCPYW8EU5XME, txn_type=web_accept, item_name=Porducts For SN:20110118113353, mc_currency=USD, item_number=20110118113353, residence_country=US, test_ipn=1, handling_amount=0.00, transaction_subject=Porducts For SN:20110118113353, payment_gross=131.44, shipping=0.00, 
+IPN Response from Paypal Server:
+ HTTP/1.1 302 Moved Temporarily
+Date: Tue, 18 Jan 2011 03:39:47 GMT
+Server: Apache
+X-Powered-By: PHP/5.2.14
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Set-Cookie: PHPSESSID=cqu2041maascqktt0et6n7dom7; path=/
+Location: /index.php/Ipblock-login.html
+Vary: Accept-Encoding
+Content-Length: 0
+Connection: close
+Content-Type: text/html; charset=utf-8
+
+HTTP/1.1 302 Moved Temporarily
+Date: Tue, 18 Jan 2011 03:39:48 GMT
+Server: Apache
+X-Powered-By: PHP/5.2.14
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Set-Cookie: PHPSESSID=s5t23jeorjprn56p683pdf8oi1; path=/
+Location: /index.php/Ipblock-login.html
+Vary: Accept-Encoding
+Content-Length: 0
+Connection: close
+Content-Type: text/html; charset=utf-8
+
+
+
+[01/18/2011 11:39 AM] - FAIL: IPN Validation Failed.
+IPN POST Vars from Paypal:
+mc_gross=131.44, protection_eligibility=Eligible, address_status=confirmed, payer_id=KDYYRC257BQ9J, tax=0.00, address_street=1 Main St, payment_date=19:34:54 Jan 17, 2011 PST, payment_status=Completed, charset=windows-1252, address_zip=95131, first_name=Test, mc_fee=4.11, address_country_code=US, address_name=Test User, notify_version=3.0, custom=, payer_status=verified, business=dre_1289554110_biz@qq.com, address_country=United States, address_city=San Jose, quantity=1, verify_sign=ATfW4iH5j7OCLQRFccDG5yp1kc7TA0QoMlMqo2Boro2aknPpWLARlpsP, payer_email=dre_1289554251_per@qq.com, txn_id=33G42347VT322521U, payment_type=instant, last_name=User, address_state=CA, receiver_email=dre_1289554110_biz@qq.com, payment_fee=4.11, receiver_id=LTCPYW8EU5XME, txn_type=web_accept, item_name=Porducts For SN:20110118113353, mc_currency=USD, item_number=20110118113353, residence_country=US, test_ipn=1, handling_amount=0.00, transaction_subject=Porducts For SN:20110118113353, payment_gross=131.44, shipping=0.00, 
+IPN Response from Paypal Server:
+ HTTP/1.1 302 Moved Temporarily
+Date: Tue, 18 Jan 2011 03:39:55 GMT
+Server: Apache
+X-Powered-By: PHP/5.2.14
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Set-Cookie: PHPSESSID=apqt8ogd36a5ri89t1eeanboj1; path=/
+Location: /index.php/Ipblock-login.html
+Vary: Accept-Encoding
+Content-Length: 0
+Connection: close
+Content-Type: text/html; charset=utf-8
+
+
+
+[01/18/2011 11:39 AM] - FAIL: IPN Validation Failed.
+IPN POST Vars from Paypal:
+mc_gross=131.44, protection_eligibility=Eligible, address_status=confirmed, payer_id=KDYYRC257BQ9J, tax=0.00, address_street=1 Main St, payment_date=19:34:54 Jan 17, 2011 PST, payment_status=Completed, charset=windows-1252, address_zip=95131, first_name=Test, mc_fee=4.11, address_country_code=US, address_name=Test User, notify_version=3.0, custom=, payer_status=verified, business=dre_1289554110_biz@qq.com, address_country=United States, address_city=San Jose, quantity=1, verify_sign=ATfW4iH5j7OCLQRFccDG5yp1kc7TA0QoMlMqo2Boro2aknPpWLARlpsP, payer_email=dre_1289554251_per@qq.com, txn_id=33G42347VT322521U, payment_type=instant, last_name=User, address_state=CA, receiver_email=dre_1289554110_biz@qq.com, payment_fee=4.11, receiver_id=LTCPYW8EU5XME, txn_type=web_accept, item_name=Porducts For SN:20110118113353, mc_currency=USD, item_number=20110118113353, residence_country=US, test_ipn=1, handling_amount=0.00, transaction_subject=Porducts For SN:20110118113353, payment_gross=131.44, shipping=0.00, 
+IPN Response from Paypal Server:
+ HTTP/1.1 302 Moved Temporarily
+Date: Tue, 18 Jan 2011 03:39:55 GMT
+Server: Apache
+X-Powered-By: PHP/5.2.14
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Set-Cookie: PHPSESSID=apqt8ogd36a5ri89t1eeanboj1; path=/
+Location: /index.php/Ipblock-login.html
+Vary: Accept-Encoding
+Content-Length: 0
+Connection: close
+Content-Type: text/html; charset=utf-8
+
+HTTP/1.1 302 Moved Temporarily
+Date: Tue, 18 Jan 2011 03:39:56 GMT
+Server: Apache
+X-Powered-By: PHP/5.2.14
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Set-Cookie: PHPSESSID=t1uhm5s0coboierlomi3qk6fm5; path=/
+Location: /index.php/Ipblock-login.html
+Vary: Accept-Encoding
+Content-Length: 0
+Connection: close
+Content-Type: text/html; charset=utf-8
+
+
+

@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+{:Meta('Members Center','Members Center','Members Center')}
+
+<Link href="../Public/css/member.css" type="text/css" rel="stylesheet" />
+<style>
+label.error { float: none; color: red;}
+
+</style>
+<script language="JavaScript" type="text/javascript" src="../Public/Js/jquery.js"></script>
+<script language="JavaScript" type="text/javascript" src="../Public/Js/jqvalidate.js"></script>
+</head>
+
+<div class="page_margins">
+<div id="header" role="banner">
+    <div id="header_wrap">
+      <h2><a href="{:U('Member-Index/index')}">Members Centre</a></h2>
+      <ul id="global-nav">
+            <li class="login"><a href="__APP__">Home</a>&nbsp;
+            <gt name="mid" value="0">
+            <a href="{:U('Member-Index/LogOut')}">LogOut</a>
+            <else/>
+  			<a href="{:U('Member-Public/Login')}">LogIn</a>
+      		</gt>
+      		&nbsp;<a href="__APP__/Cart-disp.html">Shopping Cart</a>
+            </li>
+      </ul>
+    </div>
+</div>

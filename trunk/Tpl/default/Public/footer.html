@@ -1,0 +1,14 @@
+<div class="bottom_nav">
+        <img src="../Public/images/ebay.gif" alt="" border="0" usemap="#Map" />
+<map name="Map" id="Map"><area shape="rect" coords="2,7,41,30" href="#" /><area shape="rect" coords="47,6,85,31" href="#" /><area shape="rect" coords="93,7,130,30" href="#" /><area shape="rect" coords="138,7,176,30" href="#" /><area shape="rect" coords="186,7,260,29" href="#" /><area shape="rect" coords="264,3,319,34" href="#" /><area shape="rect" coords="328,7,410,29" href="#" /><area shape="rect" coords="417,7,438,29" href="#" /><area shape="rect" coords="446,8,514,31" href="#" /><area shape="rect" coords="520,5,581,34" href="#" /><area shape="rect" coords="587,7,637,31" href="#" /></map>
+      </div>
+      <div class="copyright">{$Footer}{$footcode}</div>
+    </div>
+  </div>
+  
+<if condition="GetSettValue('365webcall_status') eq 1">
+{$_365call}
+  <script type='text/javascript' src='http://p.365webcall.com/IMMeForPartner.aspx?email={:GetSettValue('365webcall_email')}&accountid={:GetSettValue('365webcall_accountid')}&LL=1'></script>
+</if>
+</body>
+</html>

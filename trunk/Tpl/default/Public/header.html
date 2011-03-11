@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+{:Meta($pagetitle,$pagekeywords,$pagedesc,$list)}
+
+<Link href="../Public/images/reset.css" type="text/css" rel="stylesheet" />
+<Link href="../Public/images/style.css" type="text/css" rel="stylesheet" />
+<Link href="../Public/images/floatmenu.css" type="text/css" rel="stylesheet" />
+
+
+<script type="text/javascript" src="../Public/Js/jquery.js"></script> 
+<script type="text/javascript" src="../Public/Js/bigimg.js"></script> 
+<script type="text/javascript" src="../Public/images/floatmenu.js"></script> 
+</head>
+
+
+<body>
+
+
+
+  <div id="page">
+    <div id="header">
+      <div class="logo"><a href="__APP__"><img src="__ROOT__/{:GetSettValue('sitelogo')}" alt="" width="360" border="0" /></a></div>
+      <div class="top">
+        <div class="top_nav">
+          <div class="top3"><a href="__APP__/Help/">Help</a></div>
+          <div class="top2"><a href="{:U('Member-Index/index')}">User Center</a></div>
+          <div class="top1"><a href="{:U('Cart/disp')}">Shopping Cart</a></div>
+        </div>
+        <div class="nav">
+          <table width="590" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="485" align="right">
+      <div class="nav1">
+            <ul>
+              <li><a href="__APP__" class="click" style="color:#FFFFFF">Home</a></li>
+              <li><a href="__APP__/About-Us/">About Us</a></li>
+              <li><a href="{:U('Pro/index')}">Products</a></li>
+              <li><a href="__APP__/Contact-Us/">Contact Us</a></li>
+              <li><a href="{:U('Member-Index/index')}">User Center</a></li>
+            </ul>
+          </div>
+    </td>
+    <td width="105" align="left">
+      <div class="nav2">
+            <a href="{:build_url('hotmail','hotmail')}"><img src="../Public/images/message.gif" alt="" border="0" /></a>
+          </div>
+    </td>
+  </tr>
+</table>
+          
+          
+        </div>
+      </div>
+      <div class="search">
+        <div class="search1">
+          <div class="find">
+           <form action="{:U('Search/index')}" method="POST">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="370" align="left">
+      <input name="key" type="text" id="keyword" value="" />
+    </td>
+    <td width="185">
+     <select name="cateid" id="category">
+  <option value="">All Category</option>
+    <volist name="catetree" id="vo">
+        <option value="{$vo['id']}">{:class_str_insert($vo['deep'],"&nbsp;&nbsp;&nbsp;")}{$vo.name}</option>
+        </volist>
+</select>
+    </td>
+    <td>
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="35">
+    <input name="search" type="image" value="go" style="width:35px;" src="../Public/images/go1.gif" />
+    </td>
+    <td style="padding-left:5px;" align="left"><!--<a href="#">Advanced</a>--></td>
+  </tr>
+</table>
+</form>
+       
+    </td>
+  </tr>
+</table>
+          </div>
+          <div class="cart">
+            <a href="{:U('Cart/disp')}">{:itemCount()} products</a>
+          </div>
+        </div>
+        <div class="search2">
+          <strong>Hot search:</strong>
+          <iterate name="HotClass" id="vo">
+          <gt name="i" value="1">
+          ,
+          </gt>
+          <a href="{:build_url($vo,'cate_url')}">{:build_url($vo,'cate_name')}</a>
+          </iterate>
+        </div>
+      </div>
+    </div>
