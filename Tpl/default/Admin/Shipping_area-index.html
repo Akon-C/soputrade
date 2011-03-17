@@ -1,0 +1,53 @@
+<include file="../Public/admintop" />
+<include file="../Public/adminleft" />
+<script type="text/javascript">
+function delall(){
+	var id=$('input:checkbox[name^=id]:checked').map(function(){
+		return $(this).val();
+	}).get().join(",");
+	if(!id){
+		alert('请选择要删除的项!');
+	}else{
+		$.post("{:U('Shipping/delete')}","id="+id);
+		$('input[name^=id]:checked').parent().parent().remove();
+	}
+}
+$(document).ready (
+function(){
+	//选中
+	$('#check').click(function(){
+		$('input[name^=id]').attr('checked',$(this).attr('checked'));
+	});
+	
+}
+);
+</script>
+<!-- Content (Right Column) -->
+		<div id="content" class="box">
+
+			<h1>配送方式-区域设置</h1>
+            <p class="msg info">提示：</p>
+            <p class="left"><a href="{:U('Shipping_area/add',array('id'=>$id))}">添加</a></p>
+            <table width="100%">
+				<tr>
+				    <th style="text-align:center" width="7%"><input type="checkbox" id="check" /></th>
+				    <th style="text-align:center" width="10%">名称</th>
+				    
+				    <th style="text-align:center" width="45%">区域</th>                             
+                    <th style="text-align:center" >操作</th>
+				</tr>
+                <volist name="list" id="vo">
+                <tr>
+                    <td style="text-align:left" ><input type="checkbox" name="id[]" value="{$vo.id}" /></td>
+				    <td style="text-align:left" >{$vo.name}</td>
+				    <td style="text-align:left" >{$vo.remark}</td>
+                    
+                    <td style="text-align:center" ><a href="{:u('Shipping_area/edit',array('id'=>$vo['id']))}">编辑</a>&nbsp;|&nbsp;<a  href="{:u('Shipping_area/Delete',array('id'=>$vo['id']))}" >移除</a></td>
+                </tr>
+                </volist>
+				
+			</table>
+			
+            <p class="t-right"></p>
+		</div> <!-- /content -->
+<include file="../Public/adminfooter" />
