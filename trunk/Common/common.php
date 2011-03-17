@@ -772,4 +772,15 @@ function get_products_points($pid){
 	}
 }
 //3.10更新
+//3.17更新
+function get_region_name($id){
+	$dao = D ( "Region" );
+	$list = $dao->where ( "id=" . $id )->find ();
+	if ($list) {
+		return $list ["name"];
+	} else {
+		return null;
+	}
+	
+}
 ?>
