@@ -26,7 +26,7 @@ class CommAction extends Action{
 			$ipblock=new IpblockAction();
 			$ipblock->index();
 		}
-
+		
 		//主题
 		if($this->theme=GetSettValue('theme')){
 
@@ -71,7 +71,11 @@ class CommAction extends Action{
 		}
 		$today=getdate();
 		$this->month=$today['month'];
-		
+		//获取配送方式列表
+		self::$Model=D("Shipping");
+		$this->ShippingList=self::$Model->where("status=1")->findall();
+		self::$Model=D("Cart");
+		$this->Total_weight=self::$Model->cart_total_weight($this->sessionID);
 		//会员等级
 		$this->memberGropuInfo=get_members_group($this->memberID);
 		if (get_members_group($this->memberID)){

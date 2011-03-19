@@ -70,6 +70,18 @@ class CartModel extends Model {
 		}
 		return $total;
 	}
+	//获取总重量
+	public function cart_total_weight($sessionID){
+		$total = 0;
+		$dao=D("Products");
+		$list = $this->where ( "session_id='" . $sessionID . "'" )->findAll ();
+		for($row = 0; $row < count ( $list ); $row ++) {
+			$weight = $dao->get_weight($list[$row]["pid"])*$list [$row] ['count'] ;
+			$total = $total + $weight;
+		}
+		return $total;
+		
+	}
 	//获取购物车明细
 	public function display_contents($sessionID){
 		$list = $this->where (  "session_id='" . $sessionID."'")->findAll ();

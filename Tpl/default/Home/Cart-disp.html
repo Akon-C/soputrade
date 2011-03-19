@@ -110,7 +110,7 @@ function check(){
                 </volist>
               </table>
  <div align="right" style="padding-right:5px">Sub-Total: {:getprice_str($cart_total)}<br/>
-			Shipping Fee:{:getprice_str($fees['shippingmoney'])}<br/>
+			<!-- Shipping Fee:{:getprice_str($fees['shippingmoney'])}<br/>  -->
 			Insurance:{:getprice_str($fees['insurance'])}<br/>
 			Pay Fee(<strong style="color:red;font-weight:bold">{:getprice_str($cart_total+$fees['shippingmoney']+$fees['insurance'])}*{:GetSettValue("paymoney")*100}%</strong>):{:getprice_str($fees['paymoney'])}<br/>
 			Total Price:{:getprice_str($fees['total'])}

@@ -115,6 +115,16 @@ class ProductsModel extends Model {
 
 		return $attr;
 	}
+	//获取产品价格
+	public function get_weight($pid){
+		$list=$this->where("id=".$pid)->find();
+		if ($list){
+			return $list["weight"];
+		}
+		else{
+			return 0;
+		}
+	}
 	//获取产品价格明细
 	public function getpriceInfo($pid,$count){
 		$list=$this->where("id=".$pid)->find();

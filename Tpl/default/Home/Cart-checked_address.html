@@ -2,7 +2,7 @@
 
 <include file="../Public/left" />
 <include file="address_top" />
-
+<script type="text/javascript" src="../Public/Js/Shipping.js"></script> 
 
 
        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding-top:10px;padding-bottom:10px;">
@@ -32,8 +32,12 @@
             <td height="25" style="padding-left:10px;" align="left">{$member_ShippingAddress['address']}</td>
           </tr>
           <tr>
+            <td height="25" style="padding-left:10px;" width="20%" align="left"><strong>Country:</strong></td>
+            <td height="25" style="padding-left:10px;" align="left">{:get_region_name($member_ShippingAddress['country'])}</td>
+          </tr>
+          <tr>
             <td height="25" style="padding-left:10px;" width="20%" align="left"><strong>State/Province:</strong></td>
-            <td height="25" style="padding-left:10px;" align="left">{:get_country($member_ShippingAddress['country'])}</td>
+            <td height="25" style="padding-left:10px;" align="left">{:get_region_name($member_ShippingAddress['state'])}</td>
           </tr>
           <tr>
             <td height="25" style="padding-left:10px;" width="20%" align="left"><strong>City:</strong></td>
@@ -43,10 +47,7 @@
             <td height="25" style="padding-left:10px;" width="20%" align="left"><strong>Zip/Postal Code:</strong></td>
             <td height="25" style="padding-left:10px;" align="left">{$member_ShippingAddress['zip']}</td>
           </tr>
-          <tr>
-            <td height="25" style="padding-left:10px;" width="20%" align="left"><strong>Country:</strong></td>
-            <td height="25" style="padding-left:10px;" align="left">{$member_ShippingAddress['country']}</td>
-          </tr>
+          
           <tr>
             <td height="25" style="padding-left:10px;" width="20%" align="left"><strong>Telephone:</strong></td>
             <td height="25" style="padding-left:10px;" align="left">{$member_ShippingAddress['telphone']}</td>
@@ -68,14 +69,35 @@
     </td>
   </tr>
    <tr>
-    <td colspan="2" height="25" bgcolor="#F5f5f5" align="left" style="padding-left:1%;"><strong style="color:#4F617B; font-size:16px;">Shipping Method:EMS International Express</strong></td>
+    <td colspan="2" height="25" bgcolor="#F5f5f5" align="left" style="padding-left:1%;"><strong style="color:#4F617B; font-size:16px;">Shipping Method:</strong></td>
   </tr>
+  <tr>
+    <table border="0" width="100%">
+  <tr>
+  <td width="5px"></td>
+  <td width="15px">name</td>
+  <td width="25px">free</td>
+  </tr>
+  <volist name="ShippingList" id="vo">
+  <tr>
+  <td width="5px"><input type="radio" id="shipping_method" name="shipping_method" value="{$vo.code}" onclick="set_shipping('shipping_method','{$member_ShippingAddress['country']}','{$member_ShippingAddress['state']}','{$Total_weight}','{$cart_total}','{:U('Home-Ajax/getShippingFee')}');"  /></td>
+  <td>{$vo.name}</td>
+  <td>{:getprice_str(get_shipping_fee($vo["id"],$member_ShippingAddress['country'],$member_ShippingAddress['state'],$Total_weight))}</td>
+  </tr>
+  </volist>
+  </table> 
+  </tr>
+ 
+  
   <tr>
             <th colspan="2" style="padding-left:10px;font-weight:bold">4.Payment Method</th>
           </tr>
           
 </table>
-       
+ <input type ="hidden" id="shippingfee" name="shippingfee" value=0 />      
+ <input type ="hidden" id="paymentfee" name="paymentfee" value=0 />      
+ <input type ="hidden" id="insurance" name="insurance" value=0 />      
+ <input type ="hidden" id="total" name="total" value=0 />      
 
 <include file="address_bottom" />
 <include file="../Public/footer" />

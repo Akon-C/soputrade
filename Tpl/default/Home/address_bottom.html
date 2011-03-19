@@ -1,3 +1,4 @@
+
  <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <?php $count=count($paymentlist); ?>
         <volist name="paymentlist" id="vo">
@@ -12,14 +13,39 @@
 			    </td>
 	     <eq name="i%2" value="0">  </tr>  </eq>
 	     <eq name="i" value="$count">  </tr>  </eq>
-     </volist>
-  
+     </volist>  
 </table>
-
+ <table width="100%" border="0" cellspacing="0" cellpadding="0" style="line-height:25px;">
+  <tr>
+    <td align="left" width="50%"><strong style=" font-size:18px; color:#CC3300">Buy more than free shipping.</strong></td>
+    <td align="right" width="50%">
+      <table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><strong>Subtotal: {:getprice_str($cart_total)}</strong></td>
+  </tr>
+  <tr>
+    <td><strong>Weight Total: {$Total_weight}KG</strong></td>
+  </tr>
+  <tr>
+    <td><strong>Shipping Fee: <label id="shipping_money_text">{:getprice_str(0)}</label></strong></td>
+  </tr>
+  <tr>
+    <td><strong>Insurance: {:getprice_str($fees['insurance'])}</strong></td>
+  </tr>
+  <tr>
+    <td><strong>Pay Fee: <label id="pay_fee_str2">{:getprice_str($fees['paymoney'])}</label></strong></td>
+  </tr>
+  <tr>
+    <td><strong>Grand Total:</strong> <font color="#FF0000"><label id="total_text">{:getprice_str($fees['total'])}</label></font></td>
+  </tr>
+</table>
+    </td>
+  </tr>
+</table>
 
          <div style="text-align:right">
           
-		       <input type="submit"  name="Submit2" value="Submit" />
+		       <input type="submit"  name="Submit2" value="Check Out" />
 	    </div>
         </div>
       </div>

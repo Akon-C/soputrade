@@ -12,6 +12,9 @@ class MemberCommAction extends Action{
 	var $sessionID, $memberID;
 	protected $theme;
 	function _initialize() {
+		//获取国家列表
+		self::$Model=D("Region");
+		$this->Countries=self::$Model->where("type=0")->findall();
 		//主题
 		if($this->theme=GetSettValue('theme')){
 
@@ -21,15 +24,14 @@ class MemberCommAction extends Action{
 		//货币
 		L('_OPERATION_SUCCESS_',"Operation Success");
 		L('_OPERATION_FAIL_','Operation Fail');
-		$this->currencies=get_currencies_arr(); 
+		//$this->currencies=get_currencies_arr(); 
 		//生产一个唯一的session id
 		$this->sessionID = Session::get ( 'sessionID' );
 		if (! $this->sessionID) {
 			$this->sessionID = md5 ( uniqid ( rand () ) );
 			Session::set ( 'sessionID', $this->sessionID );
 		}
-		self::$Model=D("Countries");
-		$this->countries=self::$Model->getlist();
+		
 		//读取用户id
 		$this->memberID = Session::get ( 'memberID' );
 		if (! $this->memberID) {
