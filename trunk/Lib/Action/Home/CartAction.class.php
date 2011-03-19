@@ -208,9 +208,8 @@ class CartAction extends CommAction {
 			$sendto=array($orders_data['member_email'],GetSettValue('mailcopyTo'));
 			$body=$this->fetch_skin("checkout","MailTpl");
 			sendmail($sendto,GetSettValue('sitename')." - new order!",$body)	;
-			//3.19修改，添加一个确认页面
+			
 			$this->orders_data=$orders_data;
-			$this->display();
 			$this->redirect ( 'Cart/Payment', array ('id' => $orders_id ) );
 
 		} else {
