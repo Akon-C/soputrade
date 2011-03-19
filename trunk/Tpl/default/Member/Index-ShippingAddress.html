@@ -1,5 +1,5 @@
 <include file="Member:Member-top" />
-
+<script type="text/javascript" src="../Public/Js/Region.js"></script>
       <div class="page">
           <div id="main">
               <include file="Member:Member-right" />
@@ -32,29 +32,40 @@
     <td width="20%" align="left"><label class="inputLabel" for="firstname">Address:</label></td>
     <td width="80%"><input type="text" name="address" size = "35" value="{$memberShippingAddress.address}"  class="required" /><span class="alert"> *</span></td>
   </tr>
+  
+  <tr>
+    <td width="20%" align="left"><label class="inputLabel" for="firstname">Country:</label></td>
+    <td width="80%">
+    <select name="country" id="selCountries" onchange="loadRegion('selCountries',1,'selProvinces','{:U('Home-Ajax/getRegion')}');" class="required" style="font-size:11px;font-family:Verdana, Arial, Helvetica, sans-serif;">
+  <option value="">Please Select</option> 
+  <volist name="Countries" id="vo"> 
+  <option value="{$vo.id}" >{$vo.name}</option> 
+  </volist>
+  </select>
+  <span class="alert"> *</span></td>
+  </tr>
+  <tr>
+    <td width="20%" align="left"><label class="inputLabel" for="firstname">State/Province:</label></td>
+    <td width="80%">
+    <!-- <input type="text" name="state" size = "35" value="{$memberShippingAddress.state}"  class="required" /> -->
+    <select name="state" id="selProvinces"  class="required">
+            <option value="0">Please Select</option>
+    </select>
+    <span class="alert"> *</span>
+    </td>
+  </tr>
   <tr>
     <td width="20%" align="left"><label class="inputLabel" for="firstname">City or APO/FPO:</label></td>
     <td width="80%"><input type="text" name="city" size = "35" value="{$memberShippingAddress.city}"  class="required" /><span class="alert"> *</span></td>
   </tr>
   <tr>
-    <td width="20%" align="left"><label class="inputLabel" for="firstname">State/Province:</label></td>
-    <td width="80%"><input type="text" name="state" size = "35" value="{$memberShippingAddress.state}"  class="required" /><span class="alert"> *</span></td>
-  </tr>
-  <tr>
     <td width="20%" align="left"><label class="inputLabel" for="firstname">Zip/Postal Code:</label></td>
-    <td width="80%"><input type="text" name="zip" size = "35" value="{$memberShippingAddress.zip}"  class="required" /><span class="alert"> *</span></td>
-  </tr>
-  <tr>
-    <td width="20%" align="left"><label class="inputLabel" for="firstname">Country:</label></td>
     <td width="80%">
-    <select name="country" id="country" class="required" style="font-size:11px;font-family:Verdana, Arial, Helvetica, sans-serif;">
-  <option value="">Please Select</option> 
-  <volist name="countries" id="vo"> 
-  <option value="{$vo.countries_id}" >{$vo.countries_name}</option> 
-  </volist>
-  </select>
-  <span class="alert"> *</span></td>
+    <input type="text" name="zip" size = "35" value="{$memberShippingAddress.zip}"  class="required" />
+    <span class="alert"> *</span>
+    </td>
   </tr>
+  
   <tr>
     <td width="20%" align="left"><label class="inputLabel" for="firstname">Telephone:</label></td>
     <td width="80%"><input type="text" name="telphone"  class="required" size = "35" value="{$memberShippingAddress.telphone}" /><span class="alert"> *</span></td>
@@ -81,6 +92,8 @@
                 
 <script language="JavaScript" type="text/javascript">
 		$("form[name=doShippingAddress]").validate();
-		$("#country").val("{$memberShippingAddress.country}");
+		$("#selCountries").val("{$memberShippingAddress.country}");
+		loadRegion('selCountries',1,'selProvinces','{:U('Home-Ajax/getRegion')}');
+		$("#selProvinces").val("{$memberShippingAddress.state}");
 </script>
      <include file="Member:Member-footer" />

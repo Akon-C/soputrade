@@ -68,7 +68,7 @@ class CartAction extends CommAction {
 		}
 	}
 	function checked_address() {
-
+		
 		$dao = D ( "Cart" );
 		if ($dao->get_item_count ( $this->sessionID ) < 1) {
 			$this->jumpUrl=U('Index/index');
@@ -102,6 +102,9 @@ class CartAction extends CommAction {
 		$this->display ();
 	}
 	public function OtherAddress() {
+		//获取国家列表
+		self::$Model=D("Region");
+		$this->Countries=self::$Model->where("type=0")->findall();
 		$dao = D ( "Cart" );
 		if ($dao->get_item_count ( $this->sessionID ) < 1) {
 			$this->jumpUrl=U('Index/index');
@@ -145,6 +148,9 @@ class CartAction extends CommAction {
 			Session::set('step','Member-join');
 			$this->redirect ( 'Member-Public/Join' );
 		}
+	    if (! isset ( $_POST ['shipping_method'] ) || empty($_POST ['shipping_method'])) {
+			$this->error ( 'Please select SHIPPING METHOD! ' );
+		}
 		if (! isset ( $_POST ['payment_module_code'] ) || empty($_POST ['payment_module_code'])) {
 			$this->error ( 'Please select PAYMENT METHOD! ' );
 		}
@@ -154,17 +160,20 @@ class CartAction extends CommAction {
 		//3.10修改
 		$ginfo=get_members_group($this->memberID);
 		$products_total=self::$Model->cart_total ( $this->sessionID )*$ginfo["discount"];//产品价格
+		
 
 		//生成订单
 		self::$Model = D ( "Orders" );
 		if ($orders_data=self::$Model->create ()) {
 			$fee=get_orders_Fees($products_total);
-			$orders_data['shippingmoney']=$fee['shippingmoney'];
-			$orders_data['paymoney']=$fee['paymoney'];
-			$orders_data['insurance']=$fee['insurance'];
-			$orders_data['orders_total'] = $fee['total'];
+			$orders_data['shippingmoney']=$_POST["shippingfee"];
+			$orders_data['paymoney']=$_POST["paymentfee"];
+			$orders_data['insurance']=$_POST["insurance"];
+			$orders_data['orders_total'] = $_POST["total"];
+			$orders_data['express_method'] = $_POST["shipping_method"];
+			
 			if(is_numeric($orders_data['delivery_country'])){
-				$orders_data['delivery_country']=get_country($orders_data['delivery_country']);
+				$orders_data['delivery_country']=get_region_name($orders_data['delivery_country']);
 			}
 			$orders_id = self::$Model->add ($orders_data);//订单id
 
@@ -189,14 +198,19 @@ class CartAction extends CommAction {
 			self::$Model->clear_cart ( $this->sessionID );
 
 			//发送邮件
-			$this->products_total=$products_total;//产品的价格
+			
 			$this->maildata=$orders_data;//订单数据
 			$this->list=$list;//购物车产品
+			$this->fee=$fee;
+			
 
 			$this->this_script = rtrim("http://{$_SERVER['HTTP_HOST']}","/");
 			$sendto=array($orders_data['member_email'],GetSettValue('mailcopyTo'));
 			$body=$this->fetch_skin("checkout","MailTpl");
 			sendmail($sendto,GetSettValue('sitename')." - new order!",$body)	;
+			//3.19修改，添加一个确认页面
+			$this->orders_data=$orders_data;
+			$this->display();
 			$this->redirect ( 'Cart/Payment', array ('id' => $orders_id ) );
 
 		} else {

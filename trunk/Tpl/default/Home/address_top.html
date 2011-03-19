@@ -7,6 +7,7 @@ label.error { float: none; color: red;}
 	$(function(){
 		$('form[name=shipping]').validate();
 	})
+	
 </script>
 
  <div class="col5">
@@ -29,9 +30,9 @@ label.error { float: none; color: red;}
 <input type="hidden" name="member_lastname" value="{$member_Info['lastname']}">
 <input type="hidden" name="member_address" value="{$member_ShippingAddress['address']}">
 <input type="hidden" name="member_city" value="{$member_ShippingAddress['city']}">
-<input type="hidden" name="member_state" value="{$member_ShippingAddress['state']}">
+<input type="hidden" name="member_state" value="{:get_region_name($member_ShippingAddress['state'])}">
 <input type="hidden" name="member_zip" value="{$member_ShippingAddress['zip']}">
-<input type="hidden" name="member_country" value="{:get_country($member_ShippingAddress['country'])}">
+<input type="hidden" name="member_country" value="{:get_region_name($member_ShippingAddress['country'])}">
 <input type="hidden" name="member_telephone" value="{$member_ShippingAddress['telphone']}">
 <input type="hidden" name="member_id" value="{$member_Info['id']}">
 <input type="hidden" name="member_email" value="{$member_Info['email']}">
@@ -39,9 +40,9 @@ label.error { float: none; color: red;}
 <input type="hidden" name="delivery_lastname" value="{$member_Info['lastname']}">
 <input type="hidden" name="delivery_address" value="{$member_ShippingAddress['address']}">
 <input type="hidden" name="delivery_city" value="{$member_ShippingAddress['city']}">
-<input type="hidden" name="delivery_state" value="{$member_ShippingAddress['state']}">
+<input type="hidden" name="delivery_state" value="{:get_region_name($member_ShippingAddress['state'])}">
 <input type="hidden" name="delivery_zip" value="{$member_ShippingAddress['zip']}">
-<input type="hidden" name="delivery_country" value="{:get_country($member_ShippingAddress['country'])}">
+<input type="hidden" name="delivery_country" value="{:get_region_name($member_ShippingAddress['country'])}">
 <input type="hidden" name="delivery_telephone" value="{$member_ShippingAddress['telphone']}">
    <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
@@ -71,27 +72,4 @@ label.error { float: none; color: red;}
   </tr>
   </volist>
 </table>
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="line-height:25px;">
-  <tr>
-    <td align="left" width="50%"><strong style=" font-size:18px; color:#CC3300">Buy more than free shipping.</strong></td>
-    <td align="right" width="50%">
-      <table border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td><strong>Subtotal: {:getprice_str($cart_total)}</strong></td>
-  </tr>
-  <tr>
-    <td><strong>Shipping Fee: {:getprice_str($fees['shippingmoney'])}</strong></td>
-  </tr>
-  <tr>
-    <td><strong>Insurance: {:getprice_str($fees['insurance'])}</strong></td>
-  </tr>
-  <tr>
-    <td><strong>Pay Fee(<strong style="color:red;font-weight:bold">{:getprice_str($cart_total+$fees['shippingmoney']+$fees['insurance'])}*{:GetSettValue("paymoney")*100}%</strong>): {:getprice_str($fees['paymoney'])}</strong></td>
-  </tr>
-  <tr>
-    <td><strong>Grand Total:</strong> <font color="#FF0000">{:getprice_str($fees['total'])}</font></td>
-  </tr>
-</table>
-    </td>
-  </tr>
-</table>
+       

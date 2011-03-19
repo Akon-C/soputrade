@@ -124,6 +124,7 @@ function toDate($time, $format = 'Y-m-d H:i:s') {
 	$format = str_replace ( '#', ':', $format );
 	return date ($format, $time );
 }
+
 /**
 	 +----------------------------------------------------------
  * 获取缩略图名称
@@ -671,26 +672,29 @@ function get_orders_Fees($total){
 	//四舍五入，保留 2 位
 	//$cart_total = $dao->cart_total ( Session::get ( 'sessionID' ) );
 	$r=array();
+	$r["products_total"]=$total;
 	switch (GetSettValue('no_shipping')){
 		case 'qty':
 			$dao = D ( "Cart" );
 			$Count = $dao->get_item_totalcount ( Session::get ( 'sessionID' ) );
-			if ($Count<=GetSettValue("min_freeshippingqty")){
+			$r['shippingmoney']=0;
+			/*if ($Count<=GetSettValue("min_freeshippingqty")){
 
 				$r['shippingmoney']=number_format(GetSettValue("shippingmoney"),2, '.', '');
 			}
 			else{
 				$r['shippingmoney']=0;
-			}
+			}*/
 			break;
 		case 'amount':
 		default:
-			if ($total<=GetSettValue("min_freeshippingmoney")){
+			$r['shippingmoney']=0;
+			/*if ($total<=GetSettValue("min_freeshippingmoney")){
 				$r['shippingmoney']=number_format(GetSettValue("shippingmoney"),2, '.', '');
 			}
 			else{
 				$r['shippingmoney']=0;
-			}
+			}*/
 	}
 	if ($total<=GetSettValue("min_insurance")){
 		$r['insurance']=number_format($Count*GetSettValue("insurance"),2, '.', '');
@@ -783,4 +787,46 @@ function get_region_name($id){
 	}
 	
 }
+//获取运费
+function get_shipping_fee($shippingid,$countyid,$stateid,$weight){
+	$fee=array();
+	$dao=D("Shipping_area");
+	$list=$dao->where("shipping_id=".$shippingid)->findall();
+	if ($list){
+		for($i = 0; $i < count ( $list ); $i ++) {
+			if (in_array ( $stateid, unserialize ( $list [$i] ["config"] ) )) {
+				return shipping_fee($list[$i],$weight);
+			}
+			else{
+				if (in_array ( $countyid, unserialize ( $list [$i] ["config"] ) )) {
+					return shipping_fee($list[$i],$weight);
+				}
+				else{
+					return 0;
+				}
+			}
+		}
+	}
+	else{
+		return 0;
+	}
+}
+function shipping_fee($fee,$weight){
+	if ($weight<=1){
+		return $fee["base_fee"];
+	}
+	else{
+		
+		$r=$fee["base_fee"]+($weight-1)*$fee["step_fee"];
+		if ($r<=$fee["free_money"]){
+			return 0;
+		}
+		else{
+			return $r;
+		}
+	}
+	//return $fee["base_fee"];
+}
+
+
 ?>

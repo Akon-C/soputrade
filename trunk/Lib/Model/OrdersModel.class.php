@@ -13,6 +13,9 @@ protected $_auto=array(
 	array('ip_address','get_client_ip',1,'function'),
 	array('sn','get_sn',1,'function'),
 	);
-	
+	public function get_order($id){
+		return $this->where("id=".$id)->find();
+	}
 }
+
 ?>
