@@ -1,4 +1,11 @@
-﻿3.15更新记录
+﻿3.18更新记录
+给产品表添加重量属性
+ALTER TABLE `sop_products`
+ADD COLUMN `weight`  float(10,0) NULL DEFAULT 0 AFTER `size`;
+
+删除了费用设置内的运费计算
+修改会员中心的地址设置
+3.15更新记录
 
 后台添加配送方式功能
 新增表2个
