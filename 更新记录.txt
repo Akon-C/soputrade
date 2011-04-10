@@ -1,4 +1,17 @@
-﻿3.18更新记录
+﻿4.10更新记录
+
+修改了后台产品属性编辑模块！
+添加了后台产品属性可设置属性价格功能！
+具体修改
+ProductsAction
+tpl/admin/products_attredit.html
+添加
+attrdel()
+attrsave()
+操作
+请重新检查一下其他操作，如有多余请删除！
+
+3.18更新记录
 给产品表添加重量属性
 ALTER TABLE `sop_products`
 ADD COLUMN `weight`  float(10,0) NULL DEFAULT 0 AFTER `size`;
