@@ -413,6 +413,45 @@ class ProductsAction extends AdminCommAction {
 		$this->attr=$attr;
 		$this->display();
 	}
+	function attrdel(){
+		$id=$_REQUEST["id"];
+		self::$Model=D("Products_attr");
+		self::$Model->where("id=".$id)->delete();
+		echo json_encode($id);
+		
+	}
+	function attrsave(){
+		self::$Model=D("Products_attr");
+		$id=$_REQUEST["id"];
+		$data["attr_id"]=$_REQUEST["attr_id"];
+		$data["attr_value"]=$_REQUEST["attr_value"];
+		$data["products_id"]=$_REQUEST["products_id"];
+		
+		if (empty($data["attr_value"])){
+			$r["statue"]=0;
+			echo json_encode($r);die;
+		}
+		if (empty($_REQUEST["attr_price"])){
+			$data["attr_price"]=0;
+		}
+		else{
+			$data["attr_price"]=$_REQUEST["attr_price"];
+		}
+		if ($id==0){
+			$r["id"]=self::$Model->add($data);
+			//echo self::$Model->getlastsql();
+			$r["statue"]=1;
+			
+			echo json_encode($r);die;
+		}
+		else{
+			self::$Model->where("id=".$id)->save($data);
+			$r["statue"]=1;
+			$r["id"]=$id;			
+			echo json_encode($r);die;
+		}
+		
+	}
 	function attrUpdate(){
 
 		$products_id=explode(",",$_POST['products_id']);
