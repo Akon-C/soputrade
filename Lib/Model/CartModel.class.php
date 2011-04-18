@@ -12,7 +12,7 @@ class CartModel extends Model {
 	public $memberID;
 	function _initialize() {
 		parent::_initialize();
-		$this->memberID=Session::get('memberID');//会员帐号
+		$this->memberID=Session::get('memberID')?Session::get('memberID'):0;//会员帐号
 	}
 	// 查验物品
 	public function check_item($sessionID, $pid,$model) {
