@@ -1,6 +1,6 @@
 function loadRegion(sel,type_id,selName,url){
 	//alert($("#"+sel).val());
-	$("#"+selName+" option").each(function(){			
+	$("#"+selName+" option").each(function(){
 		$(this).remove();
 	});
 	$("<option value=0>请选择</option>").appendTo($("#"+selName));
@@ -8,19 +8,23 @@ function loadRegion(sel,type_id,selName,url){
 		return;
 	}
 	$.getJSON(url,{pid:$("#"+sel).val(),type:type_id},
-		function(data){			
-		$.each(data,function(idx,item){
-			if(idx==0){
-			return true;//同countinue，返回false同break
-			}
-			
-			//$(new Option(item.name,item.id)).appendTo($("#"+selName));
-			$("<option value="+item.id+">"+item.name+"</option>").appendTo($("#"+selName));
+	function(data){
+		if(data){
+			$.each(data,function(idx,item){
+				if(idx==0){
+					return true;//同countinue，返回false同break
+				}
 
-		}); 	
-		
+				//$(new Option(item.name,item.id)).appendTo($("#"+selName));
+				$("<option value="+item.id+">"+item.name+"</option>").appendTo($("#"+selName));
+
+			});
+		}else{
+			$("<option value='0'>All Province</option>").appendTo($("#"+selName));
+		}
+
 	}
-		
+
 	);
 }
 function addconfig(){
@@ -40,6 +44,6 @@ function addconfig(){
 			}
 		}
 	}
-	
+
 	$("#configtext").append(chboxtext);
 }

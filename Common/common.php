@@ -15,11 +15,11 @@ function product_history(){
 	}
 	return '';
 }
- 
+
 function format_size($size) {
-     $sizes = array(" Bytes", " KB", " MB", " GB", " TB", " PB", " EB", " ZB", " YB");
-     if ($size == 0) { return('n/a'); } else {
-     return (round($size/pow(1024, ($i = floor(log($size, 1024)))), $i > 1 ? 2 : 0) . $sizes[$i]); }
+	$sizes = array(" Bytes", " KB", " MB", " GB", " TB", " PB", " EB", " ZB", " YB");
+	if ($size == 0) { return('n/a'); } else {
+		return (round($size/pow(1024, ($i = floor(log($size, 1024)))), $i > 1 ? 2 : 0) . $sizes[$i]); }
 }
 
 function products_ask($str){
@@ -89,6 +89,20 @@ function build_url($vo,$type){
 			return U(tourlstr($vo['name']).'@',array('cid'=>$vo['id']));
 		case 'cate_name':
 			return $vo['name'];
+		case 'ad_name':
+			return $vo['name'];
+		case 'ad_remark':
+			return $vo['remark'];
+		case 'ad_link':
+			return $vo['link'];
+		case 'ad_img':
+			return __ROOT__.'/'.$vo['img_url'];
+		case 'article_url':
+			return U('Article/index',array('id'=>$vo['id']));
+		case 'article_title':
+			return $vo['title'];
+		case 'article_dateline':
+			return date('Y-m-d H:i:s',$vo['dateline']);
 		case 'cate_img':
 			return __ROOT__.'/'.$vo['imgurl'];
 		case 'g_bigimage':
@@ -197,7 +211,7 @@ function Meta($pagetitle='',$pagekeywords='',$pagedesc='',$list=''){
 	}else{
 		$Meta.=GetSettValue('keywords');
 	}
-	$Meta.=" - $sitename\" />\n";
+	$Meta.="\" />\n";
 
 	//描述
 	$Meta.='<meta name="description" content="';
@@ -212,10 +226,10 @@ function Meta($pagetitle='',$pagekeywords='',$pagedesc='',$list=''){
 	}else{
 		$Meta.=GetSettValue('description');
 	}
-	$Meta.=" - $sitename\" />\n";
+	$Meta.="\" />\n";
 
-	$Meta.="<meta name=\"generator\" content=\"www.0594trade.com\" />\n";
-	$Meta.="<meta name=\"anthor\" contnet=\"811046@qq.com\" />\n";
+	//$Meta.="<meta name=\"generator\" content=\"www.0594trade.com\" />\n";
+	//$Meta.="<meta name=\"anthor\" contnet=\"811046@qq.com\" />\n";
 	return $Meta;
 }
 /**
@@ -330,12 +344,16 @@ function get_subcate_arr($pid=0){
 	$data=array();
 	$cate=get_catetree_arr();
 	$count=0;
+	$model=D('Cate');
+	$productCount=GetSettValue('productCount');
 	for($i=0;$i<count($cate);$i++){
 		if ($cate[$i]['pid']==$pid){
 			$data[$count]=$cate[$i];
 			$data[$count]['sub']=get_subcate_arr($cate[$i]['id']);
 			$data[$count]['subcount']=count(get_subcate_arr($cate[$i]['id']));
-			//$data[$count]['procount']=get_cate_pro_num($cate[$i]['id'],$cate[$i]['id']);
+			if($productCount==1){
+				$data[$count]['procount']=$model->get_cate_pro_num($cate[$i]['id']);
+			}
 			$count++;
 		}
 	}
@@ -353,6 +371,7 @@ function get_catetree_arr() {
 
 	return S ( 'S_CATETREE' );
 }
+
 //获取节点树
 function get_nodetree_arr() {
 	$classDAO = D( "Node" );
@@ -451,15 +470,17 @@ function SetSettValue($valuename,$valuetxt=null){
 	}else{
 		$setting	=	D('Setting');
 		$map['valuename']=$valuename;
+		if (get_magic_quotes_gpc()) {
+			$valuetxt = stripslashes($valuetxt);
+		}
+		$date['valuetxt']=$valuetxt;
 		$info=$setting->where($map)->find();
 		if ($info) {
-			$date['valuetxt']=$valuetxt;
 			$setting->where($map)->data($date)->save();
 		}
 		else {
 			$d	=	D('Setting');
 			$data['valuename']=$valuename;
-			$data['valuetxt']=$valuetxt;
 			$d->add($data);
 
 		}
@@ -482,6 +503,20 @@ function get_ad_arr($code) {
 	if (S ( 'S_AD_' . $code ) == "") {
 		$dao = D ( "Ad" );
 		S ( 'S_AD_' . $code, $dao->where ( "code='" . $code."'" )->order ( "sort desc" )->findAll ()) ;
+	}
+	return S ( 'S_AD_' . $code );
+}
+
+function get_ad($code,$field) {
+	if (S ( 'S_AD_' . $code ) == "") {
+		$dao = D ( "Ad" );
+		if(isset($field)){
+			$list=$dao->field($field)->where ( "code='" . $code."'" )->order ( "sort desc" )->find();
+			$list=$list[$field];
+		}else{
+			$list=$dao->where ( "code='" . $code."'" )->order ( "sort desc" )->find();
+		}
+		S ( 'S_AD_' . $code,$list) ;
 	}
 	return S ( 'S_AD_' . $code );
 }
@@ -538,16 +573,24 @@ function getprice($price,$spe,$discount=true){
 		else{
 			return $re;
 		}
-		
+
 	}
 	return $re;
-		
+
 
 }
 function getprice_str($price){
 	return "<strong style='color:red;font-weight: bold;'>".$_SESSION ['currency'] ['code'] . ($price * $_SESSION ['currency'] ['rate'])."</strong>";
 }
-
+//获取真实的价格
+function get_real_price($price,$pricespe){
+	if ($price>=$pricespe){
+		return $pricespe;
+	}
+	else{
+		return $price;
+	}
+}
 /**
  * 替换冲突url名
  *
@@ -619,8 +662,8 @@ function get_orders_status($id){
 }
 function get_members_name($id){
 	$dao=D("Members");
-	$list=$dao->field("name")->where("id=".$id)->find();
-	return $list['name'];
+	$list=$dao->where("id=".$id)->find();
+	return $list['email'];
 }
 //获取属性的输入方式名称
 function get_type_inputtype_name($type){
@@ -668,7 +711,7 @@ function sendmail($sendTo,$subject,$body){
 	}
 
 }
-function get_orders_Fees($total){
+function get_orders_Fees($total,$shipping_price){
 	//四舍五入，保留 2 位
 	//$cart_total = $dao->cart_total ( Session::get ( 'sessionID' ) );
 	$r=array();
@@ -680,21 +723,25 @@ function get_orders_Fees($total){
 			$r['shippingmoney']=0;
 			/*if ($Count<=GetSettValue("min_freeshippingqty")){
 
-				$r['shippingmoney']=number_format(GetSettValue("shippingmoney"),2, '.', '');
+			$r['shippingmoney']=number_format(GetSettValue("shippingmoney"),2, '.', '');
 			}
 			else{
-				$r['shippingmoney']=0;
+			$r['shippingmoney']=0;
 			}*/
 			break;
 		case 'amount':
 		default:
 			$r['shippingmoney']=0;
 			/*if ($total<=GetSettValue("min_freeshippingmoney")){
-				$r['shippingmoney']=number_format(GetSettValue("shippingmoney"),2, '.', '');
+			$r['shippingmoney']=number_format(GetSettValue("shippingmoney"),2, '.', '');
 			}
 			else{
-				$r['shippingmoney']=0;
+			$r['shippingmoney']=0;
 			}*/
+	}
+
+	if(isset($shipping_price)){
+		$r['shippingmoney']=$shipping_price;
 	}
 	if ($total<=GetSettValue("min_insurance")){
 		$r['insurance']=number_format($Count*GetSettValue("insurance"),2, '.', '');
@@ -712,7 +759,7 @@ function get_orders_Fees($total){
 
 	$r['total']=number_format($total+$r['shippingmoney']+$r['paymoney']+$r['insurance'],2, '.', '');
 	return $r;
-} 
+}
 //3.10更新
 
 function get_members_points($uid){
@@ -737,8 +784,22 @@ function get_members_group($uid){
 	}
 	else{
 		return null;
-	}	
-	
+	}
+
+}
+
+/**
+ * 根据VIP会员等级取得VIP会员价
+ *
+ */
+function VipPrice($price){
+	$GroupInfo=get_members_group(Session::get('memberID'));
+	if($GroupInfo["discount"]){
+		$VipPrice=$GroupInfo["discount"]*$price;
+	}else{
+		$VipPrice=$price;
+	}
+	return $VipPrice;
 }
 /**
  * 赠送用户积分
@@ -749,7 +810,7 @@ function get_members_group($uid){
 function give_member_points($sn){
 	$dao = D ( "Orders" );
 	$list = $dao->where ( "sn=" . $sn )->find ();
-	
+
 	if ($list) {
 		$orders_id = $list ["id"];
 		$member_id=$list["member_id"];
@@ -757,13 +818,13 @@ function give_member_points($sn){
 		$list=$dao->where("orders_id=".$orders_id)->findAll();
 		if ($list){
 			$dao=D("Members");
-			for ($i=0;$i<count($list);$i++){				
+			for ($i=0;$i<count($list);$i++){
 				$dao->setInc("points","id=".$member_id,get_products_points($list[$i]["products_id"]));
-				
+
 			}
 		}
 	}
-	
+
 }
 function get_products_points($pid){
 	$dao=D("Products");
@@ -785,19 +846,31 @@ function get_region_name($id){
 	} else {
 		return null;
 	}
-	
+
+}
+function get_region_id($name){
+	$dao = D ( "Region" );
+	$list = $dao->where ( "name='" . $name."'" )->find ();
+	if ($list) {
+		return $list ["id"];
+	} else {
+		return null;
+	}
+
 }
 //获取运费
-function get_shipping_fee($shippingid,$countyid,$stateid,$weight){
+function get_shipping_fee($shippingid,$countyid,$stateid,$weight,$city){
 	$fee=array();
 	$dao=D("Shipping_area");
+	$cityid=get_region_id($city);
 	$list=$dao->where("shipping_id=".$shippingid)->findall();
 	if ($list){
 		for($i = 0; $i < count ( $list ); $i ++) {
 			if (in_array ( $stateid, unserialize ( $list [$i] ["config"] ) )) {
 				return shipping_fee($list[$i],$weight);
-			}
-			else{
+			}elseif($cityid && in_array ( $cityid, unserialize ( $list [$i] ["config"] ) )) {
+				return shipping_fee($list[$i],$weight);
+			}else{
 				if (in_array ( $countyid, unserialize ( $list [$i] ["config"] ) )) {
 					return shipping_fee($list[$i],$weight);
 				}
@@ -816,7 +889,6 @@ function shipping_fee($fee,$weight){
 		return $fee["base_fee"];
 	}
 	else{
-		
 		$r=$fee["base_fee"]+($weight-1)*$fee["step_fee"];
 		if ($r<=$fee["free_money"]){
 			return 0;
@@ -828,5 +900,8 @@ function shipping_fee($fee,$weight){
 	//return $fee["base_fee"];
 }
 
-
+function get_shipping_name($id){
+	$model=D('Shipping');
+	return $model->where(array('id'=>$id))->getField('name');
+}
 ?>

@@ -10,8 +10,10 @@
 class ECPSS {
 	var $fields = array ();
 	var $submit_url;
-	function ECPSS() {
+	var $sn;
+	function ECPSS($sn) {
 		$this->submit_url="https://security.sslepay.com/sslpayment";	
+		$this->sn=$sn;
 	}
 	function add_field($field, $value) {
 		
@@ -27,7 +29,7 @@ class ECPSS {
 		echo "<head><title>Processing Payment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"></head>\n";
 		/*echo "<body onLoad=\"document.forms['pay_form'].submit();\">\n";*/
 		echo "<body >\n";
-		echo "<center><h2>Please remember your order number, and then click on the button below to make a payment!</h2></center>\n";
+		echo "<center><h2>Please remember your order number ".$this->sn.", and then click on the button below to make a payment!</h2></center>\n";
 		echo "<center><h2>Please wait, your order is being processed and you";
 		echo " will be redirected to the payment website.</h2></center>\n";
 		echo "<form method=\"post\" name=\"pay_form\" ";

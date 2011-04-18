@@ -10,8 +10,8 @@
 class Down_cateModel extends Model{
 	protected $_validate=array(
 
-	array('catename','require','类别名称必须填写!'),
-	array('catename','','类别名称已经存在!',0,'unique',1),
+	array('name','require','类别名称必须填写!'),
+	array('name','','类别名称已经存在!',0,'unique',1),
 
 	);
 	
@@ -20,10 +20,10 @@ class Down_cateModel extends Model{
 	 *
 	 */
 
-	public function cate_option($cateid=0,$i=0,$selected=null)
+	public function cate_option($id=0,$i=0,$selected=null)
 	{
 		
-		$cate = $this->where(array('parent_cateid'=>$cateid))->order('cateid asc')->findall();
+		$cate = $this->where(array('pid'=>$id))->order('pid asc')->findall();
 		if(false == $cate) return null;
 		
 		$option='';
@@ -34,12 +34,12 @@ class Down_cateModel extends Model{
 			$str.=str_repeat('-',$i*2);
 		}
 		foreach ($cate as $v){
-			if(!is_null($selected) && $selected==$v['cateid']){
-				$option.="<option value='{$v['cateid']}' selected='selected'>".$str.$v['catename']."</option>";
+			if(!is_null($selected) && $selected==$v['id']){
+				$option.="<option value='{$v['id']}' selected='selected'>".$str.$v['name']."</option>";
 			}else{
-				$option.="<option value='{$v['cateid']}'>".$str.$v['catename']."</option>";
+				$option.="<option value='{$v['id']}'>".$str.$v['name']."</option>";
 			}
-			$option.=$this->cate_option($v['cateid'],$i+1);
+			$option.=$this->cate_option($v['id'],$i+1);
 		}
 		return $option;
 	}

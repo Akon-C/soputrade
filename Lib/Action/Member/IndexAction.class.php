@@ -30,7 +30,7 @@ class IndexAction extends MemberCommAction{
 	public function Addprofav(){
 		$memberInfo=$this->get('memberInfo');
 		$id=intval($_REQUEST['id']);
-		if(!$memberInfo['profav']) { 
+		if(!$memberInfo['profav']) {
 			$data['profav']=$id;
 		}else {
 			$profav = explode(',',$memberInfo['profav']);
@@ -53,6 +53,7 @@ class IndexAction extends MemberCommAction{
 
 		self::$Model=D("Shippingaddress");
 		$list=self::$Model->where("id=".$this->memberID)->find();
+
 		if (self::$Model->create()){
 			if ($list){
 				self::$Model->save();
@@ -85,7 +86,8 @@ class IndexAction extends MemberCommAction{
 				$data['password']=md5($_POST['new_password']);
 				self::$Model->where("id=".$this->memberID)->save($data);
 				//echo self::$Model->getlastsql();
-				$this->redirect ( 'Index/ChangePWD' );
+				$this->success ( "Operation is successful!");
+				//$this->redirect ( 'Index/ChangePWD' );
 			}
 			else{
 				$this->error ( "Confirm password error!");

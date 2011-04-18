@@ -21,7 +21,7 @@ $(function(){
 		        		"{:U('Products/attrsave')}",
 		        		{id:id,attr_id:attr_id,attr_value:attr_value,attr_price:attr_price,products_id:products_id},
 		        		function(data){
-			        		if(data.statue==1){
+			        		if(data.status==1){
 				        		alert("保存成功！");	
 				        		tr.find("[name=id]").attr("value",data.id);
 				        		//var attr_value=tr.find(".copy").after("<input type='hidden' name='id' value='"+data.id+"' />");
@@ -40,7 +40,7 @@ $(function(){
 			function(){
 		       var tr=$(this).parent().parent();
 		       var id=$(this).parent().parent().find("[name=id]").attr("value");	
-		       alert(id);	       
+		       //alert(id);	       
 		       $.getJSON(
 		    		   "{:U('Products/attrdel')}",
 		    		   {id:id},

@@ -9,8 +9,13 @@
             
             <form action="{:U('Setting/doBase')}" name="myform" method="post">
             <table class="nostyle">
-                     <!-- 
-                    <tr>
+                     
+                     <tr>
+						<td style="width:120px;">订单最小金额</td>
+						<td><input type="text" size="40" name="minimum_money" class="input-text" value="{:GetSettValue('minimum_money')}" />(低于这个金额不可下单，设为空或0禁用这个功能)</td>
+					</tr>
+				  <!-- 
+                  <tr>
 						<td style="width:120px;">运费:</td>
 						<td><input type="text" size="40" name="shippingmoney" class="input-text" value="{:GetSettValue('shippingmoney')}" />(基本运费)</td>
 					</tr>

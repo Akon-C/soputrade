@@ -9,8 +9,16 @@
 */ 
 class Shipping_areaAction extends AdminCommAction{
 	function index(){
-		$list=$this->dao->where("shipping_id=".$_GET["id"])->findall();			
-		$this->list=$list;	
+		$list=$this->dao->where("shipping_id=".$_GET["id"])->findall();
+		foreach ($list as $k=>$v){
+			$config=unserialize($list[0]['config']);
+			foreach ((array)$config as $vo){
+				$list[$k]['area'][]=get_region_name($vo);
+			}
+			$list[$k]['area']=implode(',',$list[$k]['area']);
+		}
+		$this->list=$list;
+		
 		$this->id=$_GET["id"];
 		$this->display();
 	}
@@ -18,9 +26,10 @@ class Shipping_areaAction extends AdminCommAction{
 		$map ['id'] = $_GET ['id'];
 		$list = $this->dao->where ( $map )->find ();
 		if ($list) {
+			$map1['type']=0;
+			$this->country=D('Region')->where($map1)->findall();
 			$this->config1=unserialize($list["config"]);
 			$this->list = $list;
-			
 			$this->display ();
 		} else {
 			$this->error ( '没有数据！' );
@@ -28,6 +37,8 @@ class Shipping_areaAction extends AdminCommAction{
 	}
 	function add(){
 		$this->id=$_GET['id'];
+		$map['type']=0;
+		$this->country=D('Region')->where($map)->findall();
 		parent::add();
 	}
 	function Insert(){
@@ -36,6 +47,8 @@ class Shipping_areaAction extends AdminCommAction{
 	}
 	function Update(){
 		$_POST["config"]=serialize($_POST["config"]);
+		$map['type']=0;
+		$this->country=D('Region')->where($map)->findall();
 		parent::Update ();
 	}
 }

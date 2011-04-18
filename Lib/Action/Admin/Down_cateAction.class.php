@@ -14,11 +14,11 @@ class Down_cateAction extends AdminCommAction{
 	}
 	public function catelist(){
 		
-		$this->sort='parent_cateid desc';
+		$this->sort='pid desc';
 		$this->_list();
 		$list=$this->get('list');
 		foreach ($list as $k=>$v){
-			$list[$k]['parent_caetname']=$this->dao->where(array('cateid'=>$v['parent_cateid']))->getField('catename');
+			$list[$k]['catename']=$this->dao->where(array('id'=>$v['pid']))->getField('name');
 		}
 		$this->assign('list',$list);
 		$this->display();
@@ -29,24 +29,24 @@ class Down_cateAction extends AdminCommAction{
 		$this->display();
 	}
 	public function edit(){
-		$list=$this->dao->where(array('cateid'=>$_REQUEST['cateid']))->find();
+		$list=$this->dao->where(array('id'=>$_REQUEST['id']))->find();
 		$this->list=$list;
-		if($list['parent_cateid']){
-			$this->cateoption=$this->dao->cate_option(0,0,$list['cateid']);
+		if($list['pid']){
+			$this->cateoption=$this->dao->cate_option(0,0,$list['pid']);
 		}else{
 			$this->cateoption=$this->dao->cate_option();
 		}
 		$this->display();
 	}
 	public function status(){
-		$map['cateid']=intval($_REQUEST['cateid']);
+		$map['id']=intval($_REQUEST['id']);
 		$status=$this->dao->where($map)->getField('status');
 		if($status==1){
 			$status=0;
-			$data['imgurl']=__ROOT__.'/Tpl/default/Public/images/mod_0.gif';
+			$data['img_url']=__ROOT__.'/Tpl/default/Public/images/mod_0.gif';
 		}else{
 			$status=1;
-			$data['imgurl']=__ROOT__.'/Tpl/default/Public/images/mod_1.gif';
+			$data['img_url']=__ROOT__.'/Tpl/default/Public/images/mod_1.gif';
 		}
 		$this->dao->where($map)->data(array('status'=>$status))->save();
 		$this->ajaxReturn($data,'保存成功',1);
@@ -55,7 +55,9 @@ class Down_cateAction extends AdminCommAction{
 	public function insert(){
 		if($this->isPost()){
 			if(false !== $this->dao->create()){
+				$this->dao->dateline=time();
 				if(false !== $this->dao->add()){
+					
 					$this->success('新增类别成功!');
 				}else{
 					$this->error('新增类别失败!');
@@ -69,13 +71,14 @@ class Down_cateAction extends AdminCommAction{
 	public function update(){
 		if($this->isPost()){
 			if(false !== $this->dao->create()){
-				if($this->dao->cateid==$this->dao->parent_cateid){
+				$this->dao->dateline=time();
+				if($this->dao->id==$this->dao->pid){
 					$this->error('上级类别不能为自已!');
 				}
-				$children=$this->dao->field('cateid')->where(array('parent_cateid'=>$this->dao->cateid))->findall();
+				$children=$this->dao->field('id')->where(array('pid'=>$this->dao->id))->findall();
 				$children=array_map('reset',$children);
 				
-				if(in_array($this->dao->parent_cateid,$children)){
+				if(in_array($this->dao->pid,$children)){
 					$this->error('上级类别不能为自已子类!');
 				}
 				if(false !== $this->dao->save()){
@@ -90,14 +93,15 @@ class Down_cateAction extends AdminCommAction{
 
 	}
 	public function delete() {
-		$map ['cateid'] = array('in',$_REQUEST ['cateid']);
-		if($list=$this->dao->where ($map)->findall()){
+		$map ['id'] = array('in',$_REQUEST ['id']);
+		$list=$this->dao->where ($map)->findall();
+		if(false != $list){
 			if(false !== $this->dao->where ($map)->delete()){
 				/**
 				 * 删除相关文件
 				 */
 				foreach ($list as $value) {
-					$file=iconv('utf-8','gbk',$value['imgurl']);
+					$file=iconv('utf-8','gbk',$value['img_url']);
 					if(file_exists($file)){
 						unlink($file);
 					}

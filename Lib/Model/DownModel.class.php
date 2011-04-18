@@ -12,7 +12,7 @@ class DownModel extends Model{
 
 	array('title','require','标题必须填写!'),
 	array('title','','标题已经存在!',0,'unique',1),
-	array('fileurl','','文件已经存在!',0,'unique',1),
+	array('file_url','','文件已经存在!',0,'unique',1),
 
 	);
 	

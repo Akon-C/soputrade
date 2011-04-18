@@ -15,24 +15,21 @@ class ArticleAction extends AdminCommAction{
 	public function articlelist(){
 		$map=array();
 
-		if(!empty($_REQUEST['article_cateid'])){
-			if(!empty($_REQUEST['key'])){
-				$map['article_title']=array('like','%'.auto_charset($_REQUEST['key'],'gbk','utf-8').'%');
-				$map['article_cateid']=$_REQUEST['article_cateid'];
-				$this->article_cateid=$_REQUEST['article_cateid'];
-			}else{
-				$map['article_cateid']=$_REQUEST['article_cateid'];
-			}
-
+		if(!empty($_REQUEST['pid'])){
+			$map['pid']=$_REQUEST['pid'];
+			$this->pid=$map['pid'];
+		}
+		if(!empty($_REQUEST['key'])){
+			$map['title']=array('like','%'.auto_charset($_REQUEST['key'],'gbk','utf-8').'%');
 		}
 
-		$this->cateoption=D('Article_cate')->cate_option(0,0,$_REQUEST['article_cateid']);
-		$this->sort='article_cateid desc';
+		$this->cateoption=D('Article_cate')->cate_option(0,0,$_REQUEST['pid']);
+		$this->sort='pid desc';
 		$this->_list($map);
 		$list=$this->get('list');
 		$article_cate_model=D('Article_cate');
 		foreach ($list as $k=>$v){
-			$list[$k]['article_catename']=$article_cate_model->where(array('article_cateid'=>$v['article_cateid']))->getField('article_catename');
+			$list[$k]['catename']=$article_cate_model->where(array('id'=>$v['pid']))->getField('name');
 		}
 		$this->assign('list',$list);
 		$this->display();
@@ -43,9 +40,9 @@ class ArticleAction extends AdminCommAction{
 	}
 	public function edit(){
 
-		$list=$this->dao->where(array('article_id'=>$_REQUEST['article_id']))->find();
-		if($list['article_cateid']){
-			$this->cateoption=D('Article_cate')->cate_option(0,0,$list['article_cateid']);
+		$list=$this->dao->where(array('id'=>$_REQUEST['id']))->find();
+		if($list['pid']){
+			$this->cateoption=D('Article_cate')->cate_option(0,0,$list['pid']);
 		}else{
 			$this->cateoption=D('Article_cate')->cate_option();
 		}
@@ -53,14 +50,14 @@ class ArticleAction extends AdminCommAction{
 		$this->display();
 	}
 	public function status(){
-		$map['article_id']=intval($_REQUEST['article_id']);
+		$map['id']=intval($_REQUEST['id']);
 		$status=$this->dao->where($map)->getField('status');
 		if($status==1){
 			$status=0;
-			$data['imgurl']=__ROOT__.'/Tpl/default/Public/images/mod_0.gif';
+			$data['img_url']=__ROOT__.'/Tpl/default/Public/images/mod_0.gif';
 		}else{
 			$status=1;
-			$data['imgurl']=__ROOT__.'/Tpl/default/Public/images/mod_1.gif';
+			$data['img_url']=__ROOT__.'/Tpl/default/Public/images/mod_1.gif';
 		}
 		$this->dao->where($map)->data(array('status'=>$status))->save();
 		$this->ajaxReturn($data,'保存成功',1);
@@ -70,6 +67,7 @@ class ArticleAction extends AdminCommAction{
 		if($this->isPost()){
 
 			if(false !== $this->dao->create()){
+				$this->dao->dateline=time();
 				if(false !== $this->dao->add()){
 					$this->success('新增文章成功!');
 				}else{
@@ -84,6 +82,7 @@ class ArticleAction extends AdminCommAction{
 	public function update(){
 		if($this->isPost()){
 			if(false !== $this->dao->create()){
+				$this->dao->dateline=time();
 				if(false !== $this->dao->save()){
 					$this->success('修改文章成功!');
 				}else{
@@ -96,26 +95,22 @@ class ArticleAction extends AdminCommAction{
 
 	}
 	public function delete() {
-		$map ['article_id'] = array('in',$_REQUEST ['article_id']);
-		if($list=$this->dao->where ($map)->findall()){
+		$map ['id'] = array('in',$_REQUEST ['id']);
+		$list=$this->dao->where ($map)->findall();
+		if($list){
 			if(false !== $this->dao->where ($map)->delete()){
 				/**
 				 * 删除相关图片
 				 */
 				foreach ($list as $value) {
-					$img=iconv('utf-8','gbk',$value['imgurl']);
+					$img=iconv('utf-8','gbk',$value['img_url']);
 					if(file_exists($img)){
 						unlink($img);
 					}
 				}
-				$this->success("删除成功!");
-			}else{
-				$this->error('删除失败!');
 			}
-		}else{
-			$this->error('请选择删除项!');
 		}
-
+		$this->success("删除成功!");
 	}
 }
 ?>

@@ -8,7 +8,7 @@
   * @lastupdate 2010-11-26
 */ 
 class PublicAction extends CommAction{
-
+	
 	public function Join(){
 		$this->display();
 	}
@@ -18,7 +18,7 @@ class PublicAction extends CommAction{
 		if ($account=$dao->create()){
 			$id=$dao->add();
 			$this->account=$account;
-			$sendto=array($data['email']);
+			$sendto=array($account['email']);
 			if(GetSettValue('is_welcome_email')==1 && GetSettValue('welcome_email_content') != ''){
 				sendmail($sendto, 'Welcome to '.GetSettValue('sitename'),GetSettValue('welcome_email_content'));
 			}
@@ -58,6 +58,7 @@ class PublicAction extends CommAction{
 		$this->display ();
 	}
 	public function doLogin(){
+		$this->waitSecond=3;
 		if ($this->memberID>0){
 			$this->redirect ( 'Index/index' );
 		}
@@ -100,11 +101,17 @@ class PublicAction extends CommAction{
 		}
 		$orders_id=$list['id'];
 		self::$Model = D ( "Orders_products" );
+		$pro=D('Products');
 		$plist = self::$Model->where ( "orders_id=" . $orders_id )->findall ();
+		$weight=0;
 		for ($row=0;$row<count($plist);$row++){
 			$plist[$row]['products_model']=unserialize($plist[$row]['products_model']);
+			$pp=$pro->where(array('id'=>$plist[$row]['products_id']))->find();
+			$plist[$row]['smallimage']=$pp['smallimage'];
+			$weight+=$pp['weight'];
 		}
 		$this->plist=$plist;
+		$this->weight=$weight;
 
 		$this->display ();
 	}

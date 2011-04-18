@@ -10,8 +10,8 @@
 class ArticleModel extends Model{
 	protected $_validate=array(
 
-	array('article_title','require','文章标题必须填写!'),
-	array('article_title','','文章标题已经存在!',0,'unique',1),
+	array('title','require','文章标题必须填写!'),
+	array('title','','文章标题已经存在!',0,'unique',1),
 
 	);
 	

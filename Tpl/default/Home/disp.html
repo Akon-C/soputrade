@@ -12,11 +12,24 @@ function check(){
 	}
 
 }
+$(function(){
+	$('input:radio[class^=attr_]').live('click',function(){
+		var attr_id=$('form[name=cart_quantity] input:radio:checked').map(function(){
+			return $(this).attr('id');
+		}).get().join(",");
+		$.post(window.location.href,{  'id':'{$list.id}','attr_id':attr_id },function(data,status){
+			if(status=='success'){
+				$("#product_price").html(data.product_price);
+				$("#attr_price").html(data.attr_price);
+			}
+		},'json');
+	});
+});
 </script>
 
 
   <div class="col5">
-        <div class="list_nav">Your Position: <a href="__APP__">Home</a> <volist name="catep" id="vo"> >
+        <div class="list_nav">Your Position: <a href="/">Home</a> <volist name="catep" id="vo"> >
 			  <eq name="vo['id']" value="$cateinfo['id']">
 			  {$vo.name}
 			  <else/>
@@ -44,7 +57,7 @@ function check(){
       <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td align="center"><div class="jqzoom" id="spec-n1" style="z-index:1"><img src="{:build_url($list,'pro_bigimage')}" width="310" height="290" jqimg="{:build_url($list,'pro_bigimage')}"/></div><br />
-                  <a href="{:build_url($list,'pro_bigimage')}">larger image</a> <br/>
+                  <a  id="spec-n2"  href="{:build_url($list,'pro_bigimage')}">larger image</a> <br/>
                   <div id="spec-n5">
 		<div class="control" id="spec-left">
 			<img src="../Public/css/left.gif">
@@ -75,51 +88,52 @@ function check(){
     <td width="35%" align="right" style="background-color:#F5f5f5;line-height:25px;"><strong>Product ID:</strong></td>
     <td width="65%">{$list.id}</td>
   </tr>
-  <tr>
+ <tr>
     <td width="35%" align="right" style="background-color:#F5f5f5;line-height:25px;"><strong>Weight:</strong></td>
-    <td width="65%">{$list.weight}KG</td>
+    <td width="65%">{$list.weight|default="0"}KG</td>
   </tr>
   <eq name="isVip" value="1">
   <tr style="background-color:#F5f5f5;line-height:25px;" >
     <td width="35%" align="right"><strong>{$memberGropuInfo['name']}'s Price:</strong></td>
-    <td width="65%"><strong><font color="#FF0000">USD{$vipPrice}</font></strong></td>
+    <td width="65%"><strong><font color="#FF0000">{:getprice_str($vipPrice)}</font></strong></td>
   </tr>
   </eq>
   <tr style="background-color:#F5f5f5;line-height:25px;" >
-    <td width="35%" align="right"><strong>Price:</strong></td>
-    <td width="65%"><strong><font color="#FF0000">USD{$list.pricespe}</font></strong></td>
+    <td width="35%" align="right" ><strong>Price:</strong></td>
+    <td width="65%" ><span id="product_price"><strong><font color="#FF0000">{:getprice_str($list['pricespe'])}</span>
+    <span id="attr_price"></span>
+    </font></strong>
+    </td>
   </tr>
   <tr style="background-color:#F5f5f5;line-height:25px;" >
     <td width="35%" align="right"><strong>Original Price:</strong></td>
-    <td width="65%"><strong><font color="#FF0000">USD{$list.price}</font></strong></td>
+    <td width="65%"><strong><font color="#FF0000">{:getprice_str($list['price'])}</font></strong></td>
   </tr>
   <tr>
     <td colspan="2">
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="xiao1">
+      <volist name="attrlist" id="vo">
+      <eq name="vo['input_type']" value="1">
   <tr>
-    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding-left:10px;">
-  <tr>
-    <td align="center" height="25"><strong>Size</strong></td>
-    <td align="center" height="25"><strong>Quantity</strong></td>
-  </tr>
-  <volist name="attrlist[0]['attrs']" id="vo">
- <tr>
-    <td  align="center" height="25"> {$attrlist[0]['name']}:{$vo['attr_value']}</td>
-    <td  align="center" height="25"><input name="{$attrlist[0]['name']}[]" value="{$vo['attr_value']}" type="hidden" />
-  <volist name="attrlist" id="subvo">
-   <gt name="i" value="1">
-  <gt name="subvo['values_count']" value="0">
-  <span>{$subvo['name']}</span>&nbsp;:
-     <select name="{$subvo['name']}[]">
-     <volist name="subvo['attrs']" id="subsubvo">
-     <option value="{$subsubvo['attr_value']}">{$subsubvo['attr_value']}</option>
-     </volist>
-     </select>
-  </gt>  
-  </gt>  
-  </volist>Qty:<input size="3" name="count[]" />
- </tr>
+ 
+    <td align="center" height="25" ><strong>{$vo['name']}</strong></td>
+    <td>
+    <iterate name="vo['attrs']" id="subvo">
+    <input class="attr_{$vo['name']}" type="radio" name="{$vo['name']}" id="{$subvo['id']}" value="{$subvo['attr_value']}__{$subvo['attr_price']}" />
+     {$subvo['attr_value']}
+  <notempty name="subvo['attr_price']">
+  (<gt name="subvo['attr_price']">+</gt>{:getprice_str($subvo['attr_price'])})
+  </notempty>
+  <br/>
+  </iterate>
+ </td></tr>
+ </eq>
  </volist> 
+ <tr>
+ <td align="center" height="25" ><strong>Quantity</strong></td>
+<td><input name="count" size="10">
+ </td>
+ </tr>
 </table></td>
 </tr>
 <tr>

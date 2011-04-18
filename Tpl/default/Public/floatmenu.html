@@ -1,15 +1,15 @@
-<ul class="sf-menu sf-vertical sf-js-enabled sf-shadow" >
+<ul id="listMenu" >
   <volist name="catetree" id="vo">
     <gt name="vo['subcount']" value="0">
-      <li> <a href="{:build_url($vo,'cate_url')}">{:build_url($vo,'cate_name')}</a>
-        <ul style="display: none; visibility: hidden;">
+      <li> <a href="{:build_url($vo,'cate_url')}">{:build_url($vo,'cate_name')} </a>
+        <ul>
           <iterate name="vo['sub']" id="subvo">
             <eq name="subvo['subcount']" value="0">
               <li> <a href="{:build_url($subvo,'cate_url')}">{:build_url($subvo,'cate_name')}</a> </li>
             </eq>
             <gt name="subvo['subcount']" value="0">
-              <li> <a href="{:build_url($subvo,'cate_url')}" class="sf-with-ul">{:build_url($subvo,'cate_name')}</a>
-                <ul style="display: none; visibility: hidden;">
+              <li> <a href="{:build_url($subvo,'cate_url')}">{:build_url($subvo,'cate_name')} </a>
+                <ul>
                   <iterate name="subvo['sub']" id="subvo2">
                     <li><a href="{:build_url($subvo2,'cate_url')}">{:build_url($subvo2,'cate_name')}</a></li>
                   </iterate>

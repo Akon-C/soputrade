@@ -2,27 +2,27 @@
 <include file="../Public/adminleft" />
 <script type="text/javascript">
 function status(id,_this){
-	$.post("{:U('Article_cate/status')}",'article_cateid='+id,function(data){
-		$('img',_this).attr('src',data.data['imgurl']);
+	$.post("{:U('Article_cate/status')}",'id='+id,function(data){
+		$('img',_this).attr('src',data.data['img_url']);
 	},'json');
 	
 }
 function delall(){
-	var id=$('input:checkbox[name^=article_cateid]:checked').map(function(){
+	var id=$('input:checkbox[name^=id]:checked').map(function(){
 		return $(this).val();
 	}).get().join(",");
 	if(!id){
 		alert('请选择要删除的项!');
 	}else{
-		$.post("{:U('Article_cate/delete')}","article_cateid="+id);
-		$('input[name^=article_cateid]:checked').parent().parent().remove();
+		$.post("{:U('Article_cate/delete')}","id="+id);
+		$('input[name^=id]:checked').parent().parent().remove();
 	}
 }
 $(document).ready (
 function(){
 	//选中
 	$('#check').click(function(){
-		$('input[name^=article_cateid]').attr('checked',$(this).attr('checked'));
+		$('input[name^=id]').attr('checked',$(this).attr('checked'));
 	});
 	$("a[name^='del_']").click(
 	function(){
@@ -63,13 +63,13 @@ function(){
 				</tr>
                 <volist name="list" id="vo">
                 <tr >
-                    <td style="text-align:left" ><input type="checkbox" name="article_cateid[]" value="{$vo.article_cateid}" /></td>
+                    <td style="text-align:left" ><input type="checkbox" name="id[]" value="{$vo.id}" /></td>
 				    
-                    <td style="text-align:left" >{$vo.article_catename}</td>
+                    <td style="text-align:left" >{$vo.name}</td>
 				    <td style="text-align:left" >{$vo['sort']}</td>
-                    <td style="text-align:left" ><a href="javascript:void(0);" onclick="javascript:status({$vo['article_cateid']},this);">{:getStatus($vo["status"],true)}</a></td>
-                    <td style="text-align:left" >{$vo['article_parent_catename']}</td>
-                    <td style="text-align:center" ><a href="{:U('Article_cate/edit',array('article_cateid'=>$vo['article_cateid']))}">编辑</a>&nbsp;|&nbsp;<a name="del_{$vo.article_cateid}"  href="{:U('Article_cate/delete',array('article_cateid'=>$vo['article_cateid']))}" >移除</a></td>
+                    <td style="text-align:left" ><a href="javascript:void(0);" onclick="javascript:status({$vo['id']},this);">{:getStatus($vo["status"],true)}</a></td>
+                    <td style="text-align:left" >{$vo['catename']}</td>
+                    <td style="text-align:center" ><a href="{:U('Article_cate/edit',array('id'=>$vo['id']))}">编辑</a>&nbsp;|&nbsp;<a name="del_{$vo.id}"  href="{:U('Article_cate/delete',array('id'=>$vo['id']))}" >移除</a></td>
                 </tr>
                 </volist>
 				

@@ -11,28 +11,28 @@ label.error { float: none; color: red;}
 </script>
 
  <div class="col5">
-        <div class="list_nav">Your Position: <a href="__APP__">Home</a> >  Billing, Shipping & Review , Finish </div>
+        <div class="list_nav">Your Position: <a href="/">Home</a> >  Review </div>
         <div class="list1">
           <div class="list1_title">
-            <div class="title1"><strong> Billing, Shipping & Review</strong></div>
+            <div class="title1"><strong> Review</strong></div>
             <div class="title2">&nbsp;
 </div>
           </div>
           <div class="list2_content"> 
           
           
-          <p style="font-weight:bold;margin:5px" align="left" ><a href="{:U('Cart/disp')}">Step1:The Shopping Cart</a> -> <strong style="color:red">Step2:Shipping Address -> Step3:Finish Order</strong>  </p>
+          <p style="font-weight:bold;margin:5px" align="left" ><a href="{:U('Cart/disp')}">Step1:The Shopping Cart</a> -> <strong style="color:red">Step2:Shipping Address</strong> -> Step3:Finish Order  </p>
 
 
-<form name="shipping" action="{:U('Cart/checkout')}" method="post" >
+<form name="shipping" action="{:U('Cart/shipping')}" method="post" >
 <input type="hidden" name="orders_total" value="{$fees['total']}" />
 <input type="hidden" name="member_firstname" value="{$member_Info['firstname']}">
 <input type="hidden" name="member_lastname" value="{$member_Info['lastname']}">
 <input type="hidden" name="member_address" value="{$member_ShippingAddress['address']}">
 <input type="hidden" name="member_city" value="{$member_ShippingAddress['city']}">
-<input type="hidden" name="member_state" value="{:get_region_name($member_ShippingAddress['state'])}">
+<input type="hidden" name="member_state" value="{$member_ShippingAddress['state']}">
 <input type="hidden" name="member_zip" value="{$member_ShippingAddress['zip']}">
-<input type="hidden" name="member_country" value="{:get_region_name($member_ShippingAddress['country'])}">
+<input type="hidden" name="member_country" value="{$member_ShippingAddress['country']}">
 <input type="hidden" name="member_telephone" value="{$member_ShippingAddress['telphone']}">
 <input type="hidden" name="member_id" value="{$member_Info['id']}">
 <input type="hidden" name="member_email" value="{$member_Info['email']}">
@@ -40,9 +40,9 @@ label.error { float: none; color: red;}
 <input type="hidden" name="delivery_lastname" value="{$member_Info['lastname']}">
 <input type="hidden" name="delivery_address" value="{$member_ShippingAddress['address']}">
 <input type="hidden" name="delivery_city" value="{$member_ShippingAddress['city']}">
-<input type="hidden" name="delivery_state" value="{:get_region_name($member_ShippingAddress['state'])}">
+<input type="hidden" name="delivery_state" value="{$member_ShippingAddress['state']}">
 <input type="hidden" name="delivery_zip" value="{$member_ShippingAddress['zip']}">
-<input type="hidden" name="delivery_country" value="{:get_region_name($member_ShippingAddress['country'])}">
+<input type="hidden" name="delivery_country" value="{$member_ShippingAddress['country']}">
 <input type="hidden" name="delivery_telephone" value="{$member_ShippingAddress['telphone']}">
    <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
@@ -61,9 +61,10 @@ label.error { float: none; color: red;}
     <td width="32%" align="center">{:build_url($vo,'pro_name')}</td>
     <td width="20%" align="center">
     <volist name="vo['model']" id="subvo">
-{$subvo['name']}:{$subvo['value']}&nbsp;
+{$subvo['name']}:{$subvo['value']}<br/>
+
 <input type="hidden" name="model_name_{$vo.id}[]" value="{$subvo['name']}" />
-<input type="hidden" name="model_value_{$vo.id}[]" value="{$subvo['value']}" />
+<input type="hidden" name="model_value_{$vo.id}[]" value="{$subvo['value']}" /><br/>
 </volist></td>
     <td width="10%" align="center">{$vo.count}
     </td>

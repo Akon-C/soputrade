@@ -9,40 +9,44 @@
  */
 class CartAction extends CommAction {
 	function add() {
-		if (count ( $_POST ['count'] ) == 0 || array_sum($_POST ['count'])==0) {
+		if ( $_POST ['count'] == 0) {
 			$this->error ( "You did not select any product!" );
 		}
 		$dao = D ( "Cart" );
 		self::$Model = D ( "Products" );
 		$prolist = self::$Model->where ( "id=" . $_POST ['id'] )->find ();
 		$attrlist = self::$Model->get_attrs ( $prolist ['cateid'], $_POST ['id'] );
-		for($row = 0; $row < count ( $_POST ['count'] ); $row ++) {
-			//if (empty ( $_POST ['count'] [$row] ) && $_POST ['count'] [$row] < 1) {
-			if(!$_POST['count'][$row]) continue;
-			$model = array ();
-			$i = 0;
-			foreach ( $attrlist as $key => $value ) {
+
+		$model = array ();
+		$i=0;
+		$attr_value='';
+		foreach ( $attrlist as $key => $value ) {
+			if($value['input_type']==1){
 				$model [$i] ['name'] = $value ['name'];
-				$model [$i] ['value'] = $_POST [$value ['name']] [$row];
+				$attr_value=explode('__',$_POST [$value ['name']]);
+				$model [$i] ['value'] = $attr_value[0];
+				$model [$i] ['attr_price'] = $attr_value[1];
 				$i ++;
 			}
-			$dao->add_item ( $this->sessionID, $_POST ['id'], $_POST ['count'] [$row], serialize ( $model ) );
-			//}
 		}
+		$att_str=implode(',',$attr_value);
+		if (!$att_str) {
+			$this->error ( "You did not check any product attribute!" );
+		}
+		$dao->add_item ( $this->sessionID, $_POST ['id'], $_POST ['count'], serialize ( $model ) );
 		//dump($dao->display_contents($this->sessionID));
 		$this->redirect ( 'Cart/disp' );
 	}
 	function disp() {
 		$dao = D ( "Cart" );
-		//dump($dao->display_contents ( $this->sessionID ));
 		$this->list = $dao->display_contents ( $this->sessionID );
 		$this->itemCount = $dao->get_item_count ( $this->sessionID );
 		//3.10修改
-		$ginfo=get_members_group($this->memberID);
-		$this->cart_total = $dao->cart_total ( $this->sessionID )*$ginfo["discount"];
-		
-		$this->fees=get_orders_Fees($dao->cart_total ( $this->sessionID )*$ginfo["discount"]);
+
+		$this->cart_total = $dao->cart_total ( $this->sessionID );
+		$this->fees=get_orders_Fees($dao->cart_total ( $this->sessionID ));
 		$this->fee_readme=GetSettValue('fee_readme');
+
 		$this->display ();
 	}
 	function delete() {
@@ -53,22 +57,22 @@ class CartAction extends CommAction {
 	function save() {
 		$dao = D ( "Cart" );
 		for($row = 0; $row < count ( $_POST ['pid'] ); $row ++) {
-			$model=array();
-			for ($ii=0;$ii<count($_POST['model_name_'.$_POST ['id'] [$row]]);$ii++){
-				$model[$ii]['name']=$_POST['model_name_'.$_POST ['id'] [$row]][$ii];
-				$model[$ii]['value']=$_POST['model_value_'.$_POST ['id'] [$row]][$ii];
-			}
-			$dao->modify_quantity ( $this->sessionID, $_POST ['id'] [$row], $_POST ['count'] [$row], serialize($model) );
+			$dao->modify_quantity ( $this->sessionID, $_POST ['id'] [$row], $_POST ['count'] [$row]);
 		}
 		Session::set('step',null);
 		if(isset($_REQUEST['step']) && $_REQUEST['step']=='checkout'){
+			$minimum_money=GetSettValue('minimum_money');
+			if($minimum_money>0 && $dao->cart_total ( $this->sessionID )<$minimum_money){
+				$this->error("Not be less than $minimum_money minimum!");
+			}
 			$this->redirect ( 'Cart/checked_address' );
 		}else{
 			$this->redirect ( 'Cart/disp' );
 		}
+
 	}
 	function checked_address() {
-		
+
 		$dao = D ( "Cart" );
 		if ($dao->get_item_count ( $this->sessionID ) < 1) {
 			$this->jumpUrl=U('Index/index');
@@ -92,13 +96,10 @@ class CartAction extends CommAction {
 		//读取订单信息
 		$this->list = $dao->display_contents ( $this->sessionID );
 		$this->itemCount = $dao->get_item_count ( $this->sessionID );
-		//3.10修改
-		$ginfo=get_members_group($this->memberID);
-		$this->cart_total = $dao->cart_total ( $this->sessionID )*$ginfo["discount"];
-		$this->fees=get_orders_Fees($dao->cart_total ( $this->sessionID )*$ginfo["discount"]);
-		//支付方式列表
-		self::$Model = D ( "Payment" );
-		$this->paymentlist = self::$Model->getlist ();
+		$this->Total_weight=$dao->cart_total_weight($this->sessionID );
+
+		$this->cart_total = $dao->cart_total ( $this->sessionID );
+		$this->fees=get_orders_Fees($dao->cart_total ( $this->sessionID ));
 		$this->display ();
 	}
 	public function OtherAddress() {
@@ -117,25 +118,62 @@ class CartAction extends CommAction {
 		if (! $this->memberShippingAddress && GetSettValue('quickbuy')==0) {
 			$this->redirect ( 'Member-Index/ShippingAddress' );
 		}
-
+		Session::set('step',null);
 		//读取订单信息
 		$this->list = $dao->display_contents ( $this->sessionID );
 		$this->itemCount = $dao->get_item_count ( $this->sessionID );
+		$this->Total_weight=$dao->cart_total_weight($this->sessionID );
 		//3.10修改
-		$ginfo=get_members_group($this->memberID);
-		$this->cart_total = $dao->cart_total ( $this->sessionID )*$ginfo["discount"];
-		$this->fees=get_orders_Fees($dao->cart_total ( $this->sessionID )*$ginfo["discount"]);
-		self::$Model = D ( "Countries" );
-		$this->countries = self::$Model->getlist ();
-		//支付方式列表
-		self::$Model = D ( "Payment" );
-		$this->paymentlist = self::$Model->getlist ();
+		$this->cart_total = $dao->cart_total ( $this->sessionID );
+		$this->fees=get_orders_Fees($dao->cart_total ( $this->sessionID ));
+
 		$this->display ();
 	}
 	public function clear_cart(){
 		self::$Model=D('Cart');
 		self::$Model->clear_cart($this->sessionID);
 		$this->success('Clear Cart Item Success!');
+	}
+	public function shipping(){
+		$dao = D ( "Cart" );
+		if ($dao->get_item_count ( $this->sessionID ) < 1) {
+			$this->jumpUrl=U('Index/index');
+			$this->error("Your shopping cart does not have any products!");
+		}
+
+		if ($this->memberID <= 0 && GetSettValue('quickbuy')==0) {
+			Session::set('step','Member-join');
+			$this->redirect ( 'Member-Public/Join' );
+		}
+		if (! isset ( $_POST ['shipping_id'] ) || empty($_POST ['shipping_id'])) {
+			$this->error ( 'Please select SHIPPING METHOD! ' );
+		}
+
+
+		Session::set('step',null);
+
+		//配送信息
+		self::$Model=D('Shipping');
+		$shipping_info=self::$Model->find($_POST['shipping_id']);
+		self::$Model=D('Shipping_area');
+		$shipping_info['info']=self::$Model->where('shipping_id='.$_POST['shipping_id'].' and (name="'.get_region_name($_POST['delivery_country']).'" or name="'.get_region_name($_POST['delivery_state']).'" or name="'.$_POST['delivery_city'].'")')->find();
+		$this->shipping_info=$shipping_info;
+		//运费
+		$shipping_fee=get_shipping_fee($_POST["shipping_id"],$_POST['delivery_country'],$_POST['delivery_state'],$_POST['total_weight'],$_POST['delivery_city']);
+		$this->ShippingFee=$shipping_fee;
+		//读取订单信息
+		$this->list = $dao->display_contents ( $this->sessionID );
+		$this->itemCount = $dao->get_item_count ( $this->sessionID );
+		//3.10修改
+		$this->cart_total = $dao->cart_total ( $this->sessionID );
+		$this->fees=get_orders_Fees($dao->cart_total ( $this->sessionID ),$shipping_fee);
+		//地址信息
+		self::$Model = D ( "Orders" );
+		$this->orders_data=self::$Model->create ();
+		//支付方式列表
+		self::$Model = D ( "Payment" );
+		$this->paymentlist = self::$Model->getlist ();
+		$this->display ();
 	}
 	public function checkout() {
 		$dao = D ( "Cart" );
@@ -148,7 +186,7 @@ class CartAction extends CommAction {
 			Session::set('step','Member-join');
 			$this->redirect ( 'Member-Public/Join' );
 		}
-	    if (! isset ( $_POST ['shipping_method'] ) || empty($_POST ['shipping_method'])) {
+		if (! isset ( $_POST ['shipping_id'] ) || empty($_POST ['shipping_id'])) {
 			$this->error ( 'Please select SHIPPING METHOD! ' );
 		}
 		if (! isset ( $_POST ['payment_module_code'] ) || empty($_POST ['payment_module_code'])) {
@@ -158,23 +196,19 @@ class CartAction extends CommAction {
 
 		self::$Model = D ( "Cart" );
 		//3.10修改
-		$ginfo=get_members_group($this->memberID);
-		$products_total=self::$Model->cart_total ( $this->sessionID )*$ginfo["discount"];//产品价格
-		
-
+		$products_total=self::$Model->cart_total ( $this->sessionID );//产品价格
 		//生成订单
 		self::$Model = D ( "Orders" );
 		if ($orders_data=self::$Model->create ()) {
 			$fee=get_orders_Fees($products_total);
-			$orders_data['shippingmoney']=$_POST["shippingfee"];
-			$orders_data['paymoney']=$_POST["paymentfee"];
-			$orders_data['insurance']=$_POST["insurance"];
-			$orders_data['orders_total'] = $_POST["total"];
-			$orders_data['express_method'] = $_POST["shipping_method"];
-			
-			if(is_numeric($orders_data['delivery_country'])){
-				$orders_data['delivery_country']=get_region_name($orders_data['delivery_country']);
-			}
+			$orders_data['shippingmoney']=get_shipping_fee($orders_data["shipping_id"],$orders_data['delivery_country'],$orders_data['delivery_state'],$orders_data['total_weight'],$orders_data['delivery_city']);
+			$orders_data['paymoney']=$fee["paymoney"];
+			$orders_data['insurance']=$fee["insurance"];
+			$orders_data['orders_total'] = $fee["total"];
+			$orders_data['products_total'] = $products_total;
+			$orders_data['delivery_country']=get_region_name($orders_data['delivery_country']);
+			$orders_data['delivery_state']=get_region_name($orders_data['delivery_state']);
+
 			$orders_id = self::$Model->add ($orders_data);//订单id
 
 			//处理orders_products表
@@ -193,23 +227,24 @@ class CartAction extends CommAction {
 				$data ['products_total'] = $list [$row] ['total'];
 				$dao->add ( $data );
 			}
-			
+
 			//清除购物车
 			self::$Model->clear_cart ( $this->sessionID );
 
 			//发送邮件
-			
+
 			$this->maildata=$orders_data;//订单数据
 			$this->list=$list;//购物车产品
 			$this->fee=$fee;
-			
+
 
 			$this->this_script = rtrim("http://{$_SERVER['HTTP_HOST']}","/");
 			$sendto=array($orders_data['member_email'],GetSettValue('mailcopyTo'));
 			$body=$this->fetch_skin("checkout","MailTpl");
 			sendmail($sendto,GetSettValue('sitename')." - new order!",$body)	;
-			
+			//3.19修改，添加一个确认页面
 			$this->orders_data=$orders_data;
+			$this->display();
 			$this->redirect ( 'Cart/Payment', array ('id' => $orders_id ) );
 
 		} else {
@@ -217,6 +252,7 @@ class CartAction extends CommAction {
 		}
 	}
 	public function Payment() {
+		header("Content-Type:text/html; charset=utf-8");
 		if ($this->memberID <= 0  && GetSettValue('quickbuy')==0) {
 			$this->redirect ( 'Member-Public/Join' );
 		}
@@ -233,13 +269,13 @@ class CartAction extends CommAction {
 
 		$pname = $list ['payment_module_code'];
 		import ( '@.ORG.Payment.' . $pname );
-		$p = new $pname ();
+		$p = new $pname ($list['sn']);
 
 		$this_script = "http://{$_SERVER['HTTP_HOST']}";
 		if ($pname == "Paypal") {
 			$p->add_field ( 'business', GetSettValue ( $pname . "_account" ) ); //收款人账号'402660_1224487424_biz@qq.com'
-			//$p->add_field ( 'return', $this_script . U ( 'Payment/successed' ) );//不填的话，按网站设置返回
-			$p->add_field ( 'cancel_return', $this_script . U ( 'Payment/Cancel' ) );
+			$p->add_field ( 'return', $this_script );//不填的话，按网站设置返回
+			$p->add_field ( 'cancel_return', $this_script  );
 			$p->add_field ( 'notify_url', $this_script . U ( 'Payment/Pin', array ("type" => "Paypal" ) ) );
 			$p->add_field ( 'item_name', 'Porducts For SN:' . $list ['sn'] ); //产品名称
 			$p->add_field ( 'item_number', $list ['sn'] ); //订单号码
@@ -267,6 +303,20 @@ class CartAction extends CommAction {
 			//$p->add_field('returnUrl',$this_script.U('Payment/gspay_return'));
 
 			$p->submit_post();
+		}elseif($pname=="_95epay"){
+			$this_script = "http://{$_SERVER['HTTP_HOST']}";
+			$p->add_field('MerNo',GetSettValue ( $pname . "_no" ));//商号
+			$MD5key=GetSettValue ( $pname . "_key" );//私钥
+			$p->add_field('Currency',1);
+			$p->add_field('BillNo',$list ['sn']);
+			$p->add_field('Amount',$list ['orders_total']);
+			$p->add_field('ReturnURL',$this_script.U('Payment/return_95pay'));
+			$p->add_field('Language','en');
+
+			$p->add_field('MD5info',strtoupper(md5($p->fields['MerNo'].$p->fields['BillNo'].$p->fields['Currency'].$p->fields['Amount'].$p->fields['Language'].$p->fields['ReturnURL'].$MD5key)));
+			$p->add_field('Remark',$list['BuyNote']);
+			$p->add_field('MerWebsite',$this_script);
+			$p->submit_post();
 		}elseif(strcasecmp($pname,"Payeasy")>=0) {
 			$p->add_field('v_mid',GetSettValue ( $pname . "_id" ));//商户编号
 			$p->add_field('v_oid',date('Ymd').'-'.GetSettValue ( $pname . "_id" ).'-'.$list ['sn']);//订单编号
@@ -289,6 +339,39 @@ class CartAction extends CommAction {
 			//$p->add_field('v_shipcountry','840');//送货国家
 			$p->add_field('v_shipphone',$list['member_telephone']);//送货电话
 			$p->add_field('v_shipemail',$list['member_email']);//送货Email
+			$p->submit_post();
+		}elseif($pname=="wedopay"){
+
+			$this_script = "http://{$_SERVER['HTTP_HOST']}";
+			$MD5key=GetSettValue ( $pname . "_Md5Key" );
+			$MerNo=GetSettValue ( $pname . "_MerNo" );
+			$BillNo=$list ['sn'];
+			$Amount=$list ['orders_total'];
+			$OrderDesc=$list ['BuyNote'];
+			$Currency="1";
+			$Language = "2";
+			$ReturnURL=$this_script.U('Payment/wedopay_return');
+			$md5src = $MerNo.$BillNo.$Currency.$Amount.$Language.$ReturnURL.$MD5key;		//校验源字符串
+			$MD5info = strtoupper(md5($md5src));		//MD5检验结果
+
+			$p->add_field('MerNo',$MerNo);
+			$p->add_field('Currency',$Currency);
+			$p->add_field('BillNo',$BillNo);
+			$p->add_field('Amount',$Amount);
+			$p->add_field('ReturnURL',$ReturnURL);
+			$p->add_field('Language',$Language);
+			$p->add_field('MD5info',$MD5info);
+			$p->add_field('Remark','');
+			$p->add_field('shippingFirstName',$list ['delivery_firstname']);
+			$p->add_field('shippingLastName',$list ['delivery_lastname']);
+			$p->add_field('shippingEmail',$list ['member_email']);
+			$p->add_field('shippingPhone',$list ['delivery_telephone']);
+			$p->add_field('shippingZipcode',$list ['delivery_zip']);
+			$p->add_field('shippingAddress',$list ['delivery_address']);
+			$p->add_field('shippingCity',$list ['delivery_city']);
+			$p->add_field('shippingSstate',$list ['delivery_state']);
+			$p->add_field('shippingCountry',$list ['delivery_country']);
+			$p->add_field('products','products');
 			$p->submit_post();
 		}elseif(strcasecmp($pname,"BANKOFCHINA")==0) {
 			$p->submit_post();

@@ -102,9 +102,9 @@ class paypal {
    var $ipn_data = array();         // array contains the POST values for IPN
    
    var $fields = array();           // array holds the fields to submit to paypal
-
+var $sn;
    
-   function paypal() {
+   function paypal($sn) {
        
       // initialization constructor.  Called when class is created.
       //$this->paypal_url = 'http://www.the-boot-shoes.com/'.U('Payment/paypal_c');
@@ -117,7 +117,7 @@ class paypal {
       $this->ipn_log_file = '.ipn_results.log';
       $this->ipn_log = true; 
       $this->ipn_response = '';
-      
+      $this->sn=$sn;
       // populate $fields array with a few default values.  See the paypal
       // documentation for a list of fields and their data types. These defaul
       // values can be overwritten by the calling script.
@@ -154,7 +154,7 @@ class paypal {
       echo "<head><title>Processing Payment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"></head>\n";
       echo "<body onLoad=\"document.forms['paypal_form'].submit();\">\n";
       //echo "<body >\n";
-      echo "<center><h2>Please remember your order number, and then click on the button below to make a payment!</h2></center>\n";
+      echo "<center><h2>Please remember your order number ".$this->sn.", and then click on the button below to make a payment!</h2></center>\n";
       echo "<center><h2>Please wait, your order is being processed and you";
       echo " will be redirected to the paypal website.</h2></center>\n";
       echo "<form method=\"post\" name=\"paypal_form\" ";
@@ -210,8 +210,7 @@ class paypal {
          // will be in the log.
          $this->last_error = "fsockopen error no. $errnum: $errstr";
          $this->log_ipn_results(false);       
-         return false;
-         
+         return false;         
       } else { 
  
          // Post the data back to paypal

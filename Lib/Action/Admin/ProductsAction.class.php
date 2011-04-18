@@ -101,31 +101,46 @@ class ProductsAction extends AdminCommAction {
 				}
 				$this->dao->where ( $map )->delete ();
 			}
-			
-				$this->success ( "删除成功！" );
+
+			$this->success ( "删除成功！" );
 		}
 		$this->error ( "删除失败！" );
 	}
 	function Insert() {
+
 		for($i = 0; $i < count ( $_POST ['imgurl'] ); $i ++) {
 			//判断是否为封面
-			if ($_POST ['timestamp'] [$i] == $_POST ['isIndex']) {
+			if (!empty($_POST ['imgurl'] [$i]) && $_POST ['timestamp'] [$i] == $_POST ['isIndex']) {
 				//echo "It is Index! ";
 				$_POST ['bigimage'] = $_POST ['imgurl'] [$i];
 				$_POST ['smallimage'] = get_thumb_name ( $_POST ['imgurl'] [$i] );
 			}
 		}
+		if(empty($_POST ['bigimage'])){
+			for($i = 0; $i < count ( $_POST ['imgurl'] ); $i ++) {
+				//取第一张做封面
+				if(!empty($_POST ['imgurl'] [$i])){
+					$_POST ['bigimage'] = $_POST ['imgurl'] [$i];
+					$_POST ['smallimage'] = get_thumb_name ( $_POST ['imgurl'] [$i] );
+				}
+			}
+		}
+
+
 		if ($this->dao->create ()) {
 			$id = $this->dao->add ();
 			//插入相册开始
+			$model = M ( "Products_gallery" );
 			for($i = 0; $i < count ( $_POST ['imgurl'] ); $i ++) {
-				if (! empty ( $_POST ['imgurl'][$i] )) {
+				if (! empty ( $_POST ['imgurl'][$i] ))
+				{
 					$data ['pid'] = $id;
 					$data ['img_url'] = $_POST ['imgurl'] [$i];
 					$data ['thumb_url'] = get_thumb_name ( $_POST ['imgurl'] [$i] );
 					$data ['img_desc'] = $_POST ['img_desc'] [$i];
+					empty($data['img_desc'])?$data['img_desc']=$_POST ['name']:'';
 					$data ['sort'] = $_POST ['sort'] [$i]; //sort
-					$model = M ( "Products_gallery" );
+					empty($data['sort'])?$data['sort']=$i:'';
 					$model->add ( $data );
 				}
 			}
@@ -232,17 +247,25 @@ class ProductsAction extends AdminCommAction {
 		}
 		$this->error('删除失败!');
 	}
-
 	public function Update(){
 
 		for($i = 0; $i < count ( $_POST ['imgurl'] ); $i ++) {
 			//判断是否为封面
-			if ($_POST ['timestamp'] [$i] == $_POST ['isIndex']) {
+			if (!empty($_POST ['imgurl'] [$i]) && $_POST ['timestamp'] [$i] == $_POST ['isIndex']) {
 				//echo "It is Index! ";
 				$_POST ['bigimage'] = $_POST ['imgurl'] [$i];
 				$_POST ['smallimage'] = get_thumb_name ( $_POST ['imgurl'] [$i] );
 			}
 
+		}
+		if(empty($_POST ['bigimage'])){
+			for($i = 0; $i < count ( $_POST ['imgurl'] ); $i ++) {
+				//取第一张做封面
+				if(!empty($_POST ['imgurl'] [$i])){
+					$_POST ['bigimage'] = $_POST ['imgurl'] [$i];
+					$_POST ['smallimage'] = get_thumb_name ( $_POST ['imgurl'] [$i] );
+				}
+			}
 		}
 
 		if ($this->dao->create ()) {
@@ -258,6 +281,8 @@ class ProductsAction extends AdminCommAction {
 						$data ['thumb_url'] = get_thumb_name ( $_POST ['imgurl'] [$i] );
 						$data ['img_desc'] = $_POST ['img_desc'] [$i];
 						$data ['sort'] = $_POST ['sort'] [$i]; //sort
+						empty($data['img_desc'])?$data['img_desc']=$_POST ['name']:'';
+						empty($data['sort'])?$data['sort']=$i:'';
 						$model->add ( $data );
 					}
 				}
@@ -379,6 +404,45 @@ class ProductsAction extends AdminCommAction {
 		}
 		$this->success("本次操作共上传".$j."个新产品！");
 	}
+	function attrdel(){
+		$id=$_REQUEST["id"];
+		self::$Model=D("Products_attr");
+		self::$Model->where("id=".$id)->delete();
+		echo json_encode($id);
+		
+	}
+	function attrsave(){
+		self::$Model=D("Products_attr");
+		$id=$_REQUEST["id"];
+		$data["attr_id"]=$_REQUEST["attr_id"];
+		$data["attr_value"]=$_REQUEST["attr_value"];
+		$data["products_id"]=$_REQUEST["products_id"];
+		
+		if (empty($data["attr_value"])){
+			$r["status"]=0;
+			echo json_encode($r);die;
+		}
+		if (empty($_REQUEST["attr_price"])){
+			$data["attr_price"]=0;
+		}
+		else{
+			$data["attr_price"]=$_REQUEST["attr_price"];
+		}
+		if ($id==0){
+			$r["id"]=self::$Model->add($data);
+			//echo self::$Model->getlastsql();
+			$r["status"]=1;
+			
+			echo json_encode($r);die;
+		}
+		else{
+			self::$Model->where("id=".$id)->save($data);
+			$r["status"]=1;
+			$r["id"]=$id;			
+			echo json_encode($r);die;
+		}
+		
+	}
 	function attredit(){
 		is_null($_REQUEST['id']) && $this->error('没有数据');
 		if (is_array($_REQUEST['id'])){
@@ -412,45 +476,6 @@ class ProductsAction extends AdminCommAction {
 		//dump($attr);
 		$this->attr=$attr;
 		$this->display();
-	}
-	function attrdel(){
-		$id=$_REQUEST["id"];
-		self::$Model=D("Products_attr");
-		self::$Model->where("id=".$id)->delete();
-		echo json_encode($id);
-		
-	}
-	function attrsave(){
-		self::$Model=D("Products_attr");
-		$id=$_REQUEST["id"];
-		$data["attr_id"]=$_REQUEST["attr_id"];
-		$data["attr_value"]=$_REQUEST["attr_value"];
-		$data["products_id"]=$_REQUEST["products_id"];
-		
-		if (empty($data["attr_value"])){
-			$r["statue"]=0;
-			echo json_encode($r);die;
-		}
-		if (empty($_REQUEST["attr_price"])){
-			$data["attr_price"]=0;
-		}
-		else{
-			$data["attr_price"]=$_REQUEST["attr_price"];
-		}
-		if ($id==0){
-			$r["id"]=self::$Model->add($data);
-			//echo self::$Model->getlastsql();
-			$r["statue"]=1;
-			
-			echo json_encode($r);die;
-		}
-		else{
-			self::$Model->where("id=".$id)->save($data);
-			$r["statue"]=1;
-			$r["id"]=$id;			
-			echo json_encode($r);die;
-		}
-		
 	}
 	function attrUpdate(){
 

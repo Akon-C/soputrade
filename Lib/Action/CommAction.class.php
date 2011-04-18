@@ -93,23 +93,16 @@ class CommAction extends Action{
 
 			self::$Model=D('Products');
 			$Common_Cache['toptenviews']=self::$Model->order("viewcount desc")->limit('0,10')->findall();
-			if(!$newpro_num=GetSettValue('newpro_num')){
-				$newpro_num=9;
-			}
-			if(!$recpro_num=GetSettValue('recpro_num')){
-				$recpro_num=9;
-			}
-			if(!$hotpro_num=GetSettValue('hotpro_num')){
-				$hotpro_num=9;
-			}
-			if(!$spepro_num=GetSettValue('spepro_num')){
-				$spepro_num=9;
-			}
+			$newpro_num=GetSettValue('newpro_num')?GetSettValue('newpro_num'):9;
+			$recpro_num=GetSettValue('recpro_num')?GetSettValue('recpro_num'):9;
+			$hotpro_num=GetSettValue('hotpro_num')?GetSettValue('hotpro_num'):9;
+			$spepro_num=GetSettValue('spepro_num')?GetSettValue('spepro_num'):9;
 			
 			$Common_Cache['FeaturedPorducts']=self::$Model->where("isrec=1")->order("id desc")->limit("0,$recpro_num")->findall();
 			$Common_Cache['HotPorducts']=self::$Model->where("ishot=1")->order("id desc")->limit("0,$hotpro_num")->findall();
 			$Common_Cache['NewPorducts']=self::$Model->where("isnew=1")->order("id desc")->limit("0,$newpro_num")->findall();
 			$Common_Cache['SpePorducts']=self::$Model->where("isprice=1")->order("id desc")->limit("0,$spepro_num")->findall();
+			//热门类别
 			self::$Model=D('Cate');
 			$Common_Cache['HotClass']=self::$Model->where("ishot=1")->order("id desc")->limit('0,8')->findall();
 			//首页幻灯片
@@ -121,25 +114,27 @@ class CommAction extends Action{
 			}
 			$Common_Cache['flashpic']=implode("|",$flashpic);
 			$Common_Cache['flashlink']=implode("|",$flashlink);
-			$Common_Cache['flashremark']=implode("|",$flashremark);
-			$Common_Cache['leftpic']=get_ad_arr("topleft");
+			//$Common_Cache['flashremark']=implode("|",$flashremark);//是否显示幻灯片描述
+			$Common_Cache['brandlist']=get_brand_tree();
 
-			self::$Model = D ( "Brand" );
-			$Common_Cache['brandlist']=self::$Model->order('sort desc')->findall();
-
-			//首页大图
-			self::$Model = D ( "Ad" );
-			$Common_Cache['IndexImage'] = self::$Model->where(array('remark'=>'首页大图'))->getField('img_url');
-			$Common_Cache['IndexContent'] = self::$Model->where(array('remark'=>'首页中间文本'))->getField('content');
-			$Common_Cache['leftad'] = self::$Model->where(array('code'=>'leftad'))->find();
-			$Common_Cache['link'] = $list=get_ad_arr("link");
+			/**
+			 * 广告部分
+			 */
+			//调用方法img_url图片content文字//remark标题get_ad('leftad','img_url');
+			//$Common_Cache['leftad'] = get_ad('leftad');//单个
+			//$Common_Cache['link'] = get_ad_arr("link");//广告组
 
 			self::$Model=D('Article_cate');
-			$News_cateid=self::$Model->where(array('article_catename'=>'新闻中心'))->getField("article_cateid");
+			$News_cateid=self::$Model->where(array('name'=>'新闻中心'))->getField("id");
+			
 			self::$Model= D('Article');
-			$Common_Cache['Footer'] = self::$Model->where(array('article_title'=>'底部版权'))->getField('article_content');
-			$Common_Cache['News'] = self::$Model->where(array('article_cateid'=>$News_cateid,'status'=>1))->limit(10)->order('sort desc')->findall();
+			$Common_Cache['Footer'] = self::$Model->where(array('title'=>'底部版权'))->getField('content');
+			$Common_Cache['News'] = self::$Model->where(array('pid'=>$News_cateid,'status'=>1))->limit(10)->order('sort desc')->findall();
 			$Common_Cache['footcode'] = GetSettValue('footcode');
+			$Common_Cache['tel'] = GetSettValue('tel');
+			$Common_Cache['Hotmail'] = GetSettValue('Hotmail');
+			$Common_Cache['Yahoo'] = GetSettValue('Yahoo');
+			$Common_Cache['Skype'] = GetSettValue('Skype');
 
 			F('Common_Cache',$Common_Cache);
 		}

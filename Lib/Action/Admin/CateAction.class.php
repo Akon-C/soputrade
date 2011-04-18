@@ -46,6 +46,10 @@ class CateAction extends AdminCommAction {
 		cleanCache ();
 		$this->display();
 	}
+	function select(){
+		
+		$this->display();
+	}
 	function doSortUpdate(){
 		parent::$Model=D('Cate');
 		$j=0;

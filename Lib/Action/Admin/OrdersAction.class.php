@@ -19,13 +19,14 @@ class OrdersAction extends AdminCommAction{
 	}
 	function orders(){
 		$id=intval($_GET['id']);
-		$list=$this->dao->query("select a.*,b.*,c.bigimage,c.serial,if(b.products_pricespe,b.products_pricespe,b.products_price) as price from ".C('DB_PREFIX')."orders a left join ".C('DB_PREFIX')."orders_products b on a.id=b.orders_id left join ".C('DB_PREFIX')."products c on b.products_id = c.id where a.id='".$id."'");
+		$list=$this->dao->query("select a.*,b.*,c.bigimage,sum(c.weight) as weights,c.serial,if(b.products_pricespe,b.products_pricespe,b.products_price) as price from ".C('DB_PREFIX')."orders a left join ".C('DB_PREFIX')."orders_products b on a.id=b.orders_id left join ".C('DB_PREFIX')."products c on b.products_id = c.id where a.id='".$id."'");
 		$this->products_total=reset(reset($this->dao->query("select sum(b.products_total) as products_total from ".C('DB_PREFIX')."orders a left join ".C('DB_PREFIX')."orders_products b on a.id=b.orders_id where a.id='".$id."'")));
 		foreach ($list as $k=>$v){
 			$list[$k]['products_model']=unserialize($v['products_model']);
 		}
 		$this->list=$list;
 		$this->shippingInfo=$list[0];
+		$this->count=count($list);
 		$this->orders_total=$list[0]['orders_total'];
 		if(ACTION_NAME=='orders'){
 			$this->display();
@@ -173,7 +174,7 @@ class OrdersAction extends AdminCommAction{
 			//修改订单状态
 			$map['id']=$_POST['order_id'];
 			$data['orders_status']='3';
-			$data['express_method']=$_POST['Express'];
+			$data['shipping_method']=$_POST['Express'];
 			$this->dao->where($map)->save($data);
 			$this->jumpUrl=U('Orders/dispBills',array('id'=>$_POST['order_id']));
 			$this->success ( '添加成功！' );

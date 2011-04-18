@@ -10,8 +10,10 @@
 class BANKOFCHINA {
 	var $fields = array ();
 	var $submit_url;
-	function BANKOFCHINA() {
+	var $sn;
+	function BANKOFCHINA($sn) {
 		$this->submit_url="";	
+		$this->sn=$sn;
 	}
 	
 	function add_field($field, $value) {
@@ -28,7 +30,7 @@ class BANKOFCHINA {
 		echo "<head><title>Processing Payment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"></head>\n";
 		//echo "<body onLoad=\"document.forms['pay_form'].submit();\">\n";
 		echo "<body >\n";
-		echo "<center><h2>Please remember your order number!</h2></center>\n";
+		echo "<center><h2>Please remember your order number ".$this->sn."!</h2></center>\n";
 		echo "<center>".GetSettValue('BANKOFCHINA_desc')."</center>";
 		
 		echo "</body></html>\n";

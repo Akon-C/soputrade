@@ -38,7 +38,7 @@ function check(){
 
 
  <div class="col5">
-        <div class="list_nav">Your Position: <a href="__APP__">Home</a> > The Shopping Cart , Step1  </div>
+        <div class="list_nav">Your Position: <a href="/">Home</a> > The Shopping Cart , Step1  </div>
         <div class="list1">
           <div class="list1_title">
             <div class="title1"><strong>The Shopping Cart</strong></div>
@@ -79,28 +79,12 @@ function check(){
 			        </a></p>
 				  </div></td>
                   <td align="center">
-                  
-                  <select name="model_value_{$vo['id']}[]" >
-                  
-                  <gt name="vo['model2'][0]['values_count']" value="0">
-					    <option value="">select {$vo['model2'][0]['name']}</option> 
-					     <volist name="vo['model2']" id="subvo"> 
-						     <volist name="subvo['values']" id="subvo2">
-						     <option value="{$subvo2}" <eq name="vo['model'][0]['value']" value="$subvo2">selected</eq>>{$subvo2}</option>
-						     </volist>
-						  </volist>  
-				<else/>
-				<option value="nosize">nosize</option> 
-				</gt>
-				</select>
-				
-<input type="hidden" name="model_name_{$vo.id}[]" value="{$subvo['name']}" />
-<!--<volist name="vo['model']" id="subvo">
-{$subvo['name']}:{$subvo['value']}&nbsp;
+               <volist name="vo['model']" id="subvo">
+{$subvo['name']}:{$subvo['value']}<br/>
 
 <input type="hidden" name="model_name_{$vo.id}[]" value="{$subvo['name']}" />
-<input type="hidden" name="model_value_{$vo.id}[]" value="{$subvo['value']}" />
-</volist>--></td>
+<input type="hidden" name="model_value_{$vo.id}[]" value="{$subvo['value']}" /><br/>
+</volist></td>
                   <td align="center">{:getprice($vo['price'],$vo['pricespe'],false)}</td>
                   <td align="center">{:getprice($vo['price_total'],$vo['pricespe_total'],false)}</td>
                   <td align="center">

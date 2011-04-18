@@ -39,7 +39,7 @@
     <select name="country" id="selCountries" onchange="loadRegion('selCountries',1,'selProvinces','{:U('Home-Ajax/getRegion')}');" class="required" style="font-size:11px;font-family:Verdana, Arial, Helvetica, sans-serif;">
   <option value="">Please Select</option> 
   <volist name="Countries" id="vo"> 
-  <option value="{$vo.id}" >{$vo.name}</option> 
+  <option value="{$vo.id}" <eq name="memberShippingAddress.country" value="$vo['country']">selected</eq>>{$vo.name}</option> 
   </volist>
   </select>
   <span class="alert"> *</span></td>
@@ -51,6 +51,7 @@
     <select name="state" id="selProvinces"  class="required">
             <option value="0">Please Select</option>
     </select>
+   
     <span class="alert"> *</span>
     </td>
   </tr>
@@ -76,7 +77,7 @@
   </tr>
   <tr>
     <td width="20%" align="left"><label class="inputLabel" for="firstname">Newsletter:</label></td>
-    <td width="80%"><input type="text" class="required" size = "35" name="isNewsletter" /><span class="alert"> *</span></td>
+    <td width="80%"><input type="text" class="required" size = "35" name="isNewsletter" value="{$memberShippingAddress.isNewseletter}"/><span class="alert"> *</span></td>
   </tr>
   <tr>
     <td width="20%" align="left"><label class="inputLabel" for="firstname">E-mail Address:</label></td>
@@ -89,11 +90,13 @@
                 </div>
               </div>
           </div>
-                
+
 <script language="JavaScript" type="text/javascript">
-		$("form[name=doShippingAddress]").validate();
-		$("#selCountries").val("{$memberShippingAddress.country}");
-		loadRegion('selCountries',1,'selProvinces','{:U('Home-Ajax/getRegion')}');
-		$("#selProvinces").val("{$memberShippingAddress.state}");
+$("form[name=doShippingAddress]").validate();
+$("#selCountries").val("{$memberShippingAddress.country}");
+loadRegion('selCountries',1,'selProvinces','{:U('Home-Ajax/getRegion')}');
+function state(){
+	$("#selProvinces").val("{$memberShippingAddress.state}");
+}
 </script>
      <include file="Member:Member-footer" />

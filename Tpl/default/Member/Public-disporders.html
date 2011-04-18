@@ -70,10 +70,10 @@
             <td height="25" style="padding-left:10px;" align="left">{:get_orders_status($list['id'])}</td>
           </tr>
           <eq name="orders_status" value="3">
-          <notempty name="express_method">
+          <notempty name="shipping_method">
            <tr>
             <td height="25" style="padding-left:10px;" width="10%" align="right"><strong>Express delivery:</strong></td>
-            <td height="25" style="padding-left:10px;" align="left">{$list.express_method}</td>
+            <td height="25" style="padding-left:10px;" align="left">{$list.shipping_method}</td>
           </tr>
           </notempty>
           </eq>
@@ -115,7 +115,7 @@
 					<else/>
 					Pay Fee  <b>{:getprice_str($fees['paymoney'])}</b><br>
 					</if>
-					
+					Total Weight:{$weight}KG<br/>
 					<b>Grand Total</b> <span>{:getprice($list['orders_total'],$list['orders_total'])}</span>
             </td>
           </tr>

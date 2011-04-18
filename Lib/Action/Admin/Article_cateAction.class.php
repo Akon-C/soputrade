@@ -13,12 +13,14 @@ class Article_cateAction extends AdminCommAction{
 		$this->jumpUrl=U('Article_cate/catelist');
 	}
 	public function catelist(){
-		
-		$this->sort='article_parent_cateid desc';
-		$this->_list();
-		$list=$this->get('list');
+
+		$list=$this->dao->findall();
 		foreach ($list as $k=>$v){
-			$list[$k]['article_parent_caetname']=$this->dao->where(array('article_cateid'=>$v['article_parent_cateid']))->getField('article_catename');
+			if($this->dao->where(array('id'=>$v['pid']))->getField('name')){
+				$list[$k]['catename']=$this->dao->where(array('id'=>$v['pid']))->getField('name');
+			}else{
+				$list[$k]['catename']='最顶级';
+			}
 		}
 		$this->assign('list',$list);
 		$this->display();
@@ -29,24 +31,24 @@ class Article_cateAction extends AdminCommAction{
 		$this->display();
 	}
 	public function edit(){
-		$list=$this->dao->where(array('article_cateid'=>$_REQUEST['article_cateid']))->find();
+		$list=$this->dao->where(array('id'=>$_REQUEST['id']))->find();
 		$this->list=$list;
-		if($list['article_parent_cateid']){
-			$this->cateoption=$this->dao->cate_option(0,0,$list['article_cateid']);
+		if($list['pid']){
+			$this->cateoption=$this->dao->cate_option(0,0,$list['pid']);
 		}else{
 			$this->cateoption=$this->dao->cate_option();
 		}
 		$this->display();
 	}
 	public function status(){
-		$map['article_cateid']=intval($_REQUEST['article_cateid']);
+		$map['id']=intval($_REQUEST['id']);
 		$status=$this->dao->where($map)->getField('status');
 		if($status==1){
 			$status=0;
-			$data['imgurl']=__ROOT__.'/Tpl/default/Public/images/mod_0.gif';
+			$data['img_url']=__ROOT__.'/Tpl/default/Public/images/mod_0.gif';
 		}else{
 			$status=1;
-			$data['imgurl']=__ROOT__.'/Tpl/default/Public/images/mod_1.gif';
+			$data['img_url']=__ROOT__.'/Tpl/default/Public/images/mod_1.gif';
 		}
 		$this->dao->where($map)->data(array('status'=>$status))->save();
 		$this->ajaxReturn($data,'保存成功',1);
@@ -55,6 +57,7 @@ class Article_cateAction extends AdminCommAction{
 	public function insert(){
 		if($this->isPost()){
 			if(false !== $this->dao->create()){
+				$this->dao->dateline=time();
 				if(false !== $this->dao->add()){
 					$this->success('新增类别成功!');
 				}else{
@@ -69,13 +72,14 @@ class Article_cateAction extends AdminCommAction{
 	public function update(){
 		if($this->isPost()){
 			if(false !== $this->dao->create()){
-				if($this->dao->article_cateid==$this->dao->article_parent_cateid){
+				$this->dao->dateline=time();
+				if($this->dao->id==$this->dao->pid){
 					$this->error('上级类别不能为自已!');
 				}
-				$children=$this->dao->field('article_cateid')->where(array('article_parent_cateid'=>$this->dao->article_cateid))->findall();
+				$children=$this->dao->field('id')->where(array('pid'=>$this->dao->id))->findall();
 				$children=array_map('reset',$children);
-				
-				if(in_array($this->dao->article_parent_cateid,$children)){
+
+				if(in_array($this->dao->pid,$children)){
 					$this->error('上级类别不能为自已子类!');
 				}
 				if(false !== $this->dao->save()){
@@ -90,26 +94,24 @@ class Article_cateAction extends AdminCommAction{
 
 	}
 	public function delete() {
-		$map ['article_cateid'] = array('in',$_REQUEST ['article_cateid']);
-		if($list=$this->dao->where ($map)->findall()){
+		$map ['id'] = array('in',$_REQUEST ['id']);
+		$list=$this->dao->where ($map)->findall();
+		if($list){
 			if(false !== $this->dao->where ($map)->delete()){
 				/**
 				 * 删除相关图片
 				 */
 				foreach ($list as $value) {
-					$img=iconv('utf-8','gbk',$value['imgurl']);
+					$img=iconv('utf-8','gbk',$value['img_url']);
 					if(file_exists($img)){
 						unlink($img);
 					}
 				}
-				$this->success("删除成功!");
-			}else{
-				$this->error('删除失败!');
-			}
-		}else{
-			$this->error('请选择删除项!');
-		}
 
+			}
+		}
+		$this->success("删除成功!");
 	}
 }
+
 ?>

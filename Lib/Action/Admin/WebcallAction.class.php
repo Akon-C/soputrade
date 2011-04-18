@@ -30,7 +30,7 @@ class WebcallAction extends AdminCommAction {
 			$this->name2=rawurldecode(GetSettValue('365webcall_name'));
 			$this->email2=GetSettValue('365webcall_email');
 			$this->accountid2=GetSettValue('365webcall_accountid');
-			$this->pwd2=rawurldecode(GetSettValue('365webcall_password'));
+			$this->pwd2=rawurldecode(GetSettValue('365webcall_accountid'));
 
 
 			$this->display();

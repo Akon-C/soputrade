@@ -108,6 +108,9 @@ $(function(){
 			src:src.replace("\/n5\/","\/n1\/"),
 			jqimg:src.replace("\/n5\/","\/n0\/")
 		});
+		$("#spec-n2").attr({
+			href:src.replace("\/n5\/","\/n1\/"),
+		});
 		$(this).css({
 		"border":"2px solid #ff6600",
 		"padding":"1px"

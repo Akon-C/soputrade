@@ -1,5 +1,18 @@
 <include file="../Public/admintop" />
 <include file="../Public/adminleft" />
+
+<script type="text/javascript">
+
+$(document).ready (
+function(){
+	//选中
+	$('#check').click(function(){
+		$('input[name^=id]').attr('checked',$(this).attr('checked'));
+	});
+	
+}
+);
+</script>
 <!-- Content (Right Column) -->
 		<div id="content" class="box">
 
@@ -9,9 +22,10 @@
             <p id="btn-create" class="box">
               <a href="{:U('Setting/addPayment')}">安装新支付接口</a>
             </p>
+            <form name="payment_form" method="post" />
             <table width="100%">
 				<tr>
-				    <th style="text-align:center" width="7%"></th>
+				    <th style="text-align:center" width="7%"><input type="checkbox" id="check" /></th>
 				    <th style="text-align:center" width="15%">显示名</th>
 				    <th style="text-align:center" width="15%">标识</th>
                     <th style="text-align:center" width="7%">状态</th>
@@ -30,6 +44,9 @@
                 </volist>
 				
 			</table>
-            <p class="t-right"></p>
+            <p class="t-right">
+            <input type="hidden" value="" name="status" />
+            <input type="submit" value="禁用" onclick="document.payment_form.status.value='0';" /><input type="submit" value="启用" onclick="document.payment_form.status.value='1';" /></p>
+            </form>
 		</div> <!-- /content -->
 <include file="../Public/adminfooter" />

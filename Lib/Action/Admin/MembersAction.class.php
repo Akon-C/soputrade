@@ -13,7 +13,7 @@ class MembersAction extends AdminCommAction{
 		if(!empty($_REQUEST['email'])){
 			$Map['email']=array('like','%'.$_REQUEST['email'].'%');
 		}
-		$this->sort="createdate";
+		$this->sort="createdate desc";
 		$this->_list($Map);
 		$this->display ();
 	}
@@ -55,7 +55,7 @@ class MembersAction extends AdminCommAction{
 		$data['password']=md5($_POST['newpassword']);
 		self::$Model=D("Members");
 		self::$Model->where("id=".$_POST['id'])->save($data);
-		echo self::$Model->getlastsql();
+		$this->success ( "操作成功!" );
 	}
 	//=====================3.10添加函数========================================//
 	function groupslist(){
