@@ -5,10 +5,12 @@
 <!-- Content (Right Column) -->
 		<div id="content" class="box">
 
-			<h1>添加支付方式</h1>
+			<h1>添加配送方式</h1>
             <p class="msg info">提示：<label id="msg"></label></p>
             	
-            
+             <p id="btn-create" class="box">
+              <a href="{:U('Shipping/index')}">配送方式</a>
+            </p>
             <form action="{:U('Shipping/Insert')}" name="myform" method="post" enctype="multipart/form-data">
             <table class="nostyle" width="100%">
                     <tr>

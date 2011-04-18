@@ -28,8 +28,8 @@
     <td align="center"><font color="#FF0000">{:getprice($vo["orders_total"],$vo["orders_total"])}</font></td>
     <td align="center">{:get_orders_status($vo['id'])}
      <eq name="vo['orders_status']" value="3">
-     <notempty name="vo['express_method']">
-     ({$vo['express_method']})
+     <notempty name="vo['shipping_method']">
+     ({$vo['shipping_method']})
      </notempty>
      </eq>
     </td>

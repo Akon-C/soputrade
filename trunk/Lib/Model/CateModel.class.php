@@ -25,6 +25,7 @@ class CateModel extends Model {
 		static $children = array ();
 		$data = $this->where ( array ('pid' => $id ) )->findall ();
 		if (func_num_args () > 1) {
+			$children = array ();
 			$children [] = $id;
 		}
 		foreach ( $data as $k => $v ) {

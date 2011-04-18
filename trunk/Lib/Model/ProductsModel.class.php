@@ -100,7 +100,7 @@ class ProductsModel extends Model {
 		$dao=D("Cate");
 		$typeid=$dao->field("type_id")->where("id=".$cateid)->select();
 		$dao=D("Type_attr");
-		$attr = $dao->where ( "type_id=" . $typeid [0] ['type_id'] . " and status=1" )->order ( "sort desc" )->findall ();
+		$attr = $dao->where ( "type_id=" . $typeid [0] ['type_id'] . " and status=1 and input_type=1" )->order ( "sort desc" )->findall ();
 		$dao = D ( "Products_attr" );
 		for($row = 0; $row < count ( $attr ); $row ++) {
 			$map1 ['products_id'] = $pid;
@@ -125,16 +125,25 @@ class ProductsModel extends Model {
 			return 0;
 		}
 	}
+	//计算属性价格
+	public function model_attr_price($model){
+		$price=0;
+		foreach ((array)$model as $value){
+			$price+=$value['attr_price'];
+		}
+		return $price;
+	}
 	//获取产品价格明细
-	public function getpriceInfo($pid,$count){
+	public function getpriceInfo($pid,$count,$model){
 		$list=$this->where("id=".$pid)->find();
 		if (!$list){
 			return null;
 		}
 		else{
 			$discount=0;
-			$list['price']=(float)$list['price'];
-			$list['pricespe']=(float)$list['pricespe'];
+			$model_price=$this->model_attr_price($model);
+			$list['price']=(float)(VipPrice($list['price'])+$model_price);
+			$list['pricespe']=(float)(VipPrice($list['pricespe'])+$model_price);
 			$list['count']=$count;
 			$list['discount']=$discount;
 			$list['price_total']=$list['price']*$count;

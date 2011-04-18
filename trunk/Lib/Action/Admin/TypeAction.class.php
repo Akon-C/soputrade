@@ -74,6 +74,17 @@ class TypeAction extends AdminCommAction{
 		}
 		$this->success ( "删除成功！" );
 	}
+	function attrDelete() {
+		$id=$_REQUEST ['id'];
+		if($id){
+			$map ['id'] = array('in',$id);
+			self::$Model = D ( "Type_attr" );
+			if(self::$Model->where ( $map )->count ()){
+				self::$Model->where ( $map )->delete ();
+			}
+		}
+		$this->success ( "删除成功！" );
+	}
 	function arrtedit() {
 		
 		self::$Model = D ( "Type_attr" );

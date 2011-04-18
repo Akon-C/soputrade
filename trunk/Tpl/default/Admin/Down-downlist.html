@@ -4,7 +4,7 @@
 
 function status(id,_this){
 	$.post("{:U('Down/status')}",'id='+id,function(data){
-		$('img',_this).attr('src',data.data['imgurl']);
+		$('img',_this).attr('src',data.data['img_url']);
 	},'json');
 	
 }
@@ -70,7 +70,7 @@ function(){
                 <tr >
                     <td style="text-align:left" ><input type="checkbox" name="id[]" value="{$vo.id}" /></td>
 				    
-                    <td style="text-align:left" ><a href="/{$vo.fileurl}" target="_blank">{$vo.title}</a></td>
+                    <td style="text-align:left" ><a href="/{$vo.file_url}" target="_blank">{$vo.title}</a></td>
 				    <td style="text-align:left" >{$vo['sort']}</td> 
                     <td style="text-align:left" ><a href="javascript:void(0);" onclick="javascript:status({$vo['id']},this);">{:getStatus($vo["status"],true)}</a></td>
                     <td style="text-align:left" >{$vo['catename']}</td>

@@ -57,7 +57,9 @@ class EmptyAction extends CommAction {
 	}
 	function good($pid) {
 		$dao = D ( "Products" );
-
+		if(isset($_POST['id'])){
+			$pid=intval($_POST['id']);
+		}
 		$list = $dao->where ( "id=" . $pid )->find ();
 		if ($list) {
 			$dao->viewcounts ( $pid );
@@ -77,18 +79,30 @@ class EmptyAction extends CommAction {
 				}
 				$_SESSION['product_history']=implode(',',$history_array);
 			}
+			//ajax属性价格
+			if(isset($_POST['attr_id'])){
+				$products_attr_model=D("Products_attr");
+				$map['id']=array('in',$_POST['attr_id']);
+				$products_attr=$products_attr_model->where($map)->findall();
+				$attrs=array();
+				if($products_attr){
+					$attrs['price']=0;
+					foreach ($products_attr as $attr){
+						$attrs['price']+=$attr['attr_price'];
+					}
+					if($attrs['price']){
+						$attrs['product_price']=getprice_str(VipPrice($list['pricespe'])+$attrs['price']);
+						$attrs['attr_price']='('.getprice_str(VipPrice($list['pricespe'])).($attrs['price']>0?'+':'').getprice_str($attrs['price']).')';
+					}else{
+						$attrs['product_price']=getprice_str($list['pricespe']);
+						$attrs['attr_price']='';
+					}
+					die(json_encode($attrs));
+				}
+			}
 			$this->list = $list;
 			//获取Vip价格
-			$ginfo=get_members_group($this->memberID);
-			if ($ginfo){
-				if ($list["price"]>=$list["pricespe"]){
-					$this->vipPrice=$list["pricespe"]*$ginfo["discount"];
-				}
-				else{
-					$this->vipPrice=$list["price"]*$ginfo["discount"];
-				}
-				
-			}
+			$this->vipPrice=VipPrice(get_real_price($list["price"],$list["pricespe"]));
 			//上一产品，下一产品
 			$prev=$dao->where(array("id"=>array("lt",$pid)))->order('id desc')->find();
 			$next=$dao->where(array("id"=>array("gt",$pid)))->order('id asc')->find();
@@ -106,7 +120,6 @@ class EmptyAction extends CommAction {
 				$attrlist[0]['values_count']=1;
 				$attrlist[0]['attrs']=array(0=>array('attr_value'=>'nosize'));
 			}
-
 			$this->attrlist=$attrlist;
 			$this->attrcount=count($attrlist[0]['attrs']);
 
@@ -208,27 +221,26 @@ class EmptyAction extends CommAction {
 	}
 	function article($aid){
 		parent::$Model=D('Article');
-		if(!is_numeric($aid)){
-			$title=auto_charset($aid,'utf-8','gbk');
-
-			$aid=parent::$Model->where(array('article_title'=>$title))->getField('article_id');
-
-		}
+		$title=auto_charset($aid,'utf-8','gbk');
+		$map['title']=$title;
+		$aid=parent::$Model->where($map)->getField('id');
+		//如果没有找到404
 		if(!$aid){
 			parent::_empty();
 		}
 		$article_cache=md5('article_'.$aid);
 		if(S($article_cache)==''){
 			$list=parent::$Model->find($aid);
+			$list['title']=str_replace("-"," ",$list['title']);
 			S($article_cache,$list);
 		}
 		$list= S($article_cache);
-		$list['article_title']=str_replace("-"," ",$list['article_title']);
 		$this->assign($list);
-		$this->pagetitle=$list['article_title'];
+		//seo
+		$this->pagetitle=$list['title'];
 		$this->pagekeywords=$list['keywords'];
 		$this->pagedesc=$list['description'];
-		$this->display("Home:article");
+		$this->display("Home:Article");
 	}
 	function sitemap(){
 		$this->pagetitle='Sitemap';

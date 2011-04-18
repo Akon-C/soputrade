@@ -63,9 +63,7 @@
 						<td style="width:120px;">LOGO:</td>
 						<td><input type="file" size="20" id="fileToUpload" name="fileToUpload" class="input-text"  /><input class="input-submit" id="upload"  type="button" name="upload" value="上传" onClick="return ajaxFileUpload();" /><input type="hidden" name="imgurl" id="imgurl" value="{$list['imgurl']}" />
                         <br>
-						<notempty name="list['imgurl']">
                         <img id="imgurlbox" src=".././{$list['imgurl']}" >
-						</notempty>
                         </td>
 					</tr>
                     <tr>

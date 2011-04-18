@@ -280,6 +280,7 @@ form {
 	padding:0px;
 	margin:0px;
 }
+.menu_content ul li ul {background: #ffffff;border: 1px solid #330;}
 .menu_content li {
 	/*background-image: url(li_bg.gif);
 	background-repeat: no-repeat;

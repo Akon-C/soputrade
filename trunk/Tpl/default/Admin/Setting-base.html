@@ -109,6 +109,11 @@
                         </if>
                         </td>
 					</tr>
+					
+					 <tr>
+						<td style="width:120px;">菜单显示产品计数</td>
+						<td>显示<input type="radio" size="40" name="productCount" class="input-text" value="1" />不显示<input type="radio" size="40" name="productCount" class="input-text" value="0" /></td>
+					</tr>
 					<tr>
 						<td style="width:120px;">产品图片加水印:</td>
 						<td><input type="radio" value="1"  name="ImgWater" class="input-text"  <eq name="ImgWater" value="1">checked=checked</eq>/>启用
@@ -164,6 +169,11 @@
                     <tr>
 						<td style="width:120px;">Email:</td>
 						<td><input type="text" size="40" name="Email" class="input-text" value="{:GetSettValue('Email')}" /></td>
+					</tr>
+					
+                    <tr>
+						<td style="width:120px;">电话号码:</td>
+						<td><input type="text" size="40" name="tel" class="input-text" value="{:GetSettValue('tel')}" /></td>
 					</tr>
                     <tr>
 						<td style="width:120px;">缩略图宽度:</td>

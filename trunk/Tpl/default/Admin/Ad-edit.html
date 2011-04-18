@@ -83,13 +83,11 @@ function ajaxFileUpload(fileToUpload,timestamp)
 						<td style="width:120px;">图片:</td>
 						<td><input type="file" id="fileToUpload" name="fileToUpload" class="input-text" /><input class="input-submit" id="upload"  type="button" name="upload" value="上传" onClick="return ajaxFileUpload('fileToUpload','0');" /></td>
 					</tr> 
-					<notempty name="list['imgurl']">
                          <tr>
                     <td colspan="2">
                     <img src=".././{$list.img_url}" name="imgbox" id="imgbox" >
                     </td>
                     </tr>
-						</notempty>
                    
                     <tr>
 						<td style="width:120px;">文字:</td>

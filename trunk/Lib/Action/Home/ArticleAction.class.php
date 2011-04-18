@@ -24,38 +24,38 @@ class ArticleAction extends CommAction {
 	function index(){
 		$model=D('Article');
 		switch (true){
-			case isset($_REQUEST['News']):
+			case isset($_REQUEST['News'])://新闻列表
 				$this->disp_text="News";
 				$model_cate=D('Article_cate');
-				$cateid=$model_cate->where(array('article_catename'=>'新闻中心'))->getField("article_cateid");
-				$map['article_cateid']=$cateid;
-				$model->_list($this->view,$map,'article_id',false);
+				$pid=$model_cate->where(array('name'=>'新闻中心'))->getField("id");
+				$map['pid']=$pid;
+				$model->_list($this->view,$map,'id',false);
 				
-				$this->display ('Home:Article_all');
+				$this->display ('Home:Article_list');
 				break;
-			case isset($_REQUEST['id']):
+			case isset($_REQUEST['id'])://单独文章
 				$list=$model->find(intval($_REQUEST['id']));
-				$this->pagetitle=$list['article_title'];
+				$this->pagetitle=$list['title'];
 				$this->pagekeywords=$list['keywords'];
 				$this->pagedesc=$list['description'];
 				$this->assign($list);
 				$this->display ('Home:Article');
 				break;
-			case isset($_REQUEST['cateid']):
-				$map['article_cateid']=intval($_GET['cateid']);
-				$model->_list($this->view,$map,'article_id',false);
+			case isset($_REQUEST['pid']):
+				$map['pid']=intval($_REQUEST['pid']);
+				$model->_list($this->view,$map,'id',false);
 				$model=D('Article_cate');
-				$cate=$model->where(array('article_cateid'=>intval($_GET['cateid'])))->find();
-				$this->pagetitle=$cate['article_catename'];
+				$cate=$model->where(array('id'=>intval($_REQUEST['pid'])))->find();
+				$this->pagetitle=$cate['name'];
 				$this->pagekeywords=$cate['keywords'];
 				$this->pagedesc=$cate['description'];
-				$this->disp_text=$cate['article_catename'];
-				$this->display ('Home:Article_all');
+				$this->disp_text=$cate['name'];
+				$this->display ('Home:Article_list');
 				break;
 			default:
 				$this->disp_text="Article";
 				$model->_list($this->view,$map,'article_id',false);
-				$this->display ('Home:Article_all');
+				$this->display ('Home:Article_list');
 		}
 
 

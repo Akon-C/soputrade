@@ -48,7 +48,7 @@ $(document).ready (
                     <td style="text-align:left" id="classname" >{:get_type_inputtype_name($vo['input_type'])}</td>
                     <td style="text-align:left" id="classname" >{:str_replace(chr(13),",",$vo['values'])}</td>
                     <td style="text-align:left" >{:getStatus($vo["status"],true)}</td>
-                    <td style="text-align:center" ><a href="{:u('Type/arrtedit',array('id'=>$vo['id']))}">编辑</a>&nbsp;|&nbsp;<a name="del_{$vo.id}"  href="{:u('Type/Delete',array('id'=>$vo['id']))}" >移除</a></td>
+                    <td style="text-align:center" ><a href="{:u('Type/arrtedit',array('id'=>$vo['id']))}">编辑</a>&nbsp;|&nbsp;<a name="del_{$vo.id}"  href="{:u('Type/attrDelete',array('id'=>$vo['id']))}" >移除</a></td>
                 </tr>
                 </volist>
 				

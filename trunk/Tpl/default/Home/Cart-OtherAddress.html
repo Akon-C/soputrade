@@ -86,27 +86,31 @@
   <tr>
     <td colspan="2" height="25" bgcolor="#F5f5f5" align="left" style="padding-left:1%;"><strong style="color:#4F617B; font-size:16px;">Shipping Method:</strong></td>
   </tr>
-  <tr>
+   <tr><td colspan="3"  style="padding-left:10px">
     <table border="0" width="100%">
-  <tr>
-  <td width="5px"></td>
-  <td width="15px">name</td>
-  <td width="25px">free</td>
+ <?php $count=count($ShippingList); ?>
+        <volist name="ShippingList" id="vo">
+	        <eq name="i" value="1">  <tr>  	</eq>
+			   <eq name="i%2" value="1">  <tr>  </eq>
+			    <td width="49%" align="left" style="padding-right:1%;">
+			      <fieldset style=" padding:10px;">
+			        <input type="radio" value="{$vo.id}" name="shipping_id" <eq name="i" value="1">checked</eq>><span>{$vo.name}<present name="vo['remark']">
+			         <br/>
+			         {$vo.remark}
+			        </present></span>
+			      </fieldset>
+			    </td>
+	     <eq name="i%2" value="0">  </tr>  </eq>
+	     <eq name="i" value="$count">  </tr>  </eq>
+     </volist>  
+     
+     
+  </table> </td>
   </tr>
-  <volist name="ShippingList" id="vo">
-  <tr>
-  <td width="5px"><input type="radio" id="shipping_method" name="shipping_method" value="{$vo.code}" onclick="set_shipping('shipping_method','{$member_ShippingAddress['country']}','{$member_ShippingAddress['state']}','{$Total_weight}','{$cart_total}','{:U('Home-Ajax/getShippingFee')}');"  /></td>
-  <td>{$vo.name}</td>
-  <td>{:getprice_str(get_shipping_fee($vo["id"],$member_ShippingAddress['country'],$member_ShippingAddress['state'],$Total_weight))}</td>
-  </tr>
-  </volist>
   </table> 
   </tr>
-  <tr>
-            <th colspan="2" style="padding-left:10px;font-weight:bold">4.Payment Method<span style="color:red">*</span></th>
-          </tr>
- 
-    
+
 </table>
+ <input type ="hidden"  name="total_weight" value="{$Total_weight}" /> 
 <include file="address_bottom" />
 <include file="../Public/footer" />

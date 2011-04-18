@@ -16,6 +16,7 @@ class SettingAction extends AdminCommAction{
 		$this->success('更新缓存成功！');
 	}
 	function base(){
+		$this->productCount=GetSettValue('productCount');
 		$this->ImgWater=GetSettValue('ImgWater');
 		$this->ImgWaterPos=GetSettValue('ImgWaterPos');
 		$this->ImgWaterType=GetSettValue('ImgWaterType');
@@ -46,8 +47,20 @@ class SettingAction extends AdminCommAction{
 	function Payment(){
 		$model=D('Payment');
 		$this->list=$model->order('sort')->findAll();
-		$this->display();
+		if($this->isPost()){
+			$id=implode(',',(array)$_POST['id']);
+			$map['id']=array('in',$id);
+			$list=$model->where($map)->getField('id,name');
+			$status=$_POST['status'];
+			foreach ($list as $val){
+				SetSettValue($val.'_status',$status);
+			}
+			$count=count($list);
 
+			cleanCache();
+			$this->success(($status?'启用了':'禁用了').$count.'个付款方式!');
+		}
+		$this->display();
 	}
 	function addPayment(){
 		$this->display();

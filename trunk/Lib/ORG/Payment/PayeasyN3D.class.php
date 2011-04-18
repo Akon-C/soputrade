@@ -10,8 +10,10 @@
 class PayeasyN3D {
 	var $fields = array ();
 	var $submit_url;
-	function __construct() {
+	var $sn;
+	function __construct($sn) {
 		$this->submit_url="http://pay.beijing.com.cn/prs/e_user_payment.checkit";
+		$this->sn=$sn;
 	}
 	function add_field($field, $value) {
 
@@ -69,7 +71,7 @@ js;
 		echo "</head>\n"; 
 		//echo "<body onLoad=\"document.forms['pay_form'].submit();\">\n";
 		echo "<body >\n";
-		echo "<center><h2>Please remember your order number, and then click on the button below to make a payment!</h2></center>\n";
+		echo "<center><h2>Please remember your order number ".$this->sn.", and then click on the button below to make a payment!</h2></center>\n";
 		echo "<center><h2>Please wait, your order is being processed and you";
 		echo " will be redirected to the payment website.</h2></center>\n";
 		echo "<form method=\"post\" name=\"pay_form\" ";

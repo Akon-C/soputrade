@@ -57,13 +57,13 @@
             <table class="nostyle">
                    <tr>
 						<td style="width:120px;">类别名(必填):</td>
-						<td><input type="text" size="60" name="article_catename" class="input-text" value="{$list['article_catename']}" /></td>
+						<td><input type="text" size="60" name="name" class="input-text" value="{$list['name']}" /></td>
 					</tr>
                     <tr>
 						<td style="width:120px;">LOGO:</td>
-						<td><input type="file" size="20" id="fileToUpload" name="fileToUpload" class="input-text"  /><input class="input-submit" id="upload"  type="button" name="upload" value="上传" onClick="return ajaxFileUpload();" /><input type="hidden" name="imgurl" id="imgurl" value="{$list['imgurl']}" />
+						<td><input type="file" size="20" id="fileToUpload" name="fileToUpload" class="input-text"  /><input class="input-submit" id="upload"  type="button" name="upload" value="上传" onClick="return ajaxFileUpload();" /><input type="hidden" name="img_url" id="imgurl" value="{$list['img_url']}" />
                         <br>
-                        <img id="imgurlbox" src=".././{$list['imgurl']}" width="100" height="100">
+                        <img id="imgurlbox" src=".././{$list['img_url']}" width="100" height="100">
                         </td>
 					</tr>
                     <tr>
@@ -74,7 +74,7 @@
                      <tr>
 						<td style="width:120px;">上级分类:</td>
 						<td>
-						<select name="article_parent_cateid">
+						<select name="pid">
 						{$cateoption}
 						</select>
 
@@ -88,7 +88,7 @@
 					 <tr>
 						<td style="width:120px;">内容:</td>
 						<td width="550">
-						<html:editor id="article_cate_desc" name="article_cate_desc" height="400x" width="100%" type="FCKeditor" content="{$list['article_cate_desc']}" />
+						<html:editor id="remark" name="remark" height="400x" width="100%" type="FCKeditor" content="{$list['remark']}" />
 						<!--<textarea name="article_content" cols="60" rows="10" class="input-text"></textarea>--></td>
 					</tr>
                     <tr>
@@ -104,7 +104,7 @@
                         </td>
 					</tr>
             </table>
-            <input type="hidden" name="article_cateid" value="{$list['article_cateid']}" />
+            <input type="hidden" name="id" value="{$list['id']}" />
             <script language="javascript" type="text/javascript">
 			   $("input[name='status'][value={$list['status']}]").attr("checked",true);
 			</script>

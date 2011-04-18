@@ -10,12 +10,12 @@
 class Article_cateModel extends Model{
 	protected $_validate=array(
 
-	array('article_catename','require','类别名称必须填写!'),
-	array('article_catename','','类别名称已经存在!',0,'unique',1),
+	array('name','require','类别名称必须填写!'),
+	array('name','','类别名称已经存在!',0,'unique',1),
 
 	);
 	public function get_article_by_cate($name,$limit){
-		$article=$this->query("select * from ".C('DB_PREFIX')."article_cate a left join ".C('DB_PREFIX')."article b on a.article_cateid=b.article_cateid where a.article_catename='".$name."' order by b.article_id desc limit ".$limit);
+		$article=$this->query("select * from ".C('DB_PREFIX')."article_cate a left join ".C('DB_PREFIX')."article b on a.pid=b.id where a.name='".$name."' order by b.id desc limit ".$limit);
 		return $article;
 	}
 	/**
@@ -23,10 +23,10 @@ class Article_cateModel extends Model{
 	 *
 	 */
 
-	public function cate_option($article_cateid=0,$i=0,$selected=null)
+	public function cate_option($id=0,$i=0,$selected=null)
 	{
 		
-		$cate = $this->where(array('article_parent_cateid'=>$article_cateid))->order('article_cateid asc')->findall();
+		$cate = $this->where(array('pid'=>$id))->order('id asc')->findall();
 		if(false == $cate) return null;
 		
 		$option='';
@@ -37,12 +37,12 @@ class Article_cateModel extends Model{
 			$str.=str_repeat('-',$i*2);
 		}
 		foreach ($cate as $v){
-			if(!is_null($selected) && $selected==$v['article_cateid']){
-				$option.="<option value='{$v['article_cateid']}' selected='selected'>".$str.$v['article_catename']."</option>";
+			if(!is_null($selected) && $selected==$v['id']){
+				$option.="<option value='{$v['id']}' selected='selected'>".$str.$v['name']."</option>";
 			}else{
-				$option.="<option value='{$v['article_cateid']}'>".$str.$v['article_catename']."</option>";
+				$option.="<option value='{$v['id']}'>".$str.$v['name']."</option>";
 			}
-			$option.=$this->cate_option($v['article_cateid'],$i+1);
+			$option.=$this->cate_option($v['id'],$i+1);
 		}
 		return $option;
 	}

@@ -10,8 +10,11 @@
 class gspay {
 	var $fields = array ();
 	var $submit_url;
-	function gspay() {
+	var $sn;
+	function gspay($sn) {
 		$this->submit_url="https://secure.redirect2pay.com/payment/pay.php";	
+		$this->sn=$sn;
+		//$this->submit_url="http://www.aodas.com/".U('Payment/gspay_c');	
 	}
 	function add_field($field, $value) {
 		
@@ -27,7 +30,7 @@ class gspay {
 		echo "<head><title>Processing Payment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"></head>\n";
 		echo "<body onLoad=\"document.forms['pay_form'].submit();\">\n";
 		echo "<body >\n";
-		echo "<center><h2>Please remember your order number, and then click on the button below to make a payment!</h2></center>\n";
+		echo "<center><h2>Please remember your order number ".$this->sn.", and then click on the button below to make a payment!</h2></center>\n";
 		echo "<center><h2>Please wait, your order is being processed and you";
 		echo " will be redirected to the gspay website.</h2></center>\n";
 		echo "<form method=\"post\" name=\"pay_form\" ";
@@ -41,6 +44,19 @@ class gspay {
 		
 		echo "</form>\n";
 		echo "<script>function jump(){ document.forms[\"pay_form\"].submit();} setTimeout(\"jump()\", 5000);</script>";
+		echo "</body></html>\n";
+	}
+	function submit_post_c() {
+		echo "<html>\n";
+		echo "<head><title>Processing Payment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"></head>\n";
+		echo "<body onLoad=\"document.forms['paypal_form'].submit();\">\n";
+		echo "<form method=\"post\" name=\"paypal_form\" ";
+		echo "action=\"".$this->submit_url."\">\n";
+		foreach ($this->fields as $name => $value) {
+			echo "<input type=\"hidden\" name=\"$name\" value=\"$value\"/>\n";
+		}
+		echo "</form>\n";
+		//  echo "<script>function jump(){ document.forms[\"paypal_form\"].submit();} jump();</script>";
 		echo "</body></html>\n";
 	}
 }

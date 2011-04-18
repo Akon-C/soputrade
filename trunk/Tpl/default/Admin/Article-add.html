@@ -57,11 +57,11 @@
             <table class="nostyle">
                       <tr>
 						<td style="width:120px;">标题(必填):</td>
-						<td><input type="text" size="60" name="article_title" class="input-text" value="" /></td>
+						<td><input type="text" size="60" name="title" class="input-text" value="" /></td>
 					</tr>
                     <tr>
 						<td style="width:120px;">LOGO:</td>
-						<td><input type="file" size="20" id="fileToUpload" name="fileToUpload" class="input-text"  /><input class="input-submit" id="upload"  type="button" name="upload" value="上传" onClick="return ajaxFileUpload();" /><input type="hidden" name="imgurl" id="imgurl" value="" />
+						<td><input type="file" size="20" id="fileToUpload" name="fileToUpload" class="input-text"  /><input class="input-submit" id="upload"  type="button" name="upload" value="上传" onClick="return ajaxFileUpload();" /><input type="hidden" name="img_url" id="imgurl" value="" />
                         <br>
                         <img id="imgurlbox" src=".././Public/Uploads/Article/" style="display:none;" >
                         </td>
@@ -74,7 +74,7 @@
                      <tr>
 						<td style="width:120px;">所属类别:</td>
 						<td>
-						<select name="article_cateid">
+						<select name="pid">
 						{$cateoption}
 						</select>
 
@@ -88,8 +88,8 @@
                     <tr>
 						<td style="width:120px;">内容:</td>
 						<td width="550">
-						<html:editor id="article_content" name="article_content" height="400x" width="100%" type="FCKeditor" content="" />
-						<!--<textarea name="article_content" cols="60" rows="10" class="input-text"></textarea>--></td>
+						<html:editor id="content" name="content" height="400x" width="100%" type="FCKeditor" content="" />
+						<!--<textarea name="content" cols="60" rows="10" class="input-text"></textarea>--></td>
 					</tr>
                     <tr>
 						<td style="width:120px;">关键字(SEO):</td>

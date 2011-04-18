@@ -44,6 +44,7 @@ $array=array(
 'RBAC_USER_TABLE'	=>	'role_user',
 'RBAC_ACCESS_TABLE' =>	'access',
 'RBAC_NODE_TABLE'	=> 'node',
+
 );
 return array_merge($config,$array);
 ?>

@@ -84,6 +84,17 @@
                         </select>
                         </td>
 					</tr>
+					 <tr>
+						<td style="width:120px;">品牌:</td>
+						<td>
+                        <select name="brandid" class="input-text" >
+                        <option value="0">最上级...</option>
+                        <volist name="brandtree" id="vo">
+                        <option value="{$vo['id']}">{$vo.name}</option>
+                        </volist>
+                        </select>
+                        </td>
+					</tr>
                     <tr>
 						<td style="width:120px;">所属商品类型:</td>
 						<td>

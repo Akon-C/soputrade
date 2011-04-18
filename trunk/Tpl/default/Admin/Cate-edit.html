@@ -62,9 +62,7 @@ function ajaxFileUpload()
 						<td style="width:120px;">LOGO:</td>
 						<td><input type="file" size="20" id="fileToUpload" name="fileToUpload" class="input-text"  /><input class="input-submit" id="upload"  type="button" name="upload" value="上传" onClick="return ajaxFileUpload();" /><input type="hidden" name="imgurl" id="imgurl" value="{$list['imgurl']}" />
                         <br>
-						<notempty name="list['imgurl']">
                         <img id="imgurlbox" src=".././{$list['imgurl']}" >
-						</notempty>
 						</td>
 					</tr>
                     <tr>
@@ -79,6 +77,17 @@ function ajaxFileUpload()
                         <option value="0">最上级...</option>
                         <volist name="catetree" id="vo">
                         <option value="{$vo['id']}">{:class_str_insert($vo['deep'],"&nbsp;&nbsp;&nbsp;")}{$vo.name}</option>
+                        </volist>
+                        </select>
+                        </td>
+					</tr>
+					<tr>
+						<td style="width:120px;">品牌:</td>
+						<td>
+                        <select name="brandid" class="input-text" >
+                        <option value="0">最上级...</option>
+                        <volist name="brandtree" id="vo">
+                        <option value="{$vo['id']}">{$vo.name}</option>
                         </volist>
                         </select>
                         </td>
@@ -117,6 +126,7 @@ function ajaxFileUpload()
             <input type="hidden" name="id" value="{$list['id']}" />
             <script language="javascript" type="text/javascript">
             document.myform.pid.value="{$list['pid']}";
+            document.myform.brandid.value="{$list['brandid']}";
             document.myform.type_id.value="{$list['type_id']}";
             $("input[name='ishot'][value={$list['ishot']}]").attr("checked",true);
 			</script>

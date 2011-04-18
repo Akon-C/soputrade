@@ -30,7 +30,7 @@
           <div class="menu1_content">
             <MARQUEE behavior= "scroll" align= "center" direction= "up" height="100" scrollamount= "2" scrolldelay= "70" onmouseover='this.stop()' onmouseout='this.start()'>
             <iterate name="News" id="vo">
-              <a href="{:U('Article/index',array('id'=>$vo['article_id']))}">{$vo.article_title}</a><br/>
+              <a href="{:U('Article/index',array('id'=>$vo['id']))}">{$vo.title}</a><br/>
               </iterate>
             </MARQUEE>
           </div>
