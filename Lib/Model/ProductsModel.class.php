@@ -75,7 +75,7 @@ class ProductsModel extends Model {
 				$pro_num=21;
 			}
 			$p   = new Page($count,$pro_num);
-			
+
 			//分页查询数据
 			$voList = $this->where($map)->order("`".$order."` ". $sort)->limit($p->firstRow .','.$p->listRows)->findAll();
 			//分页显示
@@ -101,19 +101,24 @@ class ProductsModel extends Model {
 		$typeid=$dao->field("type_id")->where("id=".$cateid)->select();
 		$dao=D("Type_attr");
 		$attr = $dao->where ( "type_id=" . $typeid [0] ['type_id'] . " and status=1 and input_type=1" )->order ( "sort desc" )->findall ();
+
 		$dao = D ( "Products_attr" );
+		$attrs=array();
 		for($row = 0; $row < count ( $attr ); $row ++) {
 			$map1 ['products_id'] = $pid;
 			$map1 ['attr_id'] = $attr [$row] ['id'];
-			$attr [$row] ['attrs'] = $dao->where ( $map1 )->group('attr_value')->findall ();
-			$attr [$row] ['values'] = explode ( chr ( 13 ), $attr [$row] ['values'] );
-			foreach ($attr[$row]['values'] as $k=>$v){
-				$attr[$row]['values'][$k]=str_replace("\n","",$v);
+			$attr_value=$dao->where ( $map1 )->group('attr_value')->findall ();
+			if($attr_value){
+				$attrs [$row]=$attr [$row];
+				$attrs [$row] ['attrs'] = $attr_value;
+				$attrs [$row] ['values'] = explode ( chr ( 13 ), $attr [$row] ['values'] );
+				foreach ($attrs[$row]['values'] as $k=>$v){
+					$attrs[$row]['values'][$k]=str_replace("\n","",$v);
+				}
+				$attrs [$row] ['values_count'] = count($attrs [$row] ['attrs']);
 			}
-			$attr [$row] ['values_count'] = count($attr [$row] ['attrs']);
 		}
-
-		return $attr;
+		return $attrs;
 	}
 	//获取产品价格
 	public function get_weight($pid){
@@ -157,7 +162,7 @@ class ProductsModel extends Model {
 			if ($discount>0){
 				$list['total']=$list['total']*$discount;
 			}
-			
+
 			return $list;
 		}
 	}
