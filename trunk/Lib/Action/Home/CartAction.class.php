@@ -12,6 +12,10 @@ class CartAction extends CommAction {
 		if ( $_POST ['count'] == 0) {
 			$this->error ( "You did not select any product!" );
 		}
+		if ($this->memberID <= 0 && GetSettValue('quickbuy')==0) {
+			echo "<script>alert('Please Log on!');location.href='".U('Member-Public/Join')."';</script>";
+			die;
+		}
 		$dao = D ( "Cart" );
 		self::$Model = D ( "Products" );
 		$prolist = self::$Model->where ( "id=" . $_POST ['id'] )->find ();
@@ -19,19 +23,22 @@ class CartAction extends CommAction {
 
 		$model = array ();
 		$i=0;
-		$attr_value='';
+		//属性列表
+		$attributes=array_keys($_POST['attr']);
+		$no_select=array();
 		foreach ( $attrlist as $key => $value ) {
-			if($value['input_type']==1){
+			if($value['input_type']==1 && in_array($value ['name'],$attributes)){
 				$model [$i] ['name'] = $value ['name'];
-				$attr_value=explode('__',$_POST [$value ['name']]);
+				$attr_value=explode('__',$_POST ['attr'][$value ['name']]);
 				$model [$i] ['value'] = $attr_value[0];
 				$model [$i] ['attr_price'] = $attr_value[1];
 				$i ++;
+			}else{
+				$no_select[]=$value ['name'];
 			}
 		}
-		$att_str=implode(',',$attr_value);
-		if (!$att_str) {
-			$this->error ( "You did not check any product attribute!" );
+		if (count($no_select)>0) {
+			$this->error ( "Please select ".implode(',',$no_select).'!' );
 		}
 		$dao->add_item ( $this->sessionID, $_POST ['id'], $_POST ['count'], serialize ( $model ) );
 		//dump($dao->display_contents($this->sessionID));
@@ -135,6 +142,7 @@ class CartAction extends CommAction {
 		$this->success('Clear Cart Item Success!');
 	}
 	public function shipping(){
+		header("Content-Type:text/html; charset=utf-8");
 		$dao = D ( "Cart" );
 		if ($dao->get_item_count ( $this->sessionID ) < 1) {
 			$this->jumpUrl=U('Index/index');
@@ -176,6 +184,7 @@ class CartAction extends CommAction {
 		$this->display ();
 	}
 	public function checkout() {
+		header("Content-Type:text/html; charset=utf-8");
 		$dao = D ( "Cart" );
 		if ($dao->get_item_count ( $this->sessionID ) < 1) {
 			$this->jumpUrl=U('Index/index');

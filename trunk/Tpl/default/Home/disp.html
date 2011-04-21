@@ -119,7 +119,7 @@ $(function(){
     <td align="center" height="25" ><strong>{$vo['name']}</strong></td>
     <td>
     <iterate name="vo['attrs']" id="subvo">
-    <input class="attr_{$vo['name']}" type="radio" name="{$vo['name']}" id="{$subvo['id']}" value="{$subvo['attr_value']}__{$subvo['attr_price']}" />
+    <input class="attr_{$vo['name']}" type="radio" name="attr[{$vo['name']}]" id="{$subvo['id']}" value="{$subvo['attr_value']}__{$subvo['attr_price']}" />
      {$subvo['attr_value']}
   <notempty name="subvo['attr_price']">
   (<gt name="subvo['attr_price']">+</gt>{:getprice_str($subvo['attr_price'])})

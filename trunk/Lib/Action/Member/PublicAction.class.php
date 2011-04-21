@@ -8,7 +8,7 @@
   * @lastupdate 2010-11-26
 */ 
 class PublicAction extends CommAction{
-	
+
 	public function Join(){
 		$this->display();
 	}
@@ -73,6 +73,13 @@ class PublicAction extends CommAction{
 			}
 			else{
 				Session::set('memberID',$list['id']);
+				//将会员帐号的sessionid修改为现在的sessionid;
+				if($list['id']>0){
+					$cartModel=D('Cart');
+					$data['session_id']=Session::get('sessionID');
+					//$data['uid']=$list['id'];
+					$cartModel->where ( "uid='".$list['id']."' or session_id='" . Session::get('sessionID') . "'")->data ($data)->save();
+				}
 				$data['lastlogindate']=time();
 				$data['lastloginip']=get_client_ip();
 				$list=$dao->where("id ='".$list['id']."'")->save($data);

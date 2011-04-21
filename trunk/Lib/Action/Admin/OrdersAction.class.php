@@ -19,11 +19,14 @@ class OrdersAction extends AdminCommAction{
 	}
 	function orders(){
 		$id=intval($_GET['id']);
-		$list=$this->dao->query("select a.*,b.*,c.bigimage,sum(c.weight) as weights,c.serial,if(b.products_pricespe,b.products_pricespe,b.products_price) as price from ".C('DB_PREFIX')."orders a left join ".C('DB_PREFIX')."orders_products b on a.id=b.orders_id left join ".C('DB_PREFIX')."products c on b.products_id = c.id where a.id='".$id."'");
+		$list=$this->dao->query("select a.*,b.*,c.bigimage,c.serial,if(b.products_pricespe,b.products_pricespe,b.products_price) as price from ".C('DB_PREFIX')."orders a left join ".C('DB_PREFIX')."orders_products b on a.id=b.orders_id left join ".C('DB_PREFIX')."products c on b.products_id = c.id where a.id='".$id."'");
 		$this->products_total=reset(reset($this->dao->query("select sum(b.products_total) as products_total from ".C('DB_PREFIX')."orders a left join ".C('DB_PREFIX')."orders_products b on a.id=b.orders_id where a.id='".$id."'")));
+		$weights=0;
 		foreach ($list as $k=>$v){
 			$list[$k]['products_model']=unserialize($v['products_model']);
+			$weights+=$v['weight'];
 		}
+		$this->weights=$weights;
 		$this->list=$list;
 		$this->shippingInfo=$list[0];
 		$this->count=count($list);
