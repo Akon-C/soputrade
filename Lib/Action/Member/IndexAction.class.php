@@ -12,6 +12,10 @@ class IndexAction extends MemberCommAction{
 		$this->redirect ( 'Index/Orders' );
 	}
 	public function Logout(){
+		//清空会员session
+		$cartModel=D('Cart');
+		$data['session_id']='';
+		$cartModel->where ( "uid='".Session::get("memberID")."' or session_id='" . Session::get('sessionID') . "'")->data ($data)->save();
 		Session::set("memberID",0);
 		redirect ( 'Index-index.html' );
 	}
@@ -102,7 +106,7 @@ class IndexAction extends MemberCommAction{
 		$this->count=$count;
 		import ( 'ORG.Util.Page' );
 		$page = new Page ( $count, 20 );
-		$this->orderslist=self::$Model->where($map)->order("dateline")->limit ( $page->firstRow . ',' . $page->listRows )->findall ();
+		$this->orderslist=self::$Model->where($map)->order("dateline desc")->limit ( $page->firstRow . ',' . $page->listRows )->findall ();
 		$this->show = $page->show ();
 		$this->display();
 	}
