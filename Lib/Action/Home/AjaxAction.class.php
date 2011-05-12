@@ -45,5 +45,12 @@ class AjaxAction extends Action{
 			echo json_encode("error");
 		}
 	}
+	function getShipping_area(){
+		$city=$_REQUEST["city"];
+		$dao=D("Shipping_area");
+		$map["config"]=array('like','%"'.$city.'"%');
+		$list=$dao->where($map)->findAll();
+		echo json_encode($list);
+	}
 }
 ?>
