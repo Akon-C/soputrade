@@ -45,7 +45,7 @@
     <td width="105" align="left">
       <div class="nav2">
             <a href="{:build_url('hotmail','hotmail')}"><img src="../Public/images/message.gif" alt="" border="0" /></a>
-          </div>
+      </div>
     </td>
   </tr>
 </table>
@@ -67,7 +67,7 @@
   <option value="">All Category</option>
     <volist name="catetree" id="vo">
         <option value="{$vo['id']}">{:class_str_insert($vo['deep'],"&nbsp;&nbsp;&nbsp;")}{$vo.name}</option>
-        </volist>
+    </volist>
 </select>
     </td>
     <td>
