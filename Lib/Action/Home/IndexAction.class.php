@@ -24,11 +24,6 @@ class IndexAction extends CommAction {
 		header('location: '.$_SERVER['HTTP_REFERER']);
 		
 	}
-	public function test() {
-		give_member_points("20110310173333");
-		//sendmail($sendto,"testemail","this is a testemail")	;	
-		
-	}
 	
 	
 	
