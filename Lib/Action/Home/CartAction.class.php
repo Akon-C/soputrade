@@ -72,14 +72,19 @@ class CartAction extends CommAction {
 			if($minimum_money>0 && $dao->cart_total ( $this->sessionID )<$minimum_money){
 				$this->error("Not be less than $minimum_money minimum!");
 			}
-			$this->redirect ( 'Cart/checked_address' );
+			//$this->redirect ( 'Cart/checked_address' );
+			$this->redirect ( 'Cart/checked_payment' );
 		}else{
 			$this->redirect ( 'Cart/disp' );
 		}
 
 	}
+	function checked_payment(){
+		$map1['type'] = 0;
+		$this->country = D ( 'Region' )->where ( $map1 )->findall ();
+		$this->disp ();
+	}
 	function checked_address() {
-
 		$dao = D ( "Cart" );
 		if ($dao->get_item_count ( $this->sessionID ) < 1) {
 			$this->jumpUrl=U('Index/index');
