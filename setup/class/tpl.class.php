@@ -26,7 +26,7 @@ class tpl
 	{
 		//获得替换块的子模板
 		if(is_array($values)){
-			ereg("{".$block_name."}.*{/".$block_name."}",$this->content,$regs);
+			@ereg("{".$block_name."}.*{/".$block_name."}",$this->content,$regs);
 			$str_block=substr($regs[0],2+strlen($block_name),-(strlen($block_name)+3));
 			$str_replace="";
 			$block_replace="";
@@ -39,9 +39,9 @@ class tpl
 				}
 				$block_replace.=$str_replace;
 			}
-			$this->content=ereg_replace ("{".$block_name."}.*{/".$block_name."}",$block_replace,$this->content);
+			$this->content=@ereg_replace ("{".$block_name."}.*{/".$block_name."}",$block_replace,$this->content);
 		}else{
-			$this->content=ereg_replace ("{".$block_name."}.*{/".$block_name."}",$this->contentnull,$this->content);
+			$this->content=@ereg_replace ("{".$block_name."}.*{/".$block_name."}",$this->contentnull,$this->content);
 		}
 	}
 
@@ -54,7 +54,7 @@ class tpl
 		$arrayconents=explode("{".$block_name."}",$this->content);
 		foreach ($arrayconents as $arrayconent){
 			$arrayconent="{".$block_name."}".$arrayconent;
-			ereg("{".$block_name."}.*{/".$block_name."}",$arrayconent,$regs);
+			@ereg("{".$block_name."}.*{/".$block_name."}",$arrayconent,$regs);
 			$str_block=substr($regs[0],2+strlen($block_name),-(strlen($block_name)+3));
 			if($values){
 				$this->content=str_replace ("{".$block_name."}".$str_block."{/".$block_name."}",$str_block,$this->content);
