@@ -1,0 +1,17 @@
+安装步骤：
+1.请将解压文件用ftp或者其他方式上传到您网络的根目录下
+2.打开安装地址 http://你的网址/setup，按照提示进行安装
+3.进入后台管理 http://你的网址/index.php/Admin 对网站进行设置,默认的用户名和密码都是admin,请及时修改你的用户名和密码
+4.删除安装文件夹（根目录下的setup目录！）
+
+最后祝您使用愉快！
+
+带有测试数据的安装包：
+http://www.0594trade.com/sop-1.0rc1.rar
+
+前台展示网址：http://www.soupw.org/
+后台登录网址：http://www.soupw.org/index.php/admin
+
+用户名：admin
+
+……更多精彩，请安装体验  安装使用QQ：800038618 

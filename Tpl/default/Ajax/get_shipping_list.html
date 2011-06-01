@@ -1,0 +1,10 @@
+
+<table width="100%" style="border:1px #CCCCCC solid" cellspacing="0" cellpadding="0" id="shippingbox">
+<volist name="ShippingList" id="vo">
+<tr>
+<td class="huo_d"> <input type="radio" value="{$vo.id}" name="shipping_id" > {$vo.name}</td>
+<td class="huo_f"><span>+{:getprice_str($vo['price'])}</span> </td>
+</tr>
+</volist>
+
+</table>

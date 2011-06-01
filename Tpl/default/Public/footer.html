@@ -1,0 +1,17 @@
+  <div id="footer">
+      <div class="footer">
+        <div class="bottom_nav"><a href="/">Home</a><a href="{:U('Pro/new')}">New roducts</a><a href="{:U('Pro/price')}">Specials</a><a href="{:U('Pro/index')}">All products</a><a href="{:U('Pro/reviews')}">Reviews</a><a href="__APP__/Contact-Us/">Contact Us</a><a href="__APP__/FAQs/">FAQs</a></div>
+        <div class="copyright">
+          {$Footer}{$footcode}
+        </div>            
+      </div>
+    </div>
+  </div>
+  <if condition="GetSettValue('365webcall_status') eq 1">
+{$_365call}
+  <script type='text/javascript' src='http://p.365webcall.com/IMMeForPartner.aspx?email={:GetSettValue('365webcall_email')}&accountid={:GetSettValue('365webcall_accountid')}&LL=1'></script>
+</if>
+<script type='text/javascript' src='http://chat3.365webcall.com/IMMe1.aspx?settings=mw76IX7NNm67070z3AmmNX76z3Ammw607z3AN6mmw7'></script>
+</body>
+</html>
+
