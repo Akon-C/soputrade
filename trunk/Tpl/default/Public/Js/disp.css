@@ -1,0 +1,41 @@
+.attrlist {
+	position:relative;
+}
+.attrlist div{
+	background: none repeat scroll 0 0 #FFFFFF;
+	border: 1px solid #C8C9CD;
+    float:left;
+    padding:5px;
+    vertical-align: middle;
+}
+.attrlist ul{
+	width:100%;
+	text-align:center;
+}
+
+.attrlist li {
+	background: none repeat scroll 0 0 #FFFFFF;
+	border: 1px solid #C8C9CD;
+    margin: 5px;
+    float:left;
+    padding:1px;
+    vertical-align: middle;
+}
+.attrlist li a {
+   text-decoration:none;
+    display:block;
+    padding:5px;
+    color:#000;
+    font-size:15px;
+}
+.attrlist li a:hover {
+    border: 2px solid #FF6701;
+    margin: -1px;
+}
+#attrlist_a_hover {
+    border: 2px solid #FF6701;
+    background-position: right bottom;
+    margin: -1px;
+    background-repeat: no-repeat;
+    background-image:url(checked.gif);
+}
