@@ -9,7 +9,7 @@
  */
 class EmptyAction extends CommAction {
 	function _empty() {
-		$pathinfo = str_replace('.html','',ltrim($_SERVER ['PATH_INFO'],'/' ));
+		$pathinfo=preg_replace("/(-pid|-cid){2,}/","$1",$_SERVER['PATH_INFO']);
 		switch (true){
 			case false!==strpos($pathinfo,'-pid-'):
 				$page=explode("-pid-",$pathinfo);
@@ -36,6 +36,9 @@ class EmptyAction extends CommAction {
 				break;
 			case 0==strcasecmp(MODULE_NAME,'Sitemap'):
 				$this->sitemap();
+				break;
+			case 0==strcasecmp(MODULE_NAME,'Reviews'):
+				$this->reviews();
 				break;
 			case substr($pathinfo,-1)=='/':
 				$_GET['title']=$title=trim($pathinfo,'/');
@@ -131,8 +134,8 @@ class EmptyAction extends CommAction {
 			//产品位置
 			$this->postion=reset($dao->field('count(*)+1 as postion')->where("id<'".$pid."' and cateid='".$list['cateid']."'")->order('id desc')->find());
 			//获取关联产品
-			$dao=D('Products_related');
-			$related=$dao->field('b.*')->table(C('DB_PREFIX').'products_related a')->join(C('DB_PREFIX').'products b on a.related_products_id=b.id')->where(array('a.products_id'=>$pid))->limit($realted_num)->findall();
+			$Products_related_Model=D('Products_related');
+			$related=$Products_related_Model->field('b.*')->table(C('DB_PREFIX').'products_related a')->join(C('DB_PREFIX').'products b on a.related_products_id=b.id')->where(array('a.products_id'=>$pid))->limit($realted_num)->findall();
 			empty($related)?$related=$sameclass:$related=$dao->rand($related);
 			$this->related=$related;
 			$this->sameclass=$sameclass;
@@ -209,8 +212,7 @@ class EmptyAction extends CommAction {
 			$classChildren [count ( $classChildren )] = $cid;
 			S ( $strFid_class, implode ( ",", $classChildren ) ); //取得所有子类
 		}
-		(isset($_REQUEST['price']) && isset($_REQUEST['price']))?$map['pricespe']=array(array('egt',$_REQUEST['price']),array('elt',$_REQUEST['price2'])):'';
-		!empty($_REQUEST['type'])?$map[$_REQUEST['type']]=1:'';
+		
 		$map['isdown']=array('neq',1);
 		$map['cateid']=array ('in', S ( $strFid_class ));
 		D("Products")->_list ( $this->view, $map, 'id',false );
@@ -294,6 +296,15 @@ class EmptyAction extends CommAction {
 		$this->pagekeywords='Sitemap';
 		$this->pagedesc='Sitemap';
 		$this->display("sitemap");
+	}
+	function Reviews(){
+		self::$Model=D("Products_ask");
+		$this->disp_text="Reviews";
+		if(isset($_REQUEST['id'])){
+			$map['products_id']=$_REQUEST['id'];
+		}
+		self::$Model->_list($this->view,$map,'dateline',false);
+		$this->display("reviews");
 	}
 	function FAQs(){
 		$article_cache=md5('article_faqs');

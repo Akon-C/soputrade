@@ -51,7 +51,7 @@ class wedopay {
 	function create_form($list) {
 		$pname=get_class($this);
 		$this_script = "http://{$_SERVER['HTTP_HOST']}";
-		
+
 		$MD5key=GetSettValue ( $pname . "_Md5Key" );
 		$MerNo=GetSettValue ( $pname . "_MerNo" );
 		$BillNo=$list ['sn'];
@@ -90,7 +90,11 @@ class wedopay {
 		}
 
 		$this->form.= "</form>\n";
-		//$this->form.=$this->submit(5);//是否自动提交,延迟5秒
+		if(GetSettValue($list['payment_module_code'].'_autosubmit')==1){
+			$delay=GetSettValue($list['payment_module_code'].'_delay');
+			$delay=$delay?$delay:5;
+			$this->form.=$this->submit($delay);//是否自动提交,延迟5秒
+		}
 		return $this->form;
 	}
 	function submit($delay){
@@ -100,7 +104,6 @@ class wedopay {
 			$delay*=1000;
 			$this->form.= "<script>function jump(){ document.forms[\"pay_form\"].submit();} setTimeout('jump()',$delay);</script>";
 		}
-		return $this->form;
 	}
 }
 ?>

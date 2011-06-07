@@ -18,9 +18,7 @@ class Products_askModel extends Model{
 	 */
 	public function _list($view,$map,$sortBy='',$asc=true)
 	{
-		if(isset($map['isdown'])){
-			unset($map['isdown']);
-		}
+		
 		//排序字段 默认为主键名
 		if(isset($_REQUEST['order'])) {
 			$order = $_REQUEST['order'];
@@ -35,11 +33,7 @@ class Products_askModel extends Model{
 			$sort = $asc?'asc':'desc';
 		}
 		//取得满足条件的记录数
-		if(!empty($_SESSION['map']) && 'Search'==MODULE_NAME){
-			$map=$_SESSION['map'];
-		}
 		$count= $this->where($map)->count();
-		
 		$pages=array(
 		'totalRows'=>0,//总记录
 		'totalPages'=>0,//总页数
@@ -55,9 +49,14 @@ class Products_askModel extends Model{
 			$p   = new Page($count,10);
 
 			//分页查询数据
-			$voList = $this->where($map)->order("`".$order."` ". $sort)->limit($p->firstRow .','.$p->listRows)->findAll();
+			$voList = $this->table(C('DB_PREFIX').'products_ask a')->join(C('DB_PREFIX').'products b on a.products_id=b.id')->where($map)->order("`a`.`".$order."` ". $sort)->limit($p->firstRow .','.$p->listRows)->findAll();
 			//分页显示
 			$page = $p->show();
+			$pages['totalRows']=$p->totalRows;
+			$pages['totalPages']=$p->totalPages;
+			$pages['startRow']=$p->firstRow+1;
+			$pages['endRow']=($p->nowPage>1?$p->nowPage:1)*$p->listRows;
+			$pages['endRow']=$pages['endRow']>$pages['totalRows']?$pages['totalRows']:$pages['endRow'];
 			$pages['list']=$voList;
 			$pages['page']=$page;
 		}

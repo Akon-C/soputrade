@@ -123,7 +123,7 @@ class PublicAction extends CommAction{
 	public function disporders() {
 		if ($this->memberID <= 0  && GetSettValue('quickbuy')==1) {
 			Session::set('back',U('Member-Public/disporders'));
-			$this->redirect ( 'Member-Public/Join' );
+			$this->redirect ( 'Member-Public/Login' );
 		}
 		if($_REQUEST ['id']){
 			$map['id'] = $_REQUEST ['id'];
@@ -166,6 +166,15 @@ class PublicAction extends CommAction{
 		$this->left();
 		$this->display();
 		$this->footer();
+	}
+	function newsletter(){
+		if ($this->memberID <= 0) {
+			Session::set('back',U('Member-Public/newsletter'));
+			$this->redirect ( 'Member-Public/Login' );
+		}
+		self::$Model=D('Shippingaddress');
+		self::$Model->where('id='.$this->memberID)->save(array('isNewseletter'=>$this->memberInfo['email']));
+		$this->success('Thank you. Your information has been submitted.');
 	}
 }
 ?>

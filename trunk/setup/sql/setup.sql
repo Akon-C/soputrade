@@ -1,4 +1,3 @@
-
 SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `{key}access`
@@ -114,7 +113,7 @@ CREATE TABLE `{key}cart` (
   `uid` varchar(255) NOT NULL DEFAULT '0',
   `model` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=291 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=297 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for `{key}cate`
@@ -341,7 +340,7 @@ CREATE TABLE `{key}orders` (
   PRIMARY KEY (`id`),
   KEY `idx_status_orders_cust_zen` (`orders_status`,`id`,`member_id`),
   KEY `idx_date_purchased_zen` (`dateline`)
-) ENGINE=MyISAM AUTO_INCREMENT=124 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=126 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for `{key}orders_products`
@@ -366,7 +365,7 @@ CREATE TABLE `{key}orders_products` (
   `products_prid` tinytext,
   PRIMARY KEY (`id`),
   KEY `idx_orders_id_prod_id_zen` (`orders_id`,`products_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=122 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=124 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for `{key}orders_shippingbills`
@@ -464,24 +463,24 @@ CREATE TABLE `{key}products` (
   `cateid` int(11) NOT NULL DEFAULT '0',
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `serial` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `price` varchar(255) COLLATE utf8_unicode_ci DEFAULT '0',
-  `pricespe` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `weight` float(10,0) DEFAULT '0',
+  `price` decimal(11,2) DEFAULT '0.00',
+  `pricespe` decimal(11,2) DEFAULT NULL,
+  `weight` decimal(11,2) DEFAULT '0.00',
   `bigimage` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `smallimage` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `remark` text CHARACTER SET utf8,
-  `isnew` varchar(20) COLLATE utf8_unicode_ci DEFAULT '0',
-  `ishot` varchar(20) COLLATE utf8_unicode_ci DEFAULT '0',
-  `isrec` varchar(20) COLLATE utf8_unicode_ci DEFAULT '0',
-  `isprice` varchar(20) COLLATE utf8_unicode_ci DEFAULT '0',
-  `isdown` varchar(20) COLLATE utf8_unicode_ci DEFAULT '0',
-  `dateline` varchar(11) COLLATE utf8_unicode_ci DEFAULT '0',
-  `sort` varchar(11) COLLATE utf8_unicode_ci DEFAULT '0',
-  `brandid` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `isnew` int(5) DEFAULT '0',
+  `ishot` int(5) DEFAULT '0',
+  `isrec` int(5) DEFAULT '0',
+  `isprice` int(5) DEFAULT '0',
+  `isdown` int(5) DEFAULT '0',
+  `dateline` int(11) DEFAULT '0',
+  `sort` int(11) DEFAULT '0',
+  `brandid` int(11) DEFAULT NULL,
   `viewcount` int(10) DEFAULT '0',
   `points` int(11) DEFAULT '0',
-  `costprice` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `provider` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `costprice` decimal(11,2) DEFAULT NULL,
+  `provider` decimal(11,2) DEFAULT NULL,
   `stock` int(11) DEFAULT '0',
   `pagetitle` text COLLATE utf8_unicode_ci,
   `pagekey` text COLLATE utf8_unicode_ci,
@@ -517,9 +516,10 @@ CREATE TABLE `{key}products_ask` (
   `dateline` int(255) DEFAULT NULL,
   `products_id` int(11) DEFAULT NULL,
   `status` enum('1','0') DEFAULT '0',
+  `star` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5616 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=5617 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for `{key}products_attr`
@@ -536,7 +536,7 @@ CREATE TABLE `{key}products_attr` (
   PRIMARY KEY (`id`),
   KEY `goods_id` (`products_id`),
   KEY `attr_id` (`attr_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=56057 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=56059 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for `{key}products_gallery`
@@ -618,7 +618,7 @@ CREATE TABLE `{key}setting` (
   `valuetxt` longtext,
   PRIMARY KEY (`vid`),
   KEY `valuename` (`valuename`)
-) ENGINE=MyISAM AUTO_INCREMENT=205 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=209 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for `{key}shipping`

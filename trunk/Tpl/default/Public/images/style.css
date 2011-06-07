@@ -183,6 +183,10 @@ span.marker {
 	padding-bottom: 8px;
 	text-align:left;
 }
+.search a {
+    color: #777777;
+    text-decoration: none;
+}
 .input1 {
 	border: 1px solid #dedec6;
 	background-color: #f0f0e5;
@@ -367,11 +371,13 @@ span.marker {
 .pro_img {
 	float: left;
 	width: 129px;
+	height:109px;
 }
 .pro_name {
 	text-align: left;
 	float: left;
 	width: 120px;
+	height:40px;
 	padding-left: 9px;
 }
 .pro_name a {

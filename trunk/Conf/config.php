@@ -15,7 +15,7 @@ $array=array(
 'FILE_UPLOAD_ALLOWEXTS'=>'jpg,jpeg,bmp,png,gif,tif,zip,rar,doc,xls,7z,rtf,csv',
 //站点信息
 'SYSTEM_NAME'=>'外贸易',
-'SYSTEM_VAR'=>'2.0RC1',
+'SYSTEM_VAR'=>'2.0beta1',
 //'URL_MODEL'=>2,
 //'配置项'=>'配置值'
 /*HTML*/

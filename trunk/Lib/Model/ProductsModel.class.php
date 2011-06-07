@@ -64,6 +64,8 @@ class ProductsModel extends Model {
 		if(!empty($_SESSION['map']) && 'Search'==MODULE_NAME){
 			$map=$_SESSION['map'];
 		}
+		(isset($_REQUEST['pr']) && isset($_REQUEST['pr2'])) && $map['pricespe']=array('between',"{$_REQUEST['pr']},{$_REQUEST['pr2']}");
+		!empty($_REQUEST['type']) && $map[$_REQUEST['type']]=1;
 		$count= $this->where($map)->count();
 		$pages=array(
 		'totalRows'=>0,//总记录

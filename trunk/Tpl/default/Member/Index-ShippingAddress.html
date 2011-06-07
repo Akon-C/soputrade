@@ -35,12 +35,12 @@
           </tr>
   <tr>
 
-    <td width="20%" align="left" height="30"><label class="inputLabel" for="firstname">Address:</label></td>
-    <td width="80%"><input type="text" name="address" size = "35"  value="{$memberShippingAddress.address}"    class="required"  dataType="Require" msg="Address is required!"  /><span class="alert"> *</span></td>
+    <td width="20%" align="left" height="30"><label class="inputLabel" for="Address">Address:</label></td>
+    <td width="80%"><input type="text" name="address" size = "35" id="Address" value="{$memberShippingAddress.address}"    class="required"  dataType="Require" msg="Address is required!"  /><span class="alert"> *</span></td>
   </tr>
   
   <tr>
-    <td width="20%" align="left" height="30"><label class="inputLabel" for="firstname">Country:</label></td>
+    <td width="20%" align="left" height="30"><label class="inputLabel" for="selCountries">Country:</label></td>
     <td width="80%">
      <select name="country" id="selCountries" onchange="loadRegion('selCountries',1,'selProvinces','{:U('Home-Ajax/getRegion')}');" class="required" style="font-size:11px;font-family:Verdana, Arial, Helvetica, sans-serif;"  dataType="Require" msg="Country is required!" >
     
@@ -54,7 +54,7 @@
   </tr>
   
   <tr>
-    <td width="20%" align="left" height="30"><label class="inputLabel" for="firstname">State/Province:</label></td>
+    <td width="20%" align="left" height="30"><label class="inputLabel" for="selProvinces">State/Province:</label></td>
     <td width="80%"><!--<input type="text" name="state" size = "35" value="{$memberShippingAddress.state}"  class="required" />-->
     <select name="state" id="selProvinces"  class="required"  dataType="Require" msg="State is required!" >
             <option value="0">Please Select</option>
@@ -66,32 +66,32 @@
     </td>
   </tr>
   <tr>
-    <td width="20%" align="left" height="30"><label class="inputLabel" for="firstname">City or APO/FPO:</label></td>
-    <td width="80%"><input type="text" name="city" size = "35" value="{$memberShippingAddress.city}"  class="required"  dataType="Require" msg="City is required!" /><span class="alert"> *</span></td>
+    <td width="20%" align="left" height="30"><label class="inputLabel" for="city">City or APO/FPO:</label></td>
+    <td width="80%"><input type="text" name="city" id="city" size = "35" value="{$memberShippingAddress.city}"  class="required"  dataType="Require" msg="City is required!" /><span class="alert"> *</span></td>
 
   </tr>
   <tr>
-    <td width="20%" align="left" height="30"><label class="inputLabel" for="firstname">Zip/Postal Code:</label></td>
+    <td width="20%" align="left" height="30"><label class="inputLabel" for="zip">Zip/Postal Code:</label></td>
 
-    <td width="80%"><input type="text" name="zip" size = "35" value="{$memberShippingAddress.zip}"  class="required"  dataType="Require" msg="Zip/Postal Code is required!" /><span class="alert"> *</span></td>
+    <td width="80%"><input type="text" name="zip" id="zip" size = "35" value="{$memberShippingAddress.zip}"  class="required"  dataType="Require" msg="Zip/Postal Code is required!" /><span class="alert"> *</span></td>
   </tr>
   <tr>
-    <td width="20%" align="left" height="30"><label class="inputLabel" for="firstname">Telephone:</label></td>
-    <td width="80%"><input type="text" name="telphone"  class="required" size = "35" value="{$memberShippingAddress.telphone}"  dataType="Require" msg="Telephone is required!" /><span class="alert"> *</span></td>
+    <td width="20%" align="left" height="30"><label class="inputLabel" for="telphone">Telephone:</label></td>
+    <td width="80%"><input type="text" name="telphone"  id="telphone"  class="required" size = "35" value="{$memberShippingAddress.telphone}"  dataType="Require" msg="Telephone is required!" /><span class="alert"> *</span></td>
   </tr>
 
   <tr>
-    <td width="20%" align="left" height="30"><label class="inputLabel" for="firstname">Fax Number:</label></td>
-    <td width="80%"><input type="text" name="fax"  class="required" size = "35" value="{$memberShippingAddress.fax}"  dataType="Require" msg="Fax Number is required!" /><span class="alert"> *</span></td>
+    <td width="20%" align="left" height="30"><label class="inputLabel" for="fax">Fax Number:</label></td>
+    <td width="80%"><input type="text" name="fax" id="fax"  class="required" size = "35" value="{$memberShippingAddress.fax}"  dataType="Require" msg="Fax Number is required!" /><span class="alert"> *</span></td>
   </tr>
   <tr>
-    <td width="20%" align="left" height="30"><label class="inputLabel" for="firstname">Newsletter:</label></td>
-    <td width="80%"><input type="text" class="required" size = "35" name="isNewsletter" value="{$memberShippingAddress.isNewseletter}"  dataType="Require" msg="Newsletter is required!" /><span class="alert"> *</span></td>
+    <td width="20%" align="left" height="30"><label class="inputLabel" for="isNewsletter">Newsletter:</label></td>
+    <td width="80%"><input type="text" class="required" size = "35" name="isNewsletter" id="isNewsletter" value="{$memberShippingAddress.isNewseletter}"  dataType="Require" msg="Newsletter is required!" /><span class="alert"> *</span></td>
 
   </tr>
   <tr>
-    <td width="20%" align="left" height="30"><label class="inputLabel" for="firstname">E-mail Address:</label></td>
-    <td width="80%"><input type="text" name="email"  class="required email" size = "35" value="{$memberInfo.email}"  dataType="Email" msg="Email format is not correct!" /><span class="alert"> *</span></td>
+    <td width="20%" align="left" height="30"><label class="inputLabel" for="email">E-mail Address:</label></td>
+    <td width="80%"><input type="text" name="email"  class="required email" id="email" size = "35" value="{$memberInfo.email}"  dataType="Email" msg="Email format is not correct!" /><span class="alert"> *</span></td>
   </tr>
 </table>
                     <div class="buttonRow"><input type="image" src="../Public/images/button_submit.gif" alt="Submit the Information" title=" Submit the Information " /></div> 

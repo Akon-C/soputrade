@@ -404,7 +404,7 @@ country;
 function create_form($list) {
 	$pname=get_class($this);
 	$this_script = "http://{$_SERVER['HTTP_HOST']}";
-	
+
 	$this->other();
 	$this->add_field('v_mid',GetSettValue ( $pname . "_id" ));//商户编号
 	$this->add_field('v_oid',date('Ymd').'-'.GetSettValue ( $pname . "_id" ).'-'.$list ['sn']);//订单编号
@@ -436,8 +436,11 @@ function create_form($list) {
 	$this->form.= "<input type=\"hidden\" name=\"v_shipstate\" value=\"\"/>\n";
 	$this->form.= "<input type=\"hidden\" name=\"v_shipcountry\" value=\"\"/>\n";
 	$this->form.= "</form>\n";
-	//$this->form.=$this->submit(5);//是否自动提交,延迟5秒
-	
+	if(GetSettValue($list['payment_module_code'].'_autosubmit')==1){
+		$delay=GetSettValue($list['payment_module_code'].'_delay');
+		$delay=$delay?$delay:5;
+		$this->form.=$this->submit($delay);//是否自动提交,延迟5秒
+	}
 	return $this->form;
 }
 function submit($delay){
@@ -447,7 +450,6 @@ function submit($delay){
 		$delay*=1000;
 		$this->form.= "<script>function jump(){ document.forms[\"pay_form\"].submit();} setTimeout('jump()',$delay);</script>";
 	}
-	return $this->form;
 }
 }
 ?>
