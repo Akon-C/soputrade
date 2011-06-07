@@ -29,20 +29,14 @@ class ProAction extends CommAction {
 				$map['isprice']=1;
 				$this->disp_text="Specials";
 				break;
-			case isset($_REQUEST['reviews'])://回顾
+			/*case isset($_REQUEST['reviews'])://回顾
 				if(isset($_SESSION['product_history'])){
 					$map['id']=array('in',$_SESSION['product_history']);
 				}else{
 					$map['id']=0;
 				}
 				$this->disp_text="Reviews";
-				break;
-			case isset($_REQUEST['review'])://评论
-				self::$Model=D("Products_ask");
-				$_REQUEST['order']='products_id';
-				$_REQUEST['sort']='desc';
-				$this->disp_text="Review";
-				break;
+				break;*/
 			case isset($_REQUEST['brand']):
 				$map['brandid']=$_REQUEST['id'];
 				$this->disp_text="Brand";
@@ -56,7 +50,7 @@ class ProAction extends CommAction {
 		$map['isdown']=array('neq','1');
 	
 		self::$Model->_list($this->view,$map,'id',false);
-		$this->display('Pro');
+		$this->display('Pro-index');
 	}
 
 	public function guestbook(){
@@ -149,8 +143,7 @@ class ProAction extends CommAction {
 						$products_id="";
 					}
 					sendmail($sendto,"你的网站 ".GetSettValue('sitename')." 有一个新的评论!",/*正文*/
-					"<table><tr><td>类型:</td><td>{$list['type']}$products_id</td></tr>
-					 <tr><td>邮箱:</td><td>{$list['email']}</td><tr><td>昵称:</td><td>{$list['name']}</td></tr><tr><td>标题:</td><td>{$list['title']}</td></tr><tr><td>内容:</td><td>{$list['content']}</td></tr><tr><td>IP地址:</td><td>{$list['ip']}</td></tr></table>"
+					"<table><tr><td>星级:</td><td>{$list['star']}星</td></tr><tr><td>类型:</td><td>{$list['type']}$products_id</td></tr><tr><td>邮箱:</td><td>{$list['email']}</td><tr><td>昵称:</td><td>{$list['name']}</td></tr><tr><td>标题:</td><td>{$list['title']}</td></tr><tr><td>内容:</td><td>{$list['content']}</td></tr><tr><td>IP地址:</td><td>{$list['ip']}</td></tr></table>"
 					/*正文*/);
 				}
 

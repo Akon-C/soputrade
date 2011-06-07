@@ -11,10 +11,19 @@ class ArticleModel extends Model{
 	protected $_validate=array(
 
 	array('title','require','文章标题必须填写!'),
-	array('title','','文章标题已经存在!',0,'unique',1),
-
-	);
+	//array('title','','文章标题已经存在!',0,'unique',1),
 	
+	array ('title', 'uniqueTitle', '文章标题已经存在!', 0, 'callback',1 )
+	);
+	protected function uniqueTitle(){
+		$list=$this->where("title='".$_POST ['title'] ."'")->find();
+		if ($list){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
 	/**
 	 * 分页
 	 *

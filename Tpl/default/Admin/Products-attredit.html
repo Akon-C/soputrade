@@ -1,57 +1,92 @@
 <include file="../Public/admintop" />
 <include file="../Public/adminleft" />
 <script type="text/javascript">
+function del(){
+	var id=$('input:checkbox[name^=id]:checked').map(function(){
+		return $(this).val();
+	}).get().join(",");
+	if(!id){
+		alert('请选择要删除的项!');
+	}else{
+		$.post("{:U('Products/attrdel')}","id="+id);
+		$('input:checkbox[name^=id]:checked').parent().parent().remove();
+	}
+}
+function save(){
+	var querystring=new Object();
+	$("select[name=attr_value][value!='']").map(function(i){
+		var tr=$(this).parent().parent();
+		var products_attr_id=tr.find('input:hidden[name=id]').val() || '';
+		var attr_id=tr.find('input:hidden[name=attr_id]').val() || '';
+		var attr_value=$(this).val() || '';
+		var attr_price=tr.find('input:text[name=attr_price]').val() || '';
+		var sort=tr.find('input:text[name=sort]').val() || '';
+		querystring['products_attr_id['+i+']']=products_attr_id;
+		querystring['attr_id['+i+']']=attr_id;
+		querystring['attr_value['+i+']']=attr_value;
+		querystring['attr_price['+i+']']=attr_price;
+		querystring['sort['+i+']']=sort;
+	});
+	querystring.products_id=$('input:hidden[name=products_id]').val();
+	if(querystring.products_id){
+		$.post("{:U('Products/attrsave')}",querystring,function(data){
+			alert("保存成功！");
+		});
+	}
+}
 $(function(){
+	$("#checkAll").click(function () {
+		$("input:checkbox[name^=id]").attr("checked",$(this).attr("checked"));
+	});
 	$("#attrbox .copy").live("click",
-			function(){
-				var str=$(this).parent().parent().html();
-				$(this).parent().parent().after("<tr>"+str+"</tr>");
-				
+	function(){
+		var str=$(this).parent().parent().html();
+		$(this).parent().parent().after("<tr>"+str+"</tr>");
+
+	}
+	);
+	$("#attrbox .save").live("click",function(){
+		var tr=$(this).parent().parent();
+		var id=$(this).parent().parent().find("[name=id]").attr("value");
+		var attr_id=$(this).parent().parent().find("[name=attr_id]").attr("value");
+		var attr_value=$(this).parent().parent().find("[name=attr_value]").attr("value");
+		var attr_price=$(this).parent().parent().find("[name=attr_price]").attr("value");
+		var sort=$(this).parent().parent().find("[name=sort]").attr("value");
+		var products_id=$("#products_id").attr("value");
+		$.getJSON(
+		"{:U('Products/attrsave')}",
+		{id:id,attr_id:attr_id,attr_value:attr_value,attr_price:attr_price,products_id:products_id,sort:sort},
+		function(data){
+			if(data.status==1){
+				alert("保存成功！");
+				tr.find("[name=id]").attr("value",data.id);
+				//var attr_value=tr.find(".copy").after("<input type='hidden' name='id' value='"+data.id+"' />");
+				var attr_value=tr.find(".copy").remove();
+
+			}
+			else{
+				alert("保存失败！");
+			}
+		}
+		);
+
+	});
+	$("#attrbox .delete").live("click",function(){
+		var tr=$(this).parent().parent();
+		var id=$(this).parent().parent().find("[name=id]").attr("value");
+		if(id>0){
+			$.getJSON(
+			"{:U('Products/attrdel')}",
+			{id:id},
+			function(data){
+				//alert("删除成功！");
+				tr.remove();
 			}
 			);
-	$("#attrbox .save").live("click",
-			function(){
-		        var tr=$(this).parent().parent();
-		        var id=$(this).parent().parent().find("[name=id]").attr("value");
-		        var attr_id=$(this).parent().parent().find("[name=attr_id]").attr("value");
-		        var attr_value=$(this).parent().parent().find("[name=attr_value]").attr("value");
-		        var attr_price=$(this).parent().parent().find("[name=attr_price]").attr("value");
-		        var products_id=$("#products_id").attr("value");
-		        $.getJSON(
-		        		"{:U('Products/attrsave')}",
-		        		{id:id,attr_id:attr_id,attr_value:attr_value,attr_price:attr_price,products_id:products_id},
-		        		function(data){
-			        		if(data.status==1){
-				        		alert("保存成功！");	
-				        		tr.find("[name=id]").attr("value",data.id);
-				        		//var attr_value=tr.find(".copy").after("<input type='hidden' name='id' value='"+data.id+"' />");
-				        		var attr_value=tr.find(".copy").remove();
-				        					        		
-			        		}
-			        		else{
-			        			alert("保存失败！");
-			        		}
-		        		}
-				        );
-				
-			}
-			);
-	$("#attrbox .delete").live("click",
-			function(){
-		       var tr=$(this).parent().parent();
-		       var id=$(this).parent().parent().find("[name=id]").attr("value");	
-		       //alert(id);	       
-		       $.getJSON(
-		    		   "{:U('Products/attrdel')}",
-		    		   {id:id},
-		    		   function(data){
-			    		   alert("删除成功！");
-		    			   tr.remove();
-		    		   }
-				       );
-				
-			}
-			);
+		}else{
+			tr.remove();
+		}
+	});
 }
 );
 </script>
@@ -70,12 +105,13 @@ $(function(){
 				    <th style="text-align:center" width="25%">属性名称</th>
 				    <th style="text-align:center" width="15%">值</th>
                     <th style="text-align:center" width="7%">价格</th>               
+                    <th style="text-align:center" width="7%">排序</th>               
                     <th style="text-align:center" >操作</th>
 				</tr>
 				<volist name="attr" id="vo">
 				 <eq name="vo['input_type']" value="1">
 				<tr >
-				    <td></td>
+				    <td>添加属性:</td>
 				    <td>{$vo.name}<input type="hidden" name="id" value="0"><input type="hidden" name="attr_id" value="{$vo.id}"></td>
 				    <td>
 				       <!-- <eq name="vo['input_type']" value="0">
@@ -91,6 +127,7 @@ $(function(){
                         
 				    </td>
 				    <td><input name="attr_price" class="input-text"></input></td>
+				    <td><input name="sort" class="input-text" ></input></td>
 				    <td>
 				    <a href="javascript:void(0);" class="copy" >复制</a>   
 				    <a href="javascript:void(0);" class="delete">删除</a>   
@@ -101,7 +138,7 @@ $(function(){
 				</eq>
 				 <volist name="vo['attrs']" id="subvo1">
 				 <tr>
-				    <td></td>
+				    <td><input type="checkbox" name="id[]" value="{$subvo1.id}" /> </td>
 				    <td>{$vo.name}<input type="hidden" name="id" value="{$subvo1.id}"><input type="hidden" name="attr_id" value="{$vo.id}"></td>
 				    <td>
 				        <eq name="vo['input_type']" value="0">
@@ -115,11 +152,12 @@ $(function(){
                         </volist>
                         </select>
                         <script type="text/javascript">
-						$("#{$subvo1['id']}").val("{$subvo1['attr_value']}");
+                        $("#{$subvo1['id']}").val("{$subvo1['attr_value']}");
 						</script>
                         </eq>
 				    </td>
 				    <td><input name="attr_price" class="input-text" value="{$subvo1['attr_price']}"></input></td>
+				    <td><input name="sort" class="input-text" value="{$subvo1['sort']}"></input></td>
 				    <td>
 				    <a href="javascript:void(0);" class="delete">删除</a>   
 				    <a href="javascript:void(0);" class="save">保存</a> 
@@ -128,6 +166,9 @@ $(function(){
 				 </volist>
 				</volist>
 			</table>
+			  <p class="t-left">
+            <input type="button" value="删除" onclick="del();" />
+            <input type="button" value="保存" onclick="save();" /></p>
 		</div> <!-- /content -->
 		<input type="hidden" id="products_id" name="products_id" value="{$pid}" />
 <include file="../Public/adminfooter" />

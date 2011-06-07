@@ -12,6 +12,7 @@ class MemberCommAction extends Action{
 	var $sessionID, $memberID;
 	protected $theme;
 	function _initialize() {
+		header("Content-Type:text/html; charset=utf-8");
 		//获取国家列表
 		self::$Model=D("Region");
 		$this->Countries=self::$Model->where("type=0")->findall();

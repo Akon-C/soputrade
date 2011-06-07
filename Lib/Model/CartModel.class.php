@@ -72,7 +72,11 @@ class CartModel extends Model {
 	}
 	// 删除购物车中的内容
 	public function delete_item($sessionID, $id){
-		$this->where ( "session_id='" . $sessionID . "' and id=" . $id)->delete();
+		if($id){
+			$map['session_id']=$sessionID;
+			$map['id']=array('in',$id);
+			$this->where ($map)->delete();
+		}
 	}
 	//修改物品数量
 	public function modify_quantity($sessionID, $id,$count,$model){

@@ -526,39 +526,59 @@ class ProductsAction extends AdminCommAction {
 	function attrdel(){
 		$id=$_REQUEST["id"];
 		self::$Model=D("Products_attr");
-		self::$Model->where("id=".$id)->delete();
+		$map['id']=array('in',$id);
+		self::$Model->where($map)->delete();
 		echo json_encode($id);
 
 	}
 	function attrsave(){
 		self::$Model=D("Products_attr");
-		$id=$_REQUEST["id"];
-		$data["attr_id"]=$_REQUEST["attr_id"];
-		$data["attr_value"]=$_REQUEST["attr_value"];
-		$data["products_id"]=$_REQUEST["products_id"];
+		if(is_array($_POST['attr_value'])){
+			$_POST['attr_value']=array_filter($_POST['attr_value']);
+			for($i=0;$count=count($_POST['attr_value']),$i<$count;$i++){
+				$data=array();
+				$data['attr_value']=$_POST['attr_value'][$i];
+				$data['attr_price']=$_POST['attr_price'][$i];
+				$data['attr_id']=$_POST['attr_id'][$i];
+				$data['products_id']=$_POST['products_id'];
+				$data['sort']=$_POST['sort'][$i];
+				$data['dateline']=time();
+				if($_POST['products_attr_id'][$i]){
+					self::$Model->where('id='.$_POST['products_attr_id'][$i])->save($data);
+				}else{
+					self::$Model->add($data);
+				}
+			}
+		}else{
+			$id=$_REQUEST["id"];
+			$data["attr_id"]=$_REQUEST["attr_id"];
+			$data["attr_value"]=$_REQUEST["attr_value"];
+			$data["products_id"]=$_REQUEST["products_id"];
+			$data["sort"]=$_REQUEST["sort"];
 
-		if (empty($data["attr_value"])){
-			$r["status"]=0;
-			echo json_encode($r);die;
-		}
-		if (empty($_REQUEST["attr_price"])){
-			$data["attr_price"]=0;
-		}
-		else{
-			$data["attr_price"]=$_REQUEST["attr_price"];
-		}
-		if ($id==0){
-			$r["id"]=self::$Model->add($data);
-			//echo self::$Model->getlastsql();
-			$r["status"]=1;
+			if (empty($data["attr_value"])){
+				$r["status"]=0;
+				echo json_encode($r);die;
+			}
+			if (empty($_REQUEST["attr_price"])){
+				$data["attr_price"]=0;
+			}
+			else{
+				$data["attr_price"]=$_REQUEST["attr_price"];
+			}
+			if ($id==0){
+				$r["id"]=self::$Model->add($data);
+				//echo self::$Model->getlastsql();
+				$r["status"]=1;
 
-			echo json_encode($r);die;
-		}
-		else{
-			self::$Model->where("id=".$id)->save($data);
-			$r["status"]=1;
-			$r["id"]=$id;
-			echo json_encode($r);die;
+				echo json_encode($r);die;
+			}
+			else{
+				self::$Model->where("id=".$id)->save($data);
+				$r["status"]=1;
+				$r["id"]=$id;
+				echo json_encode($r);die;
+			}
 		}
 
 	}
@@ -586,7 +606,7 @@ class ProductsAction extends AdminCommAction {
 		for ($row=0;$row<count($attr);$row++){
 			$map1['products_id']=$map['id'];
 			$map1['attr_id']=$attr[$row]['id'];
-			$attr[$row]['attrs']=self::$Model->where($map1)->findall();
+			$attr[$row]['attrs']=self::$Model->where($map1)->order('sort asc')->findall();
 			$attr[$row]['values']=explode(chr(13),$attr[$row]['values']);
 			foreach ($attr[$row]['values'] as $k=>$v){
 				$attr[$row]['values'][$k]=str_replace("\n","",$v);
@@ -685,8 +705,7 @@ class ProductsAction extends AdminCommAction {
 				//修改属性
 				//先删除原来的属性
 				self::$Model=D("Products_attr");
-				unset($map);
-				unset($data);
+				$map=$data=array();
 				$map['products_id']=array("in",$products_id);
 				self::$Model->where($map)->delete();
 
@@ -766,7 +785,7 @@ class ProductsAction extends AdminCommAction {
 	}
 
 	function exportcsv(){
-		$csvfile=TEMP_PATH."/products.csv";
+		$csvfile=TEMP_PATH."products.csv";
 		self::$Model=D('Products');
 		if(isset($_POST['cateid']) && !empty($_POST['cateid'])){
 			$cateid=D('Cate')->getChildren($_POST['cateid'],$_POST['cateid']);
@@ -777,11 +796,12 @@ class ProductsAction extends AdminCommAction {
 		}
 		if($list){
 			$fields=self::$Model->query("SHOW COLUMNS FROM __TABLE__");
-			$dbfields=array();
+			$dbfields=array();//位置
 			foreach ($fields as $field){
 				$dbfields[]=$field['Field'];
 			}
 			$file = fopen($csvfile,"w+");
+			//翻译
 			$lang= array(
 			'id' =>'产品id',
 			'cateid'=>'类别id',
@@ -811,13 +831,17 @@ class ProductsAction extends AdminCommAction {
 			'pagedec'=>'meta描述'
 			);
 			//标题
-			fputcsv($file,auto_charset($lang,'utf-8','gbk'));
+			$title=array();
+			foreach($dbfields as $key=>$val){
+				$title[]=$lang[$val]?$lang[$val]:$val;
+			}
+
+			fputcsv($file,auto_charset($title,'utf-8','gbk'));
 			//内容
 			foreach ($list as $line)
 			{
-				fputcsv($file,$line);
+				fputcsv($file,auto_charset($line,'utf-8','gbk'));
 			}
-
 			fclose($file);
 
 			import("ORG.Net.Http");
@@ -834,65 +858,70 @@ class ProductsAction extends AdminCommAction {
 		$csvfile=$_FILES['csvfile']['tmp_name'];
 		if(is_uploaded_file($csvfile)){
 			$file = fopen($csvfile,"r");
-			//跳过标题
-			$i=0;
 			$lang= array(
-			'id',
-			'cateid',
-			'name',
-			'serial',
-			'price',
-			'pricespe',
-			'weight',
-			'bigimage',
-			'smallimage',
-			'remark',
-			'isnew',
-			'ishot',
-			'isrec',
-			'isprice',
-			'isdown',
-			'dateline',
-			'sort',
-			'brandid',
-			'viewcount',
-			'points',
-			'costprice',
-			'provider',
-			'stock',
-			'pagetitle',
-			'pagekey',
-			'pagedec'
+			"产品id"=>'id',
+			"类别id"=>'cateid',
+			"产品名称"=>'name',
+			"产品货号"=>'serial',
+			"市场价格"=>'price',
+			"商店价格"=>'pricespe',
+			"重量"=>'weight',
+			"原图"=>'bigimage',
+			"缩略图"=>'smallimage',
+			"产品描述"=>'remark',
+			"是否新产品"=>'isnew',
+			"是否热门产品"=>'ishot',
+			"是否推荐产品"=>'isrec',
+			"是否特价产品"=>'isprice',
+			"是否下架产品"=>'isdown',
+			"添加时间"=>'dateline',
+			"排序"=>'sort',
+			"品牌id"=>'brandid',
+			"点击数"=>'viewcount',
+			"积分"=>'points',
+			"成本价"=>'costprice',
+			"供应商"=>'provider',
+			"库存"=>'stock',
+			"meta标题"=>'pagetitle',
+			"meta关键字"=>'pagekey',
+			"meta描述"=>'pagedec'
 			);
-
+			//读取标题
+			$title = fgetcsv($file);
+			if($title){
+				$title=auto_charset($title,'gbk','utf-8');
+				$fields=array();
+				//找出位置
+				for($i=0;$count=count($title),$i<$count;$i++){
+					$fields[]=$lang[$title[$i]]?$lang[$title[$i]]:$title[$i];
+				}
+			}else{
+				$this->error('请上传正确的文件');
+			}
 			self::$Model=D('Products');
 			//内容
 			$modify=$add=0;
-			while ($line = fgetcsv($file)) {
-				$i++;
-				//跳过标题
-				if($i==1){
-					continue;
-				}
-				$num=count($line);
+			while ($line = auto_charset(fgetcsv($file),'gbk','utf-8')) {
+
 				$data=array();
-				for ($c=0; $c < $num; $c++) {
-					$data[$lang[$c]]=$line[$c];
+				for ($c=0; $num=count($line),$c < $num; $c++) {
+					$data[$fields[$c]]=$line[$c];
 				}
 				$data=array_filter($data);
 
 				if($data==null){
 					continue;
 				}
+				//过滤多余的字段
 				self::$Model->create($data);
 
 				if(false === self::$Model->add()){
-					self::$Model->save();
-					$modify++;
+					if(false !== self::$Model->save()){
+						$modify++;
+					}
 				}else{
 					$add++;
 				}
-
 			}
 			$str='';
 			if($add){

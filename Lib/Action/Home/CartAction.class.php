@@ -65,7 +65,7 @@ class CartAction extends CommAction {
 	}
 	function delete() {
 		$dao = D ( "Cart" );
-		$dao->delete_item ( $this->sessionID, $_GET ['id'] );
+		$dao->delete_item ( $this->sessionID, $_REQUEST ['id'] );
 		$this->redirect ( 'Cart/disp' );
 	}
 	function save() {

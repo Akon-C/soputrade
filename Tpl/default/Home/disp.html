@@ -28,7 +28,7 @@
 			<img src="../Public/css/left.gif">
 		</div>
 		<div id="spec-list">
-			<div style="position: relative; overflow: hidden; z-index:1; width: 350px; height: 56px;"><ul style="width: 744px; overflow: hidden; position: absolute; left: 30px; _left: 0pt; top: 0pt; margin-top: 0pt; margin-left: 0pt;" class="list-h">
+			<div><ul>
 			<iterate name="gallerys" id="vo">
 				<li><img src="{:build_url($vo,'g_bigimage')}"> </li>
 				</iterate>
@@ -41,7 +41,7 @@
               </div>
              <div class="right_goods">
                 <div class="goods_name"><strong>{:build_url($list,'pro_name')}</strong></div>
-                <div class="goods_stock">Product id:{$vo.id}</div>
+                <div class="goods_stock">Product id:{$list.id}</div>
                 <div class="goods_pri"><strong>Price:</strong>  <font color="#FF6600" style="font-size:18px;">
      <span id="product_price">{:getprice($list['price'],$list['pricespe'],false)} </span></font><span id="attr_price"></span></div>
                 <div class="goods_size">
@@ -113,14 +113,12 @@
               
             </div>
             <div class="review">
-              <strong style="color:#666666">Current Reviews: {$review_num|default="0"}</strong><br />This product was added to our catalog on {:date("D M j G:i:s T Y",$list['dateline'])}.
+              <a href="__APP__/reviews-id-{$list.id}"><strong style="color:#666666">Current Reviews: {$review_num|default="0"}</strong></a><br />This product was added to our catalog on {:date("D M j G:i:s T Y",$list['dateline'])}.
             </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-
 
 
 

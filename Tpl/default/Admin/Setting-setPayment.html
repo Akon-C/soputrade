@@ -14,7 +14,11 @@
             <table class="nostyle">
                     <tr>
 						<td style="width:160px;">是否开启:</td>
-						<td><input type="radio" value="1"  name="{$list['name']}_status" class="input-text"  />启用<input type="radio" value="0"  name="{$list['name']}_status" class="input-text" checked />禁用</td>
+						<td><input type="radio" value="1"  name="{$list['name']}_status" class="input-text" <if condition="GetSettValue($list['name'].'_status') eq 1">checked</if> />启用<input type="radio" value="0"  name="{$list['name']}_status" class="input-text" <if condition="GetSettValue($list['name'].'_status') eq 0">checked</if> />禁用</td>
+					</tr>
+                    <tr>
+						<td style="width:160px;">是否自动提交:</td>
+						<td><input type="radio" value="1"  name="{$list['name']}_autosubmit" class="input-text"  <if condition="GetSettValue($list['name'].'_autosubmit') eq 1">checked</if>/>启用<input type="radio" value="0"  name="{$list['name']}_autosubmit" class="input-text" <if condition="GetSettValue($list['name'].'_autosubmit') eq 0">checked</if> />禁用 延迟时间(单位秒,默认5秒):<input type="text"  name="{$list['name']}_delay" class="input-text" value="{:GetSettValue($list['name'].'_delay')}"  /> </td>
 					</tr>
                     <volist name="varlist" id="vo">
                     

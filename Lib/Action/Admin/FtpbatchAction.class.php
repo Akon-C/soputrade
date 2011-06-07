@@ -41,7 +41,7 @@ class FtpbatchAction extends AdminCommAction {
 
 			}
 			$this->attr=$attr;
-			die($this->fetch('Products-getattr'));
+			die($this->fetch('Ftpbatch-getattr'));
 		}
 
 

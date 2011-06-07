@@ -93,7 +93,11 @@ class _95epay {
 		}
 
 		$this->form.= "</form>\n";
-		//$this->form.=$this->submit(5);//是否自动提交,延迟5秒
+		if(GetSettValue($list['payment_module_code'].'_autosubmit')==1){
+			$delay=GetSettValue($list['payment_module_code'].'_delay');
+			$delay=$delay?$delay:5;
+			$this->form.=$this->submit($delay);//是否自动提交,延迟5秒
+		}
 		return $this->form;
 	}
 	function submit($delay){
@@ -103,7 +107,6 @@ class _95epay {
 			$delay*=1000;
 			$this->form.= "<script>function jump(){ document.forms[\"pay_form\"].submit();} setTimeout('jump()',$delay);</script>";
 		}
-		return $this->form;
 	}
 }
 ?>

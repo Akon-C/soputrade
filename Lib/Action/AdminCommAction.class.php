@@ -11,6 +11,7 @@ class AdminCommAction extends Action {
 	public $dao,$sort;
 	protected static $Model;	//数据Model
 	function _initialize() {
+		header("Content-Type:text/html; charset=utf-8");
 		$this->roletree = get_roletree_arr ();
 		$this->nodetree = get_nodetree_arr ();
 		$this->brandtree = get_brand_tree ();

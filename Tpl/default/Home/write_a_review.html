@@ -2,7 +2,7 @@
 <include file="../Public/left" />
   <div class="col2">
         <div class="list1">
-          <div class="list1_title"><a href="/">Home</a> > Write A Review About "{$list['name']}'</div>
+          <div class="list1_title"><a href="/">Home</a> > Write A Review About "{$list['name']}"</div>
           <div class="list2_content">
             <div class="goods">
               <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -41,8 +41,21 @@
 <div>* Required information</div>
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
+    <td colspan="2">Choose a ranking for this item. 1 star is the worst and 5 stars is the best.</td>
+  </tr> 
+  <tr>
+    <td colspan="2">
+<input type="radio" id="rating-1" value="1" name="star">
+<label for="rating-1" class=""><img width="86" height="16" title=" One Star " alt="One Star" src="../Public/admin/stars_1_small.gif"></label>
+<input type="radio" id="rating-2" value="2" name="star"><label for="rating-2" class=""><img width="86" height="16" title=" Two Stars " alt="Two Stars" src="../Public/admin/stars_2_small.gif"></label>
+<input type="radio" id="rating-3" value="3" name="star"><label for="rating-3" class=""><img width="86" height="16" title=" Three Stars " alt="Three Stars" src="../Public/admin/stars_3_small.gif"></label>
+<input type="radio" id="rating-4" value="4" name="star"><label for="rating-4" class=""><img width="86" height="16" title=" Four Stars " alt="Four Stars" src="../Public/admin/stars_4_small.gif"></label>
+<input type="radio" id="rating-5" value="5" name="star" dataType="Group"  msg="Must choose a ranking"><label for="rating-5" class=""><img width="86" height="16" title=" Five Stars " alt="Five Stars" src="../Public/admin/stars_5_small.gif"></label>
+&nbsp;<span class="alert">*</span></td>
+  </tr> 
+  <tr>
     <td width="20%" height="30"><label class="inputLabel" for="from-name">Review Type:</label></td>
-    <td><input type="radio" name="type" value="Review"  dataType="Group" checked/>Review <input type="radio" name="type" value="Ask"  dataType="Group" />Ask <input type="radio" name="type" value="Message"  dataType="Group"  />Message <input type="radio" name="type" value="Contact Us"  dataType="Group"  />Contact Us  <input type="radio" name="type" value="Other" dataType="Group"  msg="Must choose a Review Type!"  />Other&nbsp;<span class="alert">*</span></td>
+    <td><input type="radio" name="type" value="Review"  />Review <input type="radio" name="type" value="Ask"  />Ask <input type="radio" name="type" value="Message"  />Message <input type="radio" name="type" value="Contact Us"  />Contact Us  <input type="radio" name="type" value="Other" dataType="Group"  msg="Must choose a Review Type!"  />Other&nbsp;<span class="alert">*</span></td>
   </tr> 
   <tr>
     <td width="20%" height="30"><label class="inputLabel" for="from-name">Your Name:</label></td>

@@ -21,7 +21,12 @@ class alipay{
 		$pname=get_class($this);
 		$this_script = "http://{$_SERVER['HTTP_HOST']}";
 		
-		return '';
+		if(GetSettValue($list['payment_module_code'].'_autosubmit')==1){
+			$delay=GetSettValue($list['payment_module_code'].'_delay');
+			$delay=$delay?$delay:5;
+			$this->form.=$this->submit($delay);//是否自动提交,延迟5秒
+		}
+		return $this->form;
 	}
 	function submit(){
 		if(!$delay){
@@ -30,7 +35,6 @@ class alipay{
 			$delay*=1000;
 			$this->form.= "<script>function jump(){ document.forms[\"pay_form\"].submit();} setTimeout('jump()',$delay);</script>";
 		}
-		return $this->form;
 	}
 }
 ?>
