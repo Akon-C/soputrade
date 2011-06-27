@@ -4,6 +4,8 @@ define('THINK_PATH', './ThinkPHP');
 //定义项目名称，如果不定义，默认为入口文件名称 
 define('APP_NAME', '.'); 
 define('APP_PATH', '.'); 
+
+
 //加载ThinkPHP框架公共入口文件 
 require(THINK_PATH.'/ThinkPHP.php'); 
 

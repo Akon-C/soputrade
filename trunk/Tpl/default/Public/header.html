@@ -49,7 +49,7 @@ $(function() {
    
       <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td style="padding-left:190px;padding-top:15px;">Currencies: &nbsp;</td>
+    <td style="padding-left:190px;padding-top:15px;">{:L('CURRENCIES')}: &nbsp;</td>
     <td style="padding-left:5px;"> <select name="Currencies" onchange="document.Currencies.submit();">
 	         <option value="">Please select...</option>
 	         <volist name="currencies" id="vo">
@@ -66,16 +66,16 @@ $(function() {
           </div>	</form>
           <div class="cart2">
          
-            <a href="/">Home</a>
+            <a href="/">{:L('HOME')}</a>
             <gt name="mid" value="0">
-			<a href="{:U('Member-Index/index')}">My Account</a> 
-            <a href="{:U('Member-Index/LogOut')}">LogOut</a>
+			<a href="{:U('Member-Index/index')}">{:L('ACCOUNT')}</a> 
+            <a href="{:U('Member-Index/LogOut')}">{:L('LogOut')}</a>
             <else/>
             
-			<a href="{:U('Member-Public/Join')}">Register</a>
-            <a href="{:U('Member-Public/Login')}">Log In</a>
+			<a href="{:U('Member-Public/Join')}">{:L('REGISETR')}</a>
+            <a href="{:U('Member-Public/Login')}">{:L('LOGIN')}</a>
             </gt>
-            <a href="{:U('Cart/disp')}">Shopping Cart</a>
+            <a href="{:U('Cart/disp')}">{:L('SHOPPING_CART')}</a>
             
             
           </div>
@@ -85,7 +85,7 @@ $(function() {
   <tr>
     <td width="100">&nbsp;</td>
     <td width="100" align="left">
-      <a href="{:U('Cart/disp')}">Shopping Cart</a><br />Now in your cart<br /><a href="{:U('Cart/disp')}" style="color:#CC9900">{:itemCount()} items</a>
+      <a href="{:U('Cart/disp')}">{:L('SHOPPING_CART')}</a><br />{:L('SHOPPING_CART_MESSAGE')}<br /><a href="{:U('Cart/disp')}" style="color:#CC9900">{:itemCount()} {:L('SHOPPING_CART_UNITS')}</a>
 
     </td>
   </tr>
@@ -97,7 +97,7 @@ $(function() {
       </div>
       <div class="nav">
         <ul>
-          <li><a href="/">Home</a><span class="marker"></span></li>
+          <li><a href="/">{:L('HOME')}</a><span class="marker"></span></li>
           <li><a href="{:U('Pro/new')}">New products</a><span class="marker"></span></li>
           <li><a href="{:U('Pro/price')}">Specials</a><span class="marker"></span></li>
           <li><a href="{:U('Pro/index')}">All products</a><span class="marker"></span></li>
@@ -112,7 +112,7 @@ $(function() {
   <tr>
     <td width="290" align="left"><input type="text" name="key" class="input1"  dataType="Require" msg="keywords is required!" /></td>
     <td width="60" align="left"><input type="image" src="../Public/images/search.gif" alt="Search" title=" Search " class="input2"  /></td>
-    <td  align="left" style="padding-left:5px;">Hot Search:
+    <td  align="left" style="padding-left:5px;">{:L('HOT_SEARCH')}:
     <iterate name="HotClass" id="vo">
     <gt name="i" value="1">
     ,
