@@ -8,9 +8,9 @@ $array=array(
 //'APP_DOMAIN_DEPLOY' => true,
 //语言
 'LANG_SWITCH_ON'=>true,
-'LANG_AUTO_DETECT'=>true,//老外自动切换语言
-//'DEFAULT_LANG'   =>	'zh-cn',	 // 默认语言
-'DEFAULT_LANG'   =>	'en-us',	 // 默认语言
+'LANG_AUTO_DETECT'=>false,//老外自动切换语言
+'DEFAULT_LANG'   =>	'zh-cn',	 // 默认语言
+//'DEFAULT_LANG'   =>	'en-us',	 // 默认语言
 //允许上传的文件类型
 'FILE_UPLOAD_ALLOWEXTS'=>'jpg,jpeg,bmp,png,gif,tif,zip,rar,doc,xls,7z,rtf,csv',
 //站点信息
@@ -23,7 +23,7 @@ $array=array(
 'DEFAULT_TEMPLATE'=>'default',
 'URL_PATHINFO_DEPR'=>'-',
 //组模
-'APP_GROUP_LIST'=>'Admin,Home,Member',
+'APP_GROUP_LIST'=>'Admin,Home,Member,Soap',
 'DEFAULT_GROUP'=>'Home',
 'TMPL_FILE_DEPR'=>"-",
 'USER_AUTH_ON'=>true,
@@ -44,6 +44,7 @@ $array=array(
 'RBAC_USER_TABLE'	=>	'role_user',
 'RBAC_ACCESS_TABLE' =>	'access',
 'RBAC_NODE_TABLE'	=> 'node',
+
 
 );
 return array_merge($config,$array);
