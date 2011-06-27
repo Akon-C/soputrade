@@ -9,14 +9,28 @@
 */ 
 $array=array(
 'DO_OK'=>"Operation is successful",
-'HOME'=>'Home',
+'HOME'=>'Home',//首页文字
+'ACCOUNT'=>'My Account',//会员中心文字
+'LOGOUT'=>'LogOut',//退出文字
+'REGISETR'=>'Join Free',//注册文字
+'LOGIN'=>'Sign In',//登录文字
+'SHOPPING_CART'=>'Shopping Cart',//购物车文字
+'SHOPPING_CART_MESSAGE'=>'Now in your cart',//购物车信息文字
+'SHOPPING_CART_UNITS'=>'Items',//购物车单位文字
+'CURRENCIES'=>'Currencies',//选择货币文字
+'HOT_SEARCH'=>'Hot search',//热门搜索
+'CATE_TITLE'=>'Categories',//类别框标题
+'BESTSELLERS_TITLE'=>'Bestsellers',//热卖框标题
+'SPECIALS_TITLE'=>'Specials',//特价框标题
+'FEATURED_TITLE'=>'Featured Products',//推荐框标题
+
 'ABOUT_US'=>'About Us',
 'CONTACT_US'=>'Contact Us',
 'NEW_PRODUCTS'=>'New Products',
 'NEED_HELP'=>'Need Help',
 'LEAVE_MESSAGE'=>'Leave Message',
 'ALL_CATEGORY'=>'All Category',
-'HOT_SEARCH'=>'Hot search',
+
 'TAGS'=>'Tags',
 'BROSWER_HISTORY'=>'Broswer History',
 'NEW_ARRIVAL_ITEMS'=>'New Arrival Items',
@@ -25,8 +39,8 @@ $array=array(
 'LOGIN'=>'Login',
 'USER_NAME'=>'User Name',
 'PASSWORD'=>'Password',
-'SIGN_IN'=>'Sign In',
-'JOIN_FREE'=>'Join Free',
+
+
 'BUYER_GUIDE'=>'Buyer Guide',
 'GOT_A_QUESTION'=>'Got a Question',
 'SEND_AN_INQUIRY'=>'Send an Inquiry',
